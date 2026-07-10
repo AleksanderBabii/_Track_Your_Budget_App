@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "TrackBudget.Application/1.0.0": {
+        "dependencies": {
+          "TrackBudget.Domain": "1.0.0"
+        },
+        "runtime": {
+          "TrackBudget.Application.dll": {}
+        }
+      },
+      "TrackBudget.Domain/1.0.0": {
+        "runtime": {
+          "TrackBudget.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TrackBudget.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TrackBudget.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/TrackBudget.Api/">
+    <Project Path="TrackBudget.Api/Trackbudget.Api.csproj" />
+  </Folder>
+  <Project Path="TrackBudget.Application/TrackBudget.Application.csproj" />
+  <Project Path="TrackBudget.Domain/TrackBudget.Domain.csproj" />
+  <Project Path="TrackBudget.Infrastructure/TrackBudget.Infrastructure.csproj" />
+</Solution>

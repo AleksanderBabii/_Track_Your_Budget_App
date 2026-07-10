@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace TrackBudget.Application.DTOs.Auth
+{
+    public class AuthResponceDto
+    {
+        public string Token { get; set; } = string.Empty;
+
+        public string Username { get; set; } = string.Empty;
+
+        public string Email { get; set; } = string.Empty;
+    }
+}
