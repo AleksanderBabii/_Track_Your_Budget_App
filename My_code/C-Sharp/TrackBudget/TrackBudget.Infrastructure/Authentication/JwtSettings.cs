@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TrackBudget.Infrastructure.Authentication;
+﻿namespace TrackBudget.Infrastructure.Authentication;
 
 public class JwtSettings
 {

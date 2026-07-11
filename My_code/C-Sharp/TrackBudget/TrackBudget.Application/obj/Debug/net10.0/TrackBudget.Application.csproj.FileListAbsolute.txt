@@ -8,6 +8,7 @@ D:\Web Development\Sasha_Folder\My_code\C-Sharp\TrackBudget\TrackBudget.Applicat
 D:\Web Development\Sasha_Folder\My_code\C-Sharp\TrackBudget\TrackBudget.Application\obj\Debug\net10.0\TrackBudget.Application.AssemblyInfoInputs.cache
 D:\Web Development\Sasha_Folder\My_code\C-Sharp\TrackBudget\TrackBudget.Application\obj\Debug\net10.0\TrackBudget.Application.AssemblyInfo.cs
 D:\Web Development\Sasha_Folder\My_code\C-Sharp\TrackBudget\TrackBudget.Application\obj\Debug\net10.0\TrackBudget.Application.csproj.CoreCompileInputs.cache
+D:\Web Development\Sasha_Folder\My_code\C-Sharp\TrackBudget\TrackBudget.Application\obj\Debug\net10.0\TrackBudget.Application.sourcelink.json
 D:\Web Development\Sasha_Folder\My_code\C-Sharp\TrackBudget\TrackBudget.Application\obj\Debug\net10.0\TrackBud.2B995959.Up2Date
 D:\Web Development\Sasha_Folder\My_code\C-Sharp\TrackBudget\TrackBudget.Application\obj\Debug\net10.0\TrackBudget.Application.dll
 D:\Web Development\Sasha_Folder\My_code\C-Sharp\TrackBudget\TrackBudget.Application\obj\Debug\net10.0\refint\TrackBudget.Application.dll

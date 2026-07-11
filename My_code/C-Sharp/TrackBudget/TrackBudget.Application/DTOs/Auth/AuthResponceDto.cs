@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TrackBudget.Application.DTOs.Auth
 {
-    public class AuthResponceDto
+    public class AuthResponseDto
     {
         public string Token { get; set; } = string.Empty;
 
