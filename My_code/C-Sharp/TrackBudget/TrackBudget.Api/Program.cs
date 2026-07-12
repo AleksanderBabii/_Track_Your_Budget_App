@@ -1,18 +1,26 @@
 using System.Text;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using TrackBudget.Application.Interfaces.Services;
+
 using TrackBudget.Infrastructure.Authentication;
 using TrackBudget.Infrastructure.Data;
+using TrackBudget.Infrastructure.Repositories;
+
 using TrackBudget.Application.Interfaces.Authentication;
 using TrackBudget.Application.Interfaces.Repositories;
+using TrackBudget.Application.Interfaces.Services;
+
 using TrackBudget.Application.Services;
-using TrackBudget.Infrastructure.Repositories;
+using TrackBudget.Application.Validators.Auth;
+
 using TrackBudget.Api.Middleware;
+
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using TrackBudget.Application.Validators.Auth;
+
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +52,8 @@ builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler(_ => { });

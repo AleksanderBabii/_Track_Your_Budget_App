@@ -1,0 +1,87 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using TrackBudget.Application.DTOs.Accounts;
+using TrackBudget.Application.Interfaces.Services;
+
+namespace TrackBudget.Api.Controllers;
+
+[ApiController]
+[Authorize]
+[Route("api/accounts")]
+
+public class AccountController(IAccountService accountService) : ControllerBase
+{
+    private readonly IAccountService _accountService = accountService;
+    private Guid GetUserIdFromClaims()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim, out var userId))
+        {
+            throw new UnauthorizedAccessException("Invalid user ID claim.");
+        }
+
+        return userId;
+    }
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyCollection<AccountDto>>> GetAllAsync(
+        CancellationToken cancellationToken = default
+    )
+    {
+        var userId = GetUserIdFromClaims();
+        var accounts = await _accountService.GetAllAsync(userId, cancellationToken);
+        return Ok(accounts);
+    }
+
+    [HttpGet("{accountId:guid}")]
+    public async Task<ActionResult<AccountDto>> GetByIdAsync(Guid accountId, CancellationToken cancellationToken = default)
+    {
+        var userId = GetUserIdFromClaims();
+        var account = await _accountService.GetByIdAsync(accountId, userId, cancellationToken);
+        if (account == null)
+        {
+            return NotFound();
+        }
+        return Ok(account);
+    }
+
+    [HttpGet("user/{userId:guid}")]
+    public async Task<ActionResult<List<AccountDto>>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var accounts = await _accountService.GetAllByUserIdAsync(userId, cancellationToken);
+        return Ok(accounts);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<AccountDto>> CreateAsync(CreateAccountDto createAccountDto, CancellationToken cancellationToken = default)
+    {
+        var userId = GetUserIdFromClaims();
+        var account = await _accountService.CreateAsync(createAccountDto, userId, cancellationToken);
+        return CreatedAtAction(nameof(GetByIdAsync), new { accountId = account.Id }, account);
+    }
+
+    [HttpPut("{accountId:guid}")]
+    public async Task<ActionResult<AccountDto>> UpdateAsync(Guid accountId, UpdateAccountDto updateAccountDto, CancellationToken cancellationToken = default)
+    {
+        var userId = GetUserIdFromClaims();
+        var account = await _accountService.UpdateAsync(accountId, updateAccountDto, userId, cancellationToken);
+        if (account == null)
+        {
+            return NotFound();
+        }
+        return Ok(account);
+    }
+
+    [HttpDelete("{accountId:guid}")]
+    public async Task<IActionResult> DeleteAsync(Guid accountId, CancellationToken cancellationToken = default)
+    {
+        var userId = GetUserIdFromClaims();
+        var result = await _accountService.DeleteAsync(accountId, userId, cancellationToken);
+        if (!result)
+        {
+            return NotFound();
+        }
+        return NoContent();
+    }
+}
