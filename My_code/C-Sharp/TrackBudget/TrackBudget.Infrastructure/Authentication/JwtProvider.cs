@@ -6,10 +6,11 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TrackBudget.Domain.Entities;
+using TrackBudget.Application.Interfaces.Authentication;
 
-namespace TrackBudget.Infrastructure.Authentication;
+namespace TrackBudget.Infrastructure.Authentication;    
 
-public  class JwtProvider
+public  class JwtProvider : IJwtProvider
 {
     private readonly JwtSettings _jwtSettings;
 
@@ -18,9 +19,9 @@ public  class JwtProvider
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string generateToken (User user)
+    public string GenerateToken(User user)
     {
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username),

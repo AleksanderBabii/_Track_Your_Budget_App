@@ -5,40 +5,59 @@ using Microsoft.IdentityModel.Tokens;
 using TrackBudget.Application.Interfaces.Services;
 using TrackBudget.Infrastructure.Authentication;
 using TrackBudget.Infrastructure.Data;
-using TrackBudget.Infrastructure.Services;
+using TrackBudget.Application.Interfaces.Authentication;
+using TrackBudget.Application.Interfaces.Repositories;
+using TrackBudget.Application.Services;
+using TrackBudget.Infrastructure.Repositories;
+using TrackBudget.Api.Middleware;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using TrackBudget.Application.Validators.Auth;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    var connectionString = builder.Configuration
-        .GetConnectionString("DefaultConnection");
-
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseNpgsql(connectionString);
 });
 
-builder.Services.Configure<JwtSettings>(
-    builder.Configuration.GetSection("JwtSettings")
-);
+builder.Services.AddOptions<JwtSettings>().
+Bind(builder.Configuration.GetSection("JwtSettings"))
+.Validate(s => !string.IsNullOrEmpty(s.Secret), "JWT Secret is required.")
+.Validate(s => !string.IsNullOrEmpty(s.Issuer), "JWT Issuer is required.")
+.Validate(s => !string.IsNullOrEmpty(s.Audience), "JWT Audience is required.")
+.ValidateOnStart();
 
-builder.Services.AddScoped<JwtProvider>();
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler(_ => { });
+builder.Services.AddHealthChecks();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var jwtSettings = builder.Configuration
     .GetSection("JwtSettings")
@@ -46,6 +65,7 @@ var jwtSettings = builder.Configuration
     ?? throw new InvalidOperationException(
         "JWT settings are missing."
     );
+
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -74,6 +94,9 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+app.UseMiddleware<ExeptionMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -82,9 +105,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("FrontendPolicy");
+app.UseAuthentication();
 app.UseAuthorization();
 
+
+app.MapHealthChecks("/health");
 app.MapControllers();
 
 app.Run();

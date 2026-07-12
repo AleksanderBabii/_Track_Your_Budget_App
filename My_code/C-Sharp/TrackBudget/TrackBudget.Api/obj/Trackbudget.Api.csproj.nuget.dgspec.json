@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\Trackbudget.Api.csproj": {}
+    "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\TrackBudget.Api.csproj": {}
   },
   "projects": {
-    "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\Trackbudget.Api.csproj": {
+    "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\TrackBudget.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\Trackbudget.Api.csproj",
-        "projectName": "Trackbudget.Api",
-        "projectPath": "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\Trackbudget.Api.csproj",
+        "projectUniqueName": "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\TrackBudget.Api.csproj",
+        "projectName": "TrackBudget.Api",
+        "projectPath": "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\TrackBudget.Api.csproj",
         "packagesPath": "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\",
         "outputPath": "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\obj\\",
         "projectStyle": "PackageReference",
@@ -53,6 +53,10 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[10.0.9, )"
@@ -554,6 +558,12 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[12.1.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

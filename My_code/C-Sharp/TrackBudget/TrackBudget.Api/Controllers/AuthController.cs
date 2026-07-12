@@ -17,39 +17,26 @@ public class AuthController : ControllerBase
 
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponseDto>> Register(
-        RegisterDto dto)
+        RegisterDto dto, CancellationToken cancellationToken)
     {
-        try
-        {
-            var result = await _authService.RegisterAsync(dto);
 
-            return StatusCode(StatusCodes.Status201Created, result);
-        }
-        catch (InvalidOperationException exception)
-        {
-            return Conflict(new
-            {
-                message = exception.Message
-            });
-        }
+
+        var result = await _authService.RegisterAsync(dto, cancellationToken);
+
+        return StatusCode(StatusCodes.Status201Created, result);
+
+
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login(
-        LoginDto dto)
+        LoginDto dto, CancellationToken cancellationToken)
     {
-        try
-        {
-            var result = await _authService.LoginAsync(dto);
 
-            return Ok(result);
-        }
-        catch (UnauthorizedAccessException exception)
-        {
-            return Unauthorized(new
-            {
-                message = exception.Message
-            });
-        }
+        var result = await _authService.LoginAsync(dto, cancellationToken);
+
+        return Ok(result);
+
+
     }
 }

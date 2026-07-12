@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "VleL4LnyTGs=",
+  "dgSpecHash": "CG4plAbUlIo=",
   "success": true,
-  "projectFilePath": "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\Trackbudget.Api.csproj",
+  "projectFilePath": "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Api\\TrackBudget.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
+    "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
+    "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.1\\fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
+    "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.9\\microsoft.aspnetcore.authentication.jwtbearer.10.0.9.nupkg.sha512",
     "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\microsoft.bcl.cryptography\\10.0.2\\microsoft.bcl.cryptography.10.0.2.nupkg.sha512",

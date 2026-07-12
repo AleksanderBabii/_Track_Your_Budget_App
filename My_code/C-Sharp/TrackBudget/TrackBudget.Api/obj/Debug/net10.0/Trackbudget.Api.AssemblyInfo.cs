@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Trackbudget.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e986603f4b7d623c315f5bf97d1a8f1558572852")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7d884b6ef6eeb2e77bcc8bbf80080388fcfc1a93")]
 [assembly: System.Reflection.AssemblyProductAttribute("Trackbudget.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Trackbudget.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "0Oqszw6rNeU=",
+  "dgSpecHash": "0l458EO/jJE=",
   "success": true,
   "projectFilePath": "D:\\Web Development\\Sasha_Folder\\My_code\\C-Sharp\\TrackBudget\\TrackBudget.Application\\TrackBudget.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\aanch.DESKTOP-3HO2UM0\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512"
+  ],
   "logs": []
 }
