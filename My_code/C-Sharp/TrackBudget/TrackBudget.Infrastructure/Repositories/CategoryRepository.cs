@@ -41,6 +41,19 @@ public class CategoryRepository : ICategoryRepository
         );
     }
 
+    public Task<Category?> GetTrackedByIdAsync(
+        Guid categoryId,
+        Guid userId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _dbContext.Categories
+            .SingleOrDefaultAsync(
+                c => c.Id == categoryId && c.UserId == userId,
+                cancellationToken
+            );
+    }
+
     public Task<bool> ExistAsync(
         Guid userId,
         string name,

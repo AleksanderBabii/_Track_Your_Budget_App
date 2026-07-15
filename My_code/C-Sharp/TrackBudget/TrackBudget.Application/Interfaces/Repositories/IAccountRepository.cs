@@ -8,6 +8,8 @@ public interface IAccountRepository
 
     Task<Account?> GetByIdAsync(Guid accountId, Guid userId, CancellationToken cancellationToken = default);
 
+    Task<Account?> GetTrackedByIdAsync(Guid accountId, Guid userId, CancellationToken cancellationToken = default);
+    
     Task AddAsync(Account account, CancellationToken cancellationToken = default);
 
     void Remove(Account account, CancellationToken cancellationToken = default);

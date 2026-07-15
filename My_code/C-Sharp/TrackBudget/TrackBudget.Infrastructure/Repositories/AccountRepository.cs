@@ -41,6 +41,21 @@ public class AccountRepository : IAccountRepository
             );
     }
 
+    public Task<Account?> GetTrackedByIdAsync(
+        Guid accountId,
+        Guid userId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _dbContext.Accounts
+            .SingleOrDefaultAsync(
+                account =>
+                    account.Id == accountId &&
+                    account.UserId == userId,
+                cancellationToken
+            );
+    }
+
     public async Task AddAsync(
         Account account,
         CancellationToken cancellationToken = default
