@@ -16,4 +16,7 @@ public class User : BaseEntity
 
     public ICollection<Category> Categories { get; set; } = new List<Category>();
 
+    public ICollection<Transfer> Transfers { get; set; }
+    = new List<Transfer>();
+
 }

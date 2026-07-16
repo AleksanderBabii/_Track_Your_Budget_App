@@ -11,4 +11,9 @@ public class Account : BaseEntity
     public Guid UserId { get; set; }
     public User User { get; set; } = null!;
     public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+    public ICollection<Transfer> OutgoingTransfers { get; set; }
+    = new List<Transfer>();
+
+public ICollection<Transfer> IncomingTransfers { get; set; }
+    = new List<Transfer>();
 }
