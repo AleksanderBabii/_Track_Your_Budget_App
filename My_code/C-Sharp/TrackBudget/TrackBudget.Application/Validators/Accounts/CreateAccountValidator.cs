@@ -5,8 +5,6 @@ namespace TrackBudget.Application.Validators.Accounts;
 
 public class CreateAccountValidator : AbstractValidator<CreateAccountDto>
 {
-    private static readonly string[] AllowedCurrencies = { "PLN", "USD", "EUR","GBP","UAH","JPY","CHF","CAD","AUD","CNY" };
-
     public CreateAccountValidator()
     {
         RuleFor(account => account.Name)
@@ -22,11 +20,7 @@ public class CreateAccountValidator : AbstractValidator<CreateAccountDto>
             .WithMessage("Initial balance must be greater than or equal to 0.");
 
         RuleFor(account => account.Currency)
-            .NotEmpty()
-            .WithMessage("Currency is required.")
-            .Must(currency => AllowedCurrencies.Contains(
-                currency.Trim().ToUpperInvariant()
-            ))
+            .IsInEnum()
             .WithMessage("Currency is not supported.");
     }
 }

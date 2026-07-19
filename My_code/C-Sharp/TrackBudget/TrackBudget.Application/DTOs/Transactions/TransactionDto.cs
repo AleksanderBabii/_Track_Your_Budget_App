@@ -1,3 +1,5 @@
+using TrackBudget.Domain.Enums;
+
 namespace TrackBudget.Application.DTOs.Transactions;
 
 public class TransactionDto
@@ -5,7 +7,7 @@ public class TransactionDto
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public decimal Amount { get; set; }
-    public string Type { get; set; } = string.Empty;
+    public TransactionType Type { get; set; }
     public DateTime Date { get; set; }
     public string? Notes { get; set; }
     public Guid AccountId { get; set; }

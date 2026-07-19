@@ -6,11 +6,6 @@ namespace TrackBudget.Application.Validators.Categories;
 public class UpdateCategoryValidator :
     AbstractValidator<UpdateCategoryDto>
 {
-    private static readonly string[] AllowedTypes = new[]
-    {
-        "Income",
-        "Expense"
-    };
 
     public UpdateCategoryValidator()
     {
@@ -22,8 +17,7 @@ public class UpdateCategoryValidator :
             .WithMessage("Name must not exceed 50 characters.");
 
         RuleFor(x => x.Type)
-            .NotEmpty()
-            .Must(type => AllowedTypes.Contains(type.Trim().ToUpperInvariant()))
+            .IsInEnum()
             .WithMessage("Type must be either 'Income' or 'Expense'.");
     }
 }

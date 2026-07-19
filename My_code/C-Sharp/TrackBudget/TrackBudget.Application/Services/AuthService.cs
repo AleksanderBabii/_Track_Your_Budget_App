@@ -30,7 +30,7 @@ public class AuthService : IAuthService
         }
 
         var existingUser = await _userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
-        
+
         if (existingUser != null)
         {
             throw new Exception("User with this email already exists.");

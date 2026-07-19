@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using TrackBudget.Domain.Entities;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Infrastructure.Data;
 
@@ -36,6 +38,27 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         .WithMany(user => user.Transfers)
         .HasForeignKey(transfer => transfer.UserId)
         .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<Account>()
+        .Property(account => account.Currency)
+        .HasConversion(
+            currency => currency.ToString().ToUpperInvariant(),
+            value => Enum.Parse<Currency>(value, ignoreCase: true)
+        );
+    
+    modelBuilder.Entity<Category>()
+        .Property(category => category.Type)
+        .HasConversion(
+            type => type.ToString().ToUpperInvariant(),
+            value => Enum.Parse<CategoryType>(value, ignoreCase: true)
+        );
+
+    modelBuilder.Entity<Transaction>()
+        .Property(transaction => transaction.Type)
+        .HasConversion(
+            type => type.ToString().ToUpperInvariant(),
+            value => Enum.Parse<TransactionType>(value, ignoreCase: true)
+        );
 }
 
 }

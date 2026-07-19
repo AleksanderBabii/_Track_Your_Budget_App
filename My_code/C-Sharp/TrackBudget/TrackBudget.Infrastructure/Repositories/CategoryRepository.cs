@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Domain.Entities;
 using TrackBudget.Infrastructure.Data;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Infrastructure.Repositories;
 
@@ -57,7 +58,7 @@ public class CategoryRepository : ICategoryRepository
     public Task<bool> ExistAsync(
         Guid userId,
         string name,
-        string type,
+        CategoryType type,
         Guid? excludedCategoryId = null,
         CancellationToken cancellationToken = default
     )

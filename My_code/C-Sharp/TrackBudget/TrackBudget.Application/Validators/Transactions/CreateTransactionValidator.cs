@@ -5,7 +5,6 @@ namespace TrackBudget.Application.Validators.Transactions;
 
 public class CreateTransactionValidator : AbstractValidator<CreateTransactionDto>
 {
-    private static readonly string[] AllowedTypes = { "Income", "Expense" };
     public CreateTransactionValidator()
     {
         RuleFor(tr => tr.Title)
@@ -16,8 +15,8 @@ public class CreateTransactionValidator : AbstractValidator<CreateTransactionDto
             .GreaterThan(0).WithMessage("Amount must be greater than zero.");
 
         RuleFor(tr => tr.Type)
-            .NotEmpty().WithMessage("Type is required.")
-            .Must(type => AllowedTypes.Contains(type.Trim().ToUpperInvariant())).WithMessage("Type must be either 'Income' or 'Expense'.");
+            .IsInEnum().WithMessage("Type is required.")
+            .WithMessage("Type must be either 'Income' or 'Expense'.");
 
         RuleFor(tr => tr.Date)
             .LessThanOrEqualTo(DateTime.Now).WithMessage("Date cannot be in the future.");
@@ -28,7 +27,7 @@ public class CreateTransactionValidator : AbstractValidator<CreateTransactionDto
         RuleFor(tr => tr.CategoryId)
             .NotEmpty().WithMessage("CategoryId is required.");
 
-            RuleFor(tr => tr.Notes)
-            .MaximumLength(500).WithMessage("Notes must not exceed 500 characters.");
+        RuleFor(tr => tr.Notes)
+        .MaximumLength(500).WithMessage("Notes must not exceed 500 characters.");
     }
 }

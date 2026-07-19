@@ -1,4 +1,5 @@
 ﻿using TrackBudget.Domain.Common;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Domain.Entities;
 
@@ -7,7 +8,7 @@ public class Account : BaseEntity
     public string Name { get; set; } = string.Empty;
     public decimal Balance { get; set; }
 
-    public string Currency { get; set; } = "PLN";
+    public Currency Currency { get; set; }
     public Guid UserId { get; set; }
     public User User { get; set; } = null!;
     public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();

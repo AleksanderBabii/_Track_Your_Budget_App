@@ -1,4 +1,5 @@
 using TrackBudget.Domain.Entities;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Application.Interfaces.Repositories;
 
@@ -16,7 +17,7 @@ public interface ICategoryRepository
         CancellationToken cancellationToken = default);
 
     Task<bool> ExistAsync(
-        Guid userId, string name, string type,
+        Guid userId, string name, CategoryType categoryType,
         Guid? excludedCategoryId = null,
         CancellationToken cancellationToken = default);
 

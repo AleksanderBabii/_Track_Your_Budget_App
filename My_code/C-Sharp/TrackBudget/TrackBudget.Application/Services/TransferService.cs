@@ -1,24 +1,21 @@
+using MapsterMapper;
 using TrackBudget.Application.DTOs.Transfers;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
 using TrackBudget.Domain.Entities;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Application.Services;
 
-public class TransferService : ITransferService
-{
-    private readonly ITransferRepository _transferRepository;
-    private readonly IAccountRepository _accountRepository;
-
-    public TransferService(
+public class TransferService(
         ITransferRepository transferRepository,
-        IAccountRepository accountRepository
-    )
-    {
-        _transferRepository = transferRepository;
-        _accountRepository = accountRepository;
-    }
-
+        IAccountRepository accountRepository,
+        IMapper mapper
+    ) : ITransferService
+{
+    private readonly ITransferRepository _transferRepository = transferRepository;
+    private readonly IAccountRepository _accountRepository = accountRepository;
+    private readonly IMapper _mapper = mapper;
     public async Task<IReadOnlyCollection<TransferDto>> GetAllAsync(
         Guid userId,
         CancellationToken cancellationToken = default
@@ -30,9 +27,7 @@ public class TransferService : ITransferService
                 cancellationToken
             );
 
-        return transfers
-            .Select(MapToDto)
-            .ToList();
+        return _mapper.Map<List<TransferDto>>(transfers);
     }
 
     public async Task<TransferDto> GetByIdAsync(
@@ -54,7 +49,7 @@ public class TransferService : ITransferService
             );
         }
 
-        return MapToDto(transfer);
+        return _mapper.Map<TransferDto>(transfer);
     }
 
     public async Task<TransferDto> CreateAsync(
@@ -98,13 +93,7 @@ public class TransferService : ITransferService
             );
         }
 
-        if (
-            !string.Equals(
-                fromAccount.Currency,
-                toAccount.Currency,
-                StringComparison.OrdinalIgnoreCase
-            )
-        )
+        if (fromAccount.Currency != toAccount.Currency)
         {
             throw new InvalidOperationException(
                 "Transfers between different currencies are not supported yet."
@@ -147,7 +136,7 @@ public class TransferService : ITransferService
             cancellationToken
         );
 
-        return MapToDto(transfer);
+        return _mapper.Map<TransferDto>(transfer);
     }
 
     private static string? NormalizeNotes(string? notes)
@@ -155,24 +144,5 @@ public class TransferService : ITransferService
         return string.IsNullOrWhiteSpace(notes)
             ? null
             : notes.Trim();
-    }
-
-    private static TransferDto MapToDto(Transfer transfer)
-    {
-        return new TransferDto
-        {
-            Id = transfer.Id,
-            Amount = transfer.Amount,
-            Date = transfer.Date,
-            Notes = transfer.Notes,
-
-            FromAccountId = transfer.FromAccountId,
-            FromAccountName = transfer.FromAccount.Name,
-
-            ToAccountId = transfer.ToAccountId,
-            ToAccountName = transfer.ToAccount.Name,
-
-            CreatedAt = transfer.CreatedAt
-        };
     }
 }

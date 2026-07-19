@@ -1,3 +1,4 @@
+using MapsterMapper;
 using TrackBudget.Application.DTOs.Accounts;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
@@ -5,14 +6,10 @@ using TrackBudget.Domain.Entities;
 
 namespace TrackBudget.Application.Services;
 
-public class AccountService : IAccountService
+public class AccountService(IAccountRepository accountRepository, IMapper mapper) : IAccountService
 {
-    private readonly IAccountRepository _accountRepository;
-
-    public AccountService(IAccountRepository accountRepository)
-    {
-        _accountRepository = accountRepository;
-    }
+    private readonly IAccountRepository _accountRepository = accountRepository;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<IReadOnlyCollection<AccountDto>> GetAllAsync(
         Guid userId,
@@ -24,9 +21,7 @@ public class AccountService : IAccountService
             cancellationToken
         );
 
-        return accounts
-            .Select(MapToDto)
-            .ToList();
+        return _mapper.Map<List<AccountDto>>(accounts);
     }
 
     public async Task<List<AccountDto>> GetAllByUserIdAsync(
@@ -39,9 +34,7 @@ public class AccountService : IAccountService
             cancellationToken
         );
 
-        return accounts
-            .Select(MapToDto)
-            .ToList();
+        return _mapper.Map<List<AccountDto>>(accounts);
     }
 
     public async Task<AccountDto?> GetByIdAsync(
@@ -56,7 +49,7 @@ public class AccountService : IAccountService
             cancellationToken
         );
 
-        return MapToDto(account);
+        return _mapper.Map<AccountDto>(account);
     }
 
     public async Task<AccountDto> CreateAsync(
@@ -69,7 +62,7 @@ public class AccountService : IAccountService
         {
             Name = dto.Name.Trim(),
             Balance = dto.InitialBalance,
-            Currency = dto.Currency.Trim().ToUpperInvariant(),
+            Currency = dto.Currency,
             UserId = userId
         };
 
@@ -82,7 +75,7 @@ public class AccountService : IAccountService
             cancellationToken
         );
 
-        return MapToDto(account);
+        return _mapper.Map<AccountDto>(account);
     }
 
     public async Task<AccountDto?> UpdateAsync(
@@ -99,14 +92,14 @@ public class AccountService : IAccountService
         );
 
         account.Name = dto.Name.Trim();
-        account.Currency = dto.Currency.Trim().ToUpperInvariant();
+        account.Currency = dto.Currency;
         account.UpdatedAt = DateTime.UtcNow;
 
         await _accountRepository.SaveChangesAsync(
             cancellationToken
         );
 
-        return MapToDto(account);
+        return _mapper.Map<AccountDto>(account);
     }
 
     public async Task<bool> DeleteAsync(
@@ -148,17 +141,5 @@ public class AccountService : IAccountService
         }
 
         return account;
-    }
-
-    private static AccountDto MapToDto(Account account)
-    {
-        return new AccountDto
-        {
-            Id = account.Id,
-            Name = account.Name,
-            Balance = account.Balance,
-            Currency = account.Currency,
-            CreatedAt = account.CreatedAt
-        };
     }
 }

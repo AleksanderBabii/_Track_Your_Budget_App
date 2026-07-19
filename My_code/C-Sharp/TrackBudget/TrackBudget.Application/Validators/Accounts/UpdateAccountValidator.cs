@@ -18,11 +18,7 @@ public class UpdateAccountValidator : AbstractValidator<UpdateAccountDto>
             .WithMessage("Account name must be at most 50 characters long.");
 
         RuleFor(account => account.Currency)
-            .NotEmpty()
-            .WithMessage("Currency is required.")
-            .Must(currency => AllowedCurrencies.Contains(
-                currency.Trim().ToUpperInvariant()
-            ))
+            .IsInEnum()
             .WithMessage("Currency is not supported.");
     }
 }

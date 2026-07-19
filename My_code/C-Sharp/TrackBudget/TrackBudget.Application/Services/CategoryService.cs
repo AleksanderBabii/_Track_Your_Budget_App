@@ -1,15 +1,19 @@
+using MapsterMapper;
 using TrackBudget.Application.DTOs.Categories;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
 using TrackBudget.Domain.Entities;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Application.Services;
 
 public class CategoryService(
-    ICategoryRepository categoryRepository
+    ICategoryRepository categoryRepository,
+    IMapper mapper
 ) : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
+    private readonly IMapper _mapper;
 
     public async Task<IReadOnlyCollection<CategoryDto>> GetAllAsync(
         Guid userId,
@@ -22,7 +26,7 @@ public class CategoryService(
                 cancellationToken
             );
 
-        return [.. categories.Select(MapToDto)];
+        return _mapper.Map<List<CategoryDto>>(categories);
     }
 
     public async Task<CategoryDto> GetByIdAsync(
@@ -37,24 +41,24 @@ public class CategoryService(
             cancellationToken
         );
 
-        return MapToDto(category);
+        return _mapper.Map<CategoryDto>(category);
     }
 
     public async Task<CategoryDto> CreateAsync(
         Guid userId,
-        CreateCategoryDto dto,
+        CreateCategoryDto createCategoryDto,
         CancellationToken cancellationToken = default
     )
     {
-        ArgumentNullException.ThrowIfNull(dto);
+        ArgumentNullException.ThrowIfNull(createCategoryDto);
 
-        var name = dto.Name.Trim();
-        var type = NormalizeType(dto.Type);
+        var name = createCategoryDto.Name.Trim();
+        var categoryType = ToCategoryType(createCategoryDto.Type);
 
         var exists = await _categoryRepository.ExistAsync(
             userId,
             name,
-            type,
+            categoryType,
             cancellationToken: cancellationToken
         );
 
@@ -68,7 +72,7 @@ public class CategoryService(
         var category = new Category
         {
             Name = name,
-            Type = type,
+            Type = categoryType,
             UserId = userId
         };
 
@@ -81,17 +85,17 @@ public class CategoryService(
             cancellationToken
         );
 
-        return MapToDto(category);
+        return _mapper.Map<CategoryDto>(category);
     }
 
     public async Task<CategoryDto> UpdateAsync(
         Guid categoryId,
         Guid userId,
-        UpdateCategoryDto dto,
+        UpdateCategoryDto updateCategoryDto,
         CancellationToken cancellationToken = default
     )
     {
-        ArgumentNullException.ThrowIfNull(dto);
+        ArgumentNullException.ThrowIfNull(updateCategoryDto);
 
         var category = await GetOwnedCategoryAsync(
             categoryId,
@@ -99,13 +103,13 @@ public class CategoryService(
             cancellationToken
         );
 
-        var name = dto.Name.Trim();
-        var type = NormalizeType(dto.Type);
+        var name = updateCategoryDto.Name.Trim();
+        var categoryType = ToCategoryType(updateCategoryDto.Type);
 
         var exists = await _categoryRepository.ExistAsync(
             userId,
             name,
-            type,
+            categoryType,
             categoryId,
             cancellationToken
         );
@@ -118,14 +122,14 @@ public class CategoryService(
         }
 
         category.Name = name;
-        category.Type = type;
+        category.Type = categoryType;
         category.UpdatedAt = DateTime.UtcNow;
 
         await _categoryRepository.SaveChangesAsync(
             cancellationToken
         );
 
-        return MapToDto(category);
+        return _mapper.Map<CategoryDto>(category);
     }
 
     public async Task DeleteAsync(
@@ -172,19 +176,13 @@ public class CategoryService(
             );
     }
 
-    private static string NormalizeType(string type)
+    private static CategoryType ToCategoryType(TransactionType transactionType)
     {
-        return type.Trim().ToUpperInvariant();
-    }
-
-    private static CategoryDto MapToDto(Category category)
-    {
-        return new CategoryDto
+        return transactionType switch
         {
-            Id = category.Id,
-            Name = category.Name,
-            Type = category.Type,
-            CreatedAt = category.CreatedAt
+            TransactionType.Income => CategoryType.Income,
+            TransactionType.Expense => CategoryType.Expense,
+            _ => throw new ArgumentOutOfRangeException(nameof(transactionType), "Invalid category type.")
         };
     }
 }

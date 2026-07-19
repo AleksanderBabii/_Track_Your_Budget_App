@@ -6,7 +6,7 @@ public interface ITransactionService
 {
     Task<IReadOnlyCollection<TransactionDto>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default);
 
-    Task<TransactionDto?> GetByIdAsync(Guid transactionId, Guid userId, CancellationToken cancellationToken = default);
+    Task<TransactionDto> GetByIdAsync(Guid transactionId, Guid userId, CancellationToken cancellationToken = default);
 
     Task<TransactionDto> CreateAsync(Guid userId, CreateTransactionDto createTransactionDto, CancellationToken cancellationToken = default);
 

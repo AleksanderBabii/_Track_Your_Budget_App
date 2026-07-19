@@ -1,12 +1,14 @@
-namespace TrackBudget.Application.DTOs.Accounts
-{
-    public class AccountDto
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public decimal Balance { get; set; }
-        public string Currency { get; set; } = string.Empty;
+using TrackBudget.Domain.Enums;
 
-        public DateTime CreatedAt { get; set; }
-    }
+namespace TrackBudget.Application.DTOs.Accounts;
+
+
+public class AccountDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public decimal Balance { get; set; }
+    public Currency Currency { get; set; }
+
+    public DateTime CreatedAt { get; set; }
 }

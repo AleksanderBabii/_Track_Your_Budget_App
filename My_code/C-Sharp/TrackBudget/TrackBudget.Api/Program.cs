@@ -1,4 +1,8 @@
 using System.Text;
+using System.Text.Json.Serialization;
+
+using Mapster;
+using MapsterMapper;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +18,7 @@ using TrackBudget.Application.Interfaces.Services;
 
 using TrackBudget.Application.Services;
 using TrackBudget.Application.Validators.Auth;
+using TrackBudget.Application.Mapping;
 
 using TrackBudget.Api.Middleware;
 
@@ -25,7 +30,13 @@ using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
+var mapsterConfig = TypeAdapterConfig.GlobalSettings;
+mapsterConfig.Scan(typeof(TransferMappingConfig).Assembly);
 
 builder.Services.AddFluentValidationAutoValidation();
 

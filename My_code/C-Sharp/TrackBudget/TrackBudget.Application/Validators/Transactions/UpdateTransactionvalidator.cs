@@ -17,9 +17,7 @@ public class UpdateTransactionValidator : AbstractValidator<UpdateTransactionDto
             .GreaterThan(0).WithMessage("Amount must be greater than zero.");
 
         RuleFor(tr => tr.Type)
-            .NotEmpty().WithMessage("Type is required.")
-            .Must(type => AllowedTypes.Contains(type.Trim().ToUpperInvariant())).WithMessage("Type must be either 'Income' or 'Expense'.");
-
+            .IsInEnum().WithMessage("Type is required.");
         RuleFor(tr => tr.Date)
             .LessThanOrEqualTo(DateTime.Now).WithMessage("Date cannot be in the future.");
 

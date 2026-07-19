@@ -1,70 +1,63 @@
+using MapsterMapper;
 using TrackBudget.Application.DTOs.Transactions;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
 using TrackBudget.Domain.Entities;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Application.Services;
 
-public class TransactionService : ITransactionService
+public class TransactionService(
+    ITransactionRepository transactionRepository,
+    IAccountRepository accountRepository,
+    ICategoryRepository categoryRepository,
+    IMapper mapper) : ITransactionService
 {
-    private readonly ITransactionRepository _transactionRepository;
-    private readonly IAccountRepository _accountRepository;
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ITransactionRepository _transactionRepository = transactionRepository;
+    private readonly IAccountRepository _accountRepository = accountRepository;
+    private readonly ICategoryRepository _categoryRepository = categoryRepository;
+    private readonly IMapper _mapper = mapper;
 
-    public TransactionService(
-        ITransactionRepository transactionRepository,
-        IAccountRepository accountRepository,
-        ICategoryRepository categoryRepository)
-    {
-        _transactionRepository = transactionRepository;
-        _accountRepository = accountRepository;
-        _categoryRepository = categoryRepository;
-    }
-
-    public async Task<IReadOnlyCollection<TransactionDto>> GetAllAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<TransactionDto>> GetAllAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default)
     {
         var transactions = await _transactionRepository.GetAllByUserIdAsync(userId, cancellationToken);
-        return transactions.Select(MapToDto).ToList();
+        return _mapper.Map<List<TransactionDto>>(transactions);
     }
 
-    public async Task<TransactionDto?> GetByIdAsync(Guid transactionId, Guid userId, CancellationToken cancellationToken = default)
+    public async Task<TransactionDto> GetByIdAsync(
+        Guid transactionId,
+        Guid userId,
+        CancellationToken cancellationToken = default)
     {
         var transaction = await GetOwnedTransactionAsync(transactionId, userId, cancellationToken);
-        if (transaction == null)
-        {
-            return null;
-        }
-
-        return MapToDto(transaction);
+        return _mapper.Map<TransactionDto>(transaction);
     }
 
-    public async Task<TransactionDto> CreateAsync(Guid userId, CreateTransactionDto createTransactionDto, CancellationToken cancellationToken = default)
+    public async Task<TransactionDto> CreateAsync(
+        Guid userId,
+        CreateTransactionDto createTransactionDto,
+        CancellationToken cancellationToken = default)
     {
-        var type = NormalizeType(createTransactionDto.Type);
-
         var account = await GetOwnedAccountAsync(createTransactionDto.AccountId, userId, cancellationToken);
-        if (account == null)
-        {
-            throw new ArgumentException("Account not found.");
-        }
-
         var category = await GetOwnedCategoryAsync(createTransactionDto.CategoryId, userId, cancellationToken);
 
-        ValidateTransactionType(category, type);
+        ValidateAmount(createTransactionDto.Amount);
+        ValidateTransactionType(category.Type, createTransactionDto.Type);
 
-        ApplyTransactionBalance(account, createTransactionDto.Amount, type);
+        ApplyBalanceChange(account, createTransactionDto.Amount, createTransactionDto.Type, reverse: false);
 
         var transaction = new Transaction
         {
-            Title = createTransactionDto.Title.Trim(),
+            Title = NormalizeTitle(createTransactionDto.Title),
             Amount = createTransactionDto.Amount,
-            Type = type,
-            Date = createTransactionDto.Date.ToUniversalTime(),
+            Type = createTransactionDto.Type,
+            Date = NormalizeDateToUtc(createTransactionDto.Date),
             Notes = NormalizeNotes(createTransactionDto.Notes),
             UserId = userId,
             AccountId = account.Id,
             CategoryId = category.Id,
-
             Account = account,
             Category = category
         };
@@ -72,62 +65,58 @@ public class TransactionService : ITransactionService
         await _transactionRepository.AddAsync(transaction, cancellationToken);
         await _transactionRepository.SaveChangesAsync(cancellationToken);
 
-        return MapToDto(transaction);
+        return _mapper.Map<TransactionDto>(transaction);
     }
 
     public async Task<TransactionDto> UpdateAsync(
-    Guid transactionId,
-    Guid userId,
-    UpdateTransactionDto dto,
-    CancellationToken cancellationToken = default
-)
+        Guid transactionId,
+        Guid userId,
+        UpdateTransactionDto dto,
+        CancellationToken cancellationToken = default)
     {
-        var transaction = await GetOwnedTransactionAsync(
-            transactionId,
-            userId,
-            cancellationToken
-        );
+        var transaction = await GetOwnedTransactionAsync(transactionId, userId, cancellationToken);
 
-        var oldAccount = await GetOwnedAccountAsync(
-            transaction.AccountId,
-            userId,
-            cancellationToken
-        );
-
-        ReverseTransactionBalance(
-            oldAccount,
-            transaction.Amount,
-            transaction.Type
-        );
+        var oldAccount = await GetOwnedAccountAsync(transaction.AccountId, userId, cancellationToken);
 
         var newAccount = transaction.AccountId == dto.AccountId
             ? oldAccount
-            : await GetOwnedAccountAsync(
-                dto.AccountId,
-                userId,
-                cancellationToken
-            );
+            : await GetOwnedAccountAsync(dto.AccountId, userId, cancellationToken);
 
-        var category = await GetOwnedCategoryAsync(
-            dto.CategoryId,
-            userId,
-            cancellationToken
+        var category = await GetOwnedCategoryAsync(dto.CategoryId, userId, cancellationToken);
+
+        ValidateAmount(dto.Amount);
+        ValidateTransactionType(category.Type, dto.Type);
+
+        // Validate all balance effects first, then mutate.
+        ValidateBalanceTransition(
+            oldAccount,
+            newAccount,
+            transaction.Amount,
+            transaction.Type,
+            dto.Amount,
+            dto.Type
         );
 
-        var type = NormalizeType(dto.Type);
+        // Reverse old transaction effect.
+        ApplyBalanceChange(
+            oldAccount,
+            transaction.Amount,
+            transaction.Type,
+            reverse: true
+        );
 
-        ValidateTransactionType(category, type);
-
-        ApplyTransactionBalance(
+        // Apply new transaction effect.
+        ApplyBalanceChange(
             newAccount,
             dto.Amount,
-            type
+            dto.Type,
+            reverse: false
         );
 
-        transaction.Title = dto.Title.Trim();
+        transaction.Title = NormalizeTitle(dto.Title);
         transaction.Amount = dto.Amount;
-        transaction.Type = type;
-        transaction.Date = dto.Date.ToUniversalTime();
+        transaction.Type = dto.Type;
+        transaction.Date = NormalizeDateToUtc(dto.Date);
         transaction.Notes = NormalizeNotes(dto.Notes);
         transaction.AccountId = newAccount.Id;
         transaction.CategoryId = category.Id;
@@ -135,152 +124,178 @@ public class TransactionService : ITransactionService
         transaction.Category = category;
         transaction.UpdatedAt = DateTime.UtcNow;
 
-        await _transactionRepository.SaveChangesAsync(
-            cancellationToken
-        );
+        await _transactionRepository.SaveChangesAsync(cancellationToken);
 
-        return MapToDto(transaction);
+        return _mapper.Map<TransactionDto>(transaction);
     }
 
     public async Task DeleteAsync(
         Guid transactionId,
         Guid userId,
-        CancellationToken cancellationToken = default
-    )
+        CancellationToken cancellationToken = default)
     {
-        var transaction = await GetOwnedTransactionAsync(
-            transactionId,
-            userId,
-            cancellationToken
-        );
+        var transaction = await GetOwnedTransactionAsync(transactionId, userId, cancellationToken);
 
-        var account = await GetOwnedAccountAsync(
-            transaction.AccountId,
-            userId,
-            cancellationToken
-        );
+        var account = await GetOwnedAccountAsync(transaction.AccountId, userId, cancellationToken);
 
-        ReverseTransactionBalance(
+        ApplyBalanceChange(
             account,
             transaction.Amount,
-            transaction.Type
+            transaction.Type,
+            reverse: true
         );
 
         _transactionRepository.Remove(transaction);
+        await _transactionRepository.SaveChangesAsync(cancellationToken);
+    }
 
-        await _transactionRepository.SaveChangesAsync(
-            cancellationToken
+    private async Task<Transaction> GetOwnedTransactionAsync(
+        Guid transactionId,
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        return await _transactionRepository.GetByIdAsync(transactionId, userId, cancellationToken)
+            ?? throw new ArgumentException("Transaction not found.");
+    }
+
+    private async Task<Account> GetOwnedAccountAsync(
+        Guid accountId,
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        return await _accountRepository.GetTrackedByIdAsync(accountId, userId, cancellationToken)
+            ?? throw new ArgumentException("Account not found.");
+    }
+
+    private async Task<Category> GetOwnedCategoryAsync(
+        Guid categoryId,
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        return await _categoryRepository.GetTrackedByIdAsync(categoryId, userId, cancellationToken)
+            ?? throw new ArgumentException("Category not found.");
+    }
+
+    private static void ValidateTransactionType(CategoryType categoryType, TransactionType transactionType)
+    {
+        if (!Enum.IsDefined(transactionType))
+        {
+            throw new ArgumentException("Invalid transaction type.");
+        }
+
+        if (categoryType != (CategoryType)transactionType)
+        {
+            throw new ArgumentException(
+                $"Transaction type '{transactionType}' does not match category type '{categoryType}'.");
+        }
+    }
+
+    private static void ValidateAmount(decimal amount)
+    {
+        if (amount <= 0)
+        {
+            throw new ArgumentException("Amount must be greater than zero.");
+        }
+    }
+
+    private static string NormalizeTitle(string? title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            throw new ArgumentException("Title is required.");
+        }
+
+        return title.Trim();
+    }
+
+    private static DateTime NormalizeDateToUtc(DateTime date)
+    {
+        return date.Kind switch
+        {
+            DateTimeKind.Utc => date,
+            DateTimeKind.Local => date.ToUniversalTime(),
+            DateTimeKind.Unspecified => DateTime.SpecifyKind(date, DateTimeKind.Utc),
+            _ => date
+        };
+    }
+
+    private static void ValidateBalanceTransition(
+        Account oldAccount,
+        Account newAccount,
+        decimal oldAmount,
+        TransactionType oldType,
+        decimal newAmount,
+        TransactionType newType)
+    {
+        var oldBalanceAfterReverse = ComputeBalanceAfter(
+            oldAccount.Balance,
+            oldAmount,
+            oldType,
+            reverse: true
+        );
+
+        if (ReferenceEquals(oldAccount, newAccount))
+        {
+            ComputeBalanceAfter(
+                oldBalanceAfterReverse,
+                newAmount,
+                newType,
+                reverse: false
+            );
+
+            return;
+        }
+
+        ComputeBalanceAfter(
+            newAccount.Balance,
+            newAmount,
+            newType,
+            reverse: false
         );
     }
 
-    private async Task<Transaction> GetOwnedTransactionAsync(Guid transactionId, Guid userId, CancellationToken cancellationToken)
+    private static void ApplyBalanceChange(Account account, decimal amount, TransactionType type, bool reverse)
     {
-        var transaction = await _transactionRepository.GetByIdAsync(transactionId, userId, cancellationToken);
-        if (transaction == null)
-        {
-            throw new ArgumentException("Transaction not found.");
-        }
-
-        return transaction;
+        account.Balance = ComputeBalanceAfter(account.Balance, amount, type, reverse);
     }
 
-    private async Task<Account> GetOwnedAccountAsync(Guid accountId, Guid userId, CancellationToken cancellationToken)
+    private static decimal ComputeBalanceAfter(decimal currentBalance, decimal amount, TransactionType type, bool reverse)
     {
-        var account = await _accountRepository.GetTrackedByIdAsync(accountId, userId, cancellationToken);
-        if (account == null)
+        switch (type)
         {
-            throw new ArgumentException("Account not found.");
-        }
-        return account;
-    }
+            case TransactionType.Income:
+                if (reverse)
+                {
+                    if (currentBalance < amount)
+                    {
+                        throw new InvalidOperationException("Insufficient balance to reverse the transaction.");
+                    }
 
-    private async Task<Category> GetOwnedCategoryAsync(Guid categoryId, Guid userId, CancellationToken cancellationToken)
-    {
-        var category = await _categoryRepository.GetTrackedByIdAsync(categoryId, userId, cancellationToken);
-        if (category == null)
-        {
-            throw new ArgumentException("Category not found.");
-        }
-        return category;
-    }
+                    return currentBalance - amount;
+                }
 
-    private static void ValidateTransactionType(Category category, string transactionType)
-    {
-        transactionType = NormalizeType(transactionType);
-        if (!string.Equals(category.Type, transactionType, StringComparison.OrdinalIgnoreCase))
-        {
-            throw new ArgumentException($"Transaction type '{transactionType}' does not match category type '{category.Type}'.");
-        }
-        if (transactionType != "INCOME" && transactionType != "EXPENSE")
-        {
-            throw new ArgumentException("Invalid transaction type. Must be 'INCOME' or 'EXPENSE'.");
-        }
-    }
+                return currentBalance + amount;
 
-    private static void ApplyTransactionBalance(Account account, decimal amount, string type)
-    {
-        if (type == "INCOME")
-        {
-            account.Balance += amount;
-        }
-        else
-        {
-            if (account.Balance < amount)
-            {
-                throw new InvalidOperationException("Insufficient balance for the transaction.");
-            }
-            account.Balance -= amount;
-        }
+            case TransactionType.Expense:
+                if (reverse)
+                {
+                    return currentBalance + amount;
+                }
 
-        account.UpdatedAt = DateTime.UtcNow;
-    }
+                if (currentBalance < amount)
+                {
+                    throw new InvalidOperationException("Insufficient balance for the transaction.");
+                }
 
-    private static void ReverseTransactionBalance(Account account, decimal amount, string type)
-    {
-        if (type == "INCOME")
-        {
-            if (account.Balance < amount)
-            {
-                throw new InvalidOperationException("Insufficient balance to reverse the transaction.");
-            }
-            account.Balance -= amount;
+                return currentBalance - amount;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), "Invalid transaction type.");
         }
-        else
-        {
-            account.Balance += amount;
-        }
-
-        account.UpdatedAt = DateTime.UtcNow;
-    }
-
-    private static string NormalizeType(string type)
-    {
-        return type.Trim().ToUpperInvariant();
     }
 
     private static string? NormalizeNotes(string? notes)
     {
         return string.IsNullOrWhiteSpace(notes) ? null : notes.Trim();
-    }
-
-    private static TransactionDto MapToDto(Transaction transaction)
-    {
-        return new TransactionDto
-        {
-            Id = transaction.Id,
-            Title = transaction.Title,
-            Amount = transaction.Amount,
-            Type = transaction.Type,
-            Date = transaction.Date,
-            Notes = NormalizeNotes(transaction.Notes),
-
-            AccountId = transaction.AccountId,
-            AccountName = transaction.Account.Name,
-
-            CategoryId = transaction.CategoryId,
-            CategoryName = transaction.Category.Name,
-
-            CreatedAt = transaction.CreatedAt
-        };
     }
 }

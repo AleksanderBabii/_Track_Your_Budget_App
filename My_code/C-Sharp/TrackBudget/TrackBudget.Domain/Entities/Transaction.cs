@@ -1,4 +1,5 @@
 ﻿using TrackBudget.Domain.Common;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Domain.Entities;
 
@@ -8,7 +9,7 @@ public class Transaction : BaseEntity
 
     public decimal Amount { get; set; }
 
-    public string Type { get; set; } = string.Empty;
+    public TransactionType Type { get; set; }
 
     public DateTime Date { get; set; }
     public string? Notes { get; set; }
