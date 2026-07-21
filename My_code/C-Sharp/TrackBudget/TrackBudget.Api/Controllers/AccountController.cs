@@ -1,8 +1,11 @@
 using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using TrackBudget.Application.DTOs.Accounts;
 using TrackBudget.Application.Interfaces.Services;
+using TrackBudget.Application.Exceptions;
 
 namespace TrackBudget.Api.Controllers;
 
@@ -19,7 +22,7 @@ public class AccountController(IAccountService accountService) : ControllerBase
 
         if (userIdClaim == null || !Guid.TryParse(userIdClaim, out var userId))
         {
-            throw new UnauthorizedAccessException("Invalid user ID claim.");
+            throw new UnauthorizedException("Invalid user ID claim.");
         }
 
         return userId;
@@ -39,18 +42,8 @@ public class AccountController(IAccountService accountService) : ControllerBase
     {
         var userId = GetUserIdFromClaims();
         var account = await _accountService.GetByIdAsync(accountId, userId, cancellationToken);
-        if (account == null)
-        {
-            return NotFound();
-        }
-        return Ok(account);
-    }
 
-    [HttpGet("user/{userId:guid}")]
-    public async Task<ActionResult<List<AccountDto>>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
-    {
-        var accounts = await _accountService.GetAllByUserIdAsync(userId, cancellationToken);
-        return Ok(accounts);
+        return Ok(account);
     }
 
     [HttpPost]
@@ -66,22 +59,14 @@ public class AccountController(IAccountService accountService) : ControllerBase
     {
         var userId = GetUserIdFromClaims();
         var account = await _accountService.UpdateAsync(accountId, updateAccountDto, userId, cancellationToken);
-        if (account == null)
-        {
-            return NotFound();
-        }
         return Ok(account);
     }
 
     [HttpDelete("{accountId:guid}")]
     public async Task<IActionResult> DeleteAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
-        var userId = GetUserIdFromClaims();
-        var result = await _accountService.DeleteAsync(accountId, userId, cancellationToken);
-        if (!result)
-        {
-            return NotFound();
-        }
+        var account = await _accountService.GetByIdAsync(accountId, GetUserIdFromClaims(), cancellationToken);
+
         return NoContent();
     }
 }

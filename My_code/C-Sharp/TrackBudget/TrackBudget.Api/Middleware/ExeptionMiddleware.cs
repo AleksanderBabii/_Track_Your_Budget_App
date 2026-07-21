@@ -25,12 +25,26 @@ public class ExeptionMiddleware
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, exception.Message);
+            _logger.LogError(exception, "Unhandled exception: {Message}", exception.Message);
+
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+            var rootException = exception.GetBaseException();
+
+            var details = _env.IsDevelopment()
+                ? $"""
+           Root exception: {rootException.Message}
+
+           Exception type: {rootException.GetType().FullName}
+
+           Stack trace:
+           {exception.StackTrace}
+           """
+                : null;
 
             var response = _env.IsDevelopment()
-                ? new ApiException(context.Response.StatusCode, exception.Message, exception.StackTrace?.ToString())
+                ? new ApiException(context.Response.StatusCode, exception.Message, details)
                 : new ApiException(context.Response.StatusCode, "Internal Server Error");
 
             var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };

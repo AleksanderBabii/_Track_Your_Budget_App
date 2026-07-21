@@ -1,7 +1,11 @@
 using MapsterMapper;
+
 using TrackBudget.Application.DTOs.Transactions;
+using TrackBudget.Application.Exceptions;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
+using TrackBudget.Applicatioin.Exceptions;
+
 using TrackBudget.Domain.Entities;
 using TrackBudget.Domain.Enums;
 
@@ -43,7 +47,6 @@ public class TransactionService(
         var account = await GetOwnedAccountAsync(createTransactionDto.AccountId, userId, cancellationToken);
         var category = await GetOwnedCategoryAsync(createTransactionDto.CategoryId, userId, cancellationToken);
 
-        ValidateAmount(createTransactionDto.Amount);
         ValidateTransactionType(category.Type, createTransactionDto.Type);
 
         ApplyBalanceChange(account, createTransactionDto.Amount, createTransactionDto.Type, reverse: false);
@@ -84,7 +87,6 @@ public class TransactionService(
 
         var category = await GetOwnedCategoryAsync(dto.CategoryId, userId, cancellationToken);
 
-        ValidateAmount(dto.Amount);
         ValidateTransactionType(category.Type, dto.Type);
 
         // Validate all balance effects first, then mutate.
@@ -155,7 +157,7 @@ public class TransactionService(
         CancellationToken cancellationToken)
     {
         return await _transactionRepository.GetByIdAsync(transactionId, userId, cancellationToken)
-            ?? throw new ArgumentException("Transaction not found.");
+            ?? throw new NotFoundException("Transaction not found.");
     }
 
     private async Task<Account> GetOwnedAccountAsync(
@@ -164,7 +166,7 @@ public class TransactionService(
         CancellationToken cancellationToken)
     {
         return await _accountRepository.GetTrackedByIdAsync(accountId, userId, cancellationToken)
-            ?? throw new ArgumentException("Account not found.");
+            ?? throw new NotFoundException("Account not found.");
     }
 
     private async Task<Category> GetOwnedCategoryAsync(
@@ -173,39 +175,21 @@ public class TransactionService(
         CancellationToken cancellationToken)
     {
         return await _categoryRepository.GetTrackedByIdAsync(categoryId, userId, cancellationToken)
-            ?? throw new ArgumentException("Category not found.");
+            ?? throw new NotFoundException("Category not found.");
     }
 
     private static void ValidateTransactionType(CategoryType categoryType, TransactionType transactionType)
     {
-        if (!Enum.IsDefined(transactionType))
-        {
-            throw new ArgumentException("Invalid transaction type.");
-        }
-
         if (categoryType != (CategoryType)transactionType)
         {
-            throw new ArgumentException(
+            throw new BusinessRuleException(
                 $"Transaction type '{transactionType}' does not match category type '{categoryType}'.");
-        }
-    }
-
-    private static void ValidateAmount(decimal amount)
-    {
-        if (amount <= 0)
-        {
-            throw new ArgumentException("Amount must be greater than zero.");
         }
     }
 
     private static string NormalizeTitle(string? title)
     {
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            throw new ArgumentException("Title is required.");
-        }
-
-        return title.Trim();
+        return title?.Trim() ?? string.Empty;
     }
 
     private static DateTime NormalizeDateToUtc(DateTime date)
@@ -268,7 +252,7 @@ public class TransactionService(
                 {
                     if (currentBalance < amount)
                     {
-                        throw new InvalidOperationException("Insufficient balance to reverse the transaction.");
+                        throw new BusinessRuleException("Insufficient balance to reverse the transaction.");
                     }
 
                     return currentBalance - amount;
@@ -284,13 +268,13 @@ public class TransactionService(
 
                 if (currentBalance < amount)
                 {
-                    throw new InvalidOperationException("Insufficient balance for the transaction.");
+                    throw new BusinessRuleException("Insufficient balance for the transaction.");
                 }
 
                 return currentBalance - amount;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(type), "Invalid transaction type.");
+                throw new BusinessRuleException($"Unsupported transaction type: {type}");
         }
     }
 

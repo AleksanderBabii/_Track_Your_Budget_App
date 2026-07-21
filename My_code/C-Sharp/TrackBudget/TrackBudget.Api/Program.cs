@@ -1,12 +1,14 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
+
 using Mapster;
 using MapsterMapper;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 
 using TrackBudget.Infrastructure.Authentication;
 using TrackBudget.Infrastructure.Data;
@@ -37,6 +39,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 var mapsterConfig = TypeAdapterConfig.GlobalSettings;
 mapsterConfig.Scan(typeof(TransferMappingConfig).Assembly);
+builder.Services.AddSingleton(mapsterConfig);
+builder.Services.AddScoped<IMapper, ServiceMapper>();
 
 builder.Services.AddFluentValidationAutoValidation();
 
@@ -44,7 +48,35 @@ builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "TrackBudget API",
+        Version = "v1"
+    });
+
+    options.AddSecurityDefinition(
+        "bearer",
+        new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "Enter your JWT token."
+        }
+    );
+
+    options.AddSecurityRequirement(document =>
+        new OpenApiSecurityRequirement
+        {
+            [new OpenApiSecuritySchemeReference(
+                "bearer",
+                document
+            )] = []
+        }
+    );
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

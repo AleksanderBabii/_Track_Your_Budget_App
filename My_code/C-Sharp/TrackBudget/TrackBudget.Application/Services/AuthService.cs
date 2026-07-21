@@ -1,7 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 using TrackBudget.Application.DTOs.Auth;
 using TrackBudget.Application.Interfaces.Authentication;
 using TrackBudget.Application.Interfaces.Services;
 using TrackBudget.Application.Interfaces.Repositories;
+using TrackBudget.Application.Exceptions;
+
 using TrackBudget.Domain.Entities;
 
 namespace TrackBudget.Application.Services;
@@ -26,14 +30,14 @@ public class AuthService : IAuthService
 
         if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(normalizedEmail) || string.IsNullOrWhiteSpace(dto.Password))
         {
-            throw new Exception("Username, email, and password are required.");
+            throw new UnauthorizedException("Username, email, and password are required.");
         }
 
         var existingUser = await _userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
 
         if (existingUser != null)
         {
-            throw new Exception("User with this email already exists.");
+            throw new UnauthorizedException("User with this email already exists.");
         }
 
         var hashedPassword = _passwordHasher.HashPassword(dto.Password);
@@ -64,7 +68,7 @@ public class AuthService : IAuthService
         var user = await _userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
         if (user == null || !_passwordHasher.VerifyPassword(dto.Password, user.PasswordHash))
         {
-            throw new Exception("Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
         }
 
         var token = _jwtProvider.GenerateToken(user);

@@ -2,7 +2,9 @@ using MapsterMapper;
 using TrackBudget.Application.DTOs.Accounts;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
+using TrackBudget.Applicatioin.Exceptions;
 using TrackBudget.Domain.Entities;
+using TrackBudget.Aplication.Exceptions;
 
 namespace TrackBudget.Application.Services;
 
@@ -137,7 +139,7 @@ public class AccountService(IAccountRepository accountRepository, IMapper mapper
 
         if (account is null)
         {
-            throw new KeyNotFoundException("Account not found.");
+            throw new NotFoundException("Account not found.");
         }
 
         return account;

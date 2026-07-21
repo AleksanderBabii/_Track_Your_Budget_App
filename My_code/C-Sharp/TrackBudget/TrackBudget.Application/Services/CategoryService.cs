@@ -1,7 +1,11 @@
 using MapsterMapper;
+
+using TrackBudget.Aplication.Exceptions;
 using TrackBudget.Application.DTOs.Categories;
+using TrackBudget.Application.Exceptions;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
+
 using TrackBudget.Domain.Entities;
 using TrackBudget.Domain.Enums;
 
@@ -13,7 +17,7 @@ public class CategoryService(
 ) : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<IReadOnlyCollection<CategoryDto>> GetAllAsync(
         Guid userId,
@@ -64,7 +68,7 @@ public class CategoryService(
 
         if (exists)
         {
-            throw new InvalidOperationException(
+            throw new BusinessRuleException(
                 "A category with this name and type already exists."
             );
         }
@@ -116,7 +120,7 @@ public class CategoryService(
 
         if (exists)
         {
-            throw new InvalidOperationException(
+            throw new BusinessRuleException(
                 "A category with this name and type already exists."
             );
         }
@@ -146,7 +150,7 @@ public class CategoryService(
 
         if (category.Transactions.Count > 0)
         {
-            throw new InvalidOperationException(
+            throw new BusinessRuleException(
                 "A category used by transactions cannot be deleted."
             );
         }
@@ -171,7 +175,7 @@ public class CategoryService(
         );
 
         return category
-            ?? throw new KeyNotFoundException(
+            ?? throw new NotFoundException(
                 "Category not found."
             );
     }

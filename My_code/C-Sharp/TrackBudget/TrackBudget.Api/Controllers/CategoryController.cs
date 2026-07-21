@@ -9,16 +9,9 @@ namespace TrackBudget.Api.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/categories")]
-public class CategoriesController : ControllerBase
+public class CategoriesController( ICategoryService categoryService) : ControllerBase
 {
-    private readonly ICategoryService _categoryService;
-
-    public CategoriesController(
-        ICategoryService categoryService
-    )
-    {
-        _categoryService = categoryService;
-    }
+    private readonly ICategoryService _categoryService = categoryService;
 
     [HttpGet]
     public async Task<

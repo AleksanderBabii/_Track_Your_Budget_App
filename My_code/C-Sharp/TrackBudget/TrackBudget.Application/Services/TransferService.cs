@@ -1,7 +1,10 @@
 using MapsterMapper;
+
 using TrackBudget.Application.DTOs.Transfers;
+using TrackBudget.Application.Exceptions;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
+
 using TrackBudget.Domain.Entities;
 using TrackBudget.Domain.Enums;
 
@@ -44,7 +47,7 @@ public class TransferService(
 
         if (transfer is null)
         {
-            throw new KeyNotFoundException(
+            throw new NotFoundException(
                 "Transfer not found."
             );
         }
@@ -58,13 +61,6 @@ public class TransferService(
         CancellationToken cancellationToken = default
     )
     {
-        if (dto.FromAccountId == dto.ToAccountId)
-        {
-            throw new ArgumentException(
-                "Source and destination accounts must be different."
-            );
-        }
-
         var fromAccount =
             await _accountRepository.GetTrackedByIdAsync(
                 dto.FromAccountId,
@@ -74,7 +70,7 @@ public class TransferService(
 
         if (fromAccount is null)
         {
-            throw new KeyNotFoundException(
+            throw new NotFoundException(
                 "Source account not found."
             );
         }
@@ -88,21 +84,21 @@ public class TransferService(
 
         if (toAccount is null)
         {
-            throw new KeyNotFoundException(
+            throw new NotFoundException(
                 "Destination account not found."
             );
         }
 
         if (fromAccount.Currency != toAccount.Currency)
         {
-            throw new InvalidOperationException(
+            throw new BusinessRuleException(
                 "Transfers between different currencies are not supported yet."
             );
         }
 
         if (fromAccount.Balance < dto.Amount)
         {
-            throw new InvalidOperationException(
+            throw new BusinessRuleException(
                 "The source account does not have enough funds."
             );
         }

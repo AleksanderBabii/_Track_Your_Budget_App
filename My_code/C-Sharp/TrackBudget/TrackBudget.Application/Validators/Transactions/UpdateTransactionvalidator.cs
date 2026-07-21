@@ -5,7 +5,6 @@ namespace TrackBudget.Application.Validators.Transactions;
 
 public class UpdateTransactionValidator : AbstractValidator<UpdateTransactionDto>
 {
-    private static readonly string[] AllowedTypes = { "INCOME", "EXPENSE" };
     public UpdateTransactionValidator()
     {
         RuleFor(tr => tr.Title)
