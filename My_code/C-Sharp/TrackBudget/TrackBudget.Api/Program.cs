@@ -13,14 +13,15 @@ using Microsoft.OpenApi;
 using TrackBudget.Infrastructure.Authentication;
 using TrackBudget.Infrastructure.Data;
 using TrackBudget.Infrastructure.Repositories;
+using TrackBudget.Infrastructure.Persistence;
 
 using TrackBudget.Application.Interfaces.Authentication;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
-
 using TrackBudget.Application.Services;
 using TrackBudget.Application.Validators.Auth;
 using TrackBudget.Application.Mapping;
+using TrackBudget.Application.Interfaces.Persistence;
 
 using TrackBudget.Api.Middleware;
 
@@ -103,9 +104,9 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 builder.Services.AddScoped<ITransferService, TransferService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddProblemDetails();
-builder.Services.AddExceptionHandler(_ => { });
 builder.Services.AddHealthChecks();
 
 builder.Services.AddCors(options =>
@@ -153,8 +154,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseExceptionHandler();
-app.UseMiddleware<ExeptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

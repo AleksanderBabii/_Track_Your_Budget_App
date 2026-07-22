@@ -1,29 +1,34 @@
 using MapsterMapper;
+
+using TrackBudget.Application.Exceptions;
 using TrackBudget.Application.DTOs.Accounts;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
-using TrackBudget.Applicatioin.Exceptions;
+
+using TrackBudget.Application.Interfaces.Persistence;
+
 using TrackBudget.Domain.Entities;
-using TrackBudget.Aplication.Exceptions;
+
 
 namespace TrackBudget.Application.Services;
 
-public class AccountService(IAccountRepository accountRepository, IMapper mapper) : IAccountService
+public class AccountService(
+    IAccountRepository accountRepository , 
+    IMapper mapper, 
+    IUnitOfWork unitOfWork
+) : IAccountService
 {
-    private readonly IAccountRepository _accountRepository = accountRepository;
-    private readonly IMapper _mapper = mapper;
-
     public async Task<IReadOnlyCollection<AccountDto>> GetAllAsync(
         Guid userId,
         CancellationToken cancellationToken = default
     )
     {
-        var accounts = await _accountRepository.GetAllByUserIdAsync(
+        var accounts = await accountRepository.GetAllByUserIdAsync(
             userId,
             cancellationToken
         );
 
-        return _mapper.Map<List<AccountDto>>(accounts);
+        return mapper.Map<List<AccountDto>>(accounts);
     }
 
     public async Task<List<AccountDto>> GetAllByUserIdAsync(
@@ -31,12 +36,12 @@ public class AccountService(IAccountRepository accountRepository, IMapper mapper
         CancellationToken cancellationToken = default
     )
     {
-        var accounts = await _accountRepository.GetAllByUserIdAsync(
+        var accounts = await accountRepository.GetAllByUserIdAsync(
             userId,
             cancellationToken
         );
 
-        return _mapper.Map<List<AccountDto>>(accounts);
+        return mapper.Map<List<AccountDto>>(accounts);
     }
 
     public async Task<AccountDto?> GetByIdAsync(
@@ -51,7 +56,7 @@ public class AccountService(IAccountRepository accountRepository, IMapper mapper
             cancellationToken
         );
 
-        return _mapper.Map<AccountDto>(account);
+        return mapper.Map<AccountDto>(account);
     }
 
     public async Task<AccountDto> CreateAsync(
@@ -68,16 +73,16 @@ public class AccountService(IAccountRepository accountRepository, IMapper mapper
             UserId = userId
         };
 
-        await _accountRepository.AddAsync(
+        await accountRepository.AddAsync(
             account,
             cancellationToken
         );
 
-        await _accountRepository.SaveChangesAsync(
+        await unitOfWork.SaveChangesAsync(
             cancellationToken
         );
 
-        return _mapper.Map<AccountDto>(account);
+        return mapper.Map<AccountDto>(account);
     }
 
     public async Task<AccountDto?> UpdateAsync(
@@ -97,11 +102,11 @@ public class AccountService(IAccountRepository accountRepository, IMapper mapper
         account.Currency = dto.Currency;
         account.UpdatedAt = DateTime.UtcNow;
 
-        await _accountRepository.SaveChangesAsync(
+        await unitOfWork.SaveChangesAsync(
             cancellationToken
         );
 
-        return _mapper.Map<AccountDto>(account);
+        return mapper.Map<AccountDto>(account);
     }
 
     public async Task<bool> DeleteAsync(
@@ -116,9 +121,9 @@ public class AccountService(IAccountRepository accountRepository, IMapper mapper
             cancellationToken
         );
 
-        _accountRepository.Remove(account, cancellationToken);
+        accountRepository.Remove(account, cancellationToken);
 
-        await _accountRepository.SaveChangesAsync(
+        await unitOfWork.SaveChangesAsync(
             cancellationToken
         );
 
@@ -131,7 +136,7 @@ public class AccountService(IAccountRepository accountRepository, IMapper mapper
         CancellationToken cancellationToken
     )
     {
-        var account = await _accountRepository.GetByIdAsync(
+        var account = await accountRepository.GetByIdAsync(
             accountId,
             userId,
             cancellationToken

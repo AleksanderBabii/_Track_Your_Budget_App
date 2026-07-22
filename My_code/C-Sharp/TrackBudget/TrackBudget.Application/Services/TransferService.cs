@@ -4,6 +4,7 @@ using TrackBudget.Application.DTOs.Transfers;
 using TrackBudget.Application.Exceptions;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
+using TrackBudget.Application.Interfaces.Persistence;
 
 using TrackBudget.Domain.Entities;
 using TrackBudget.Domain.Enums;
@@ -11,26 +12,24 @@ using TrackBudget.Domain.Enums;
 namespace TrackBudget.Application.Services;
 
 public class TransferService(
-        ITransferRepository transferRepository,
-        IAccountRepository accountRepository,
-        IMapper mapper
-    ) : ITransferService
+    ITransferRepository transferRepository,
+    IAccountRepository accountRepository,
+    IMapper mapper,
+    IUnitOfWork unitOfWork
+) : ITransferService
 {
-    private readonly ITransferRepository _transferRepository = transferRepository;
-    private readonly IAccountRepository _accountRepository = accountRepository;
-    private readonly IMapper _mapper = mapper;
     public async Task<IReadOnlyCollection<TransferDto>> GetAllAsync(
         Guid userId,
         CancellationToken cancellationToken = default
     )
     {
         var transfers =
-            await _transferRepository.GetAllByUserIdAsync(
+            await transferRepository.GetAllByUserIdAsync(
                 userId,
                 cancellationToken
             );
 
-        return _mapper.Map<List<TransferDto>>(transfers);
+        return mapper.Map<List<TransferDto>>(transfers);
     }
 
     public async Task<TransferDto> GetByIdAsync(
@@ -39,7 +38,7 @@ public class TransferService(
         CancellationToken cancellationToken = default
     )
     {
-        var transfer = await _transferRepository.GetByIdAsync(
+        var transfer = await transferRepository.GetByIdAsync(
             transferId,
             userId,
             cancellationToken
@@ -52,7 +51,7 @@ public class TransferService(
             );
         }
 
-        return _mapper.Map<TransferDto>(transfer);
+        return mapper.Map<TransferDto>(transfer);
     }
 
     public async Task<TransferDto> CreateAsync(
@@ -62,7 +61,7 @@ public class TransferService(
     )
     {
         var fromAccount =
-            await _accountRepository.GetTrackedByIdAsync(
+            await accountRepository.GetTrackedByIdAsync(
                 dto.FromAccountId,
                 userId,
                 cancellationToken
@@ -76,7 +75,7 @@ public class TransferService(
         }
 
         var toAccount =
-            await _accountRepository.GetTrackedByIdAsync(
+            await accountRepository.GetTrackedByIdAsync(
                 dto.ToAccountId,
                 userId,
                 cancellationToken
@@ -123,16 +122,16 @@ public class TransferService(
             ToAccount = toAccount
         };
 
-        await _transferRepository.AddAsync(
+        await transferRepository.AddAsync(
             transfer,
             cancellationToken
         );
 
-        await _transferRepository.SaveChangesAsync(
+        await unitOfWork.SaveChangesAsync(
             cancellationToken
         );
 
-        return _mapper.Map<TransferDto>(transfer);
+        return mapper.Map<TransferDto>(transfer);
     }
 
     private static string? NormalizeNotes(string? notes)

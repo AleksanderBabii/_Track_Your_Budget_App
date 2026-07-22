@@ -1,4 +1,4 @@
-namespace TrackBudget.Applicatioin.Exceptions;
+namespace TrackBudget.Application.Exceptions;
 
 public class ForbiddenException : Exception
 {

@@ -1,10 +1,10 @@
 using MapsterMapper;
 
-using TrackBudget.Aplication.Exceptions;
 using TrackBudget.Application.DTOs.Categories;
 using TrackBudget.Application.Exceptions;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
+using TrackBudget.Application.Interfaces.Persistence;
 
 using TrackBudget.Domain.Entities;
 using TrackBudget.Domain.Enums;
@@ -13,11 +13,10 @@ namespace TrackBudget.Application.Services;
 
 public class CategoryService(
     ICategoryRepository categoryRepository,
-    IMapper mapper
+    IMapper mapper,
+    IUnitOfWork unitOfWork
 ) : ICategoryService
 {
-    private readonly ICategoryRepository _categoryRepository = categoryRepository;
-    private readonly IMapper _mapper = mapper;
 
     public async Task<IReadOnlyCollection<CategoryDto>> GetAllAsync(
         Guid userId,
@@ -25,12 +24,12 @@ public class CategoryService(
     )
     {
         var categories =
-            await _categoryRepository.GetAllByUserIdAsync(
+            await categoryRepository.GetAllByUserIdAsync(
                 userId,
                 cancellationToken
             );
 
-        return _mapper.Map<List<CategoryDto>>(categories);
+        return mapper.Map<List<CategoryDto>>(categories);
     }
 
     public async Task<CategoryDto> GetByIdAsync(
@@ -45,7 +44,7 @@ public class CategoryService(
             cancellationToken
         );
 
-        return _mapper.Map<CategoryDto>(category);
+        return mapper.Map<CategoryDto>(category);
     }
 
     public async Task<CategoryDto> CreateAsync(
@@ -59,7 +58,7 @@ public class CategoryService(
         var name = createCategoryDto.Name.Trim();
         var categoryType = ToCategoryType(createCategoryDto.Type);
 
-        var exists = await _categoryRepository.ExistAsync(
+        var exists = await categoryRepository.ExistAsync(
             userId,
             name,
             categoryType,
@@ -80,16 +79,16 @@ public class CategoryService(
             UserId = userId
         };
 
-        await _categoryRepository.AddAsync(
+        await categoryRepository.AddAsync(
             category,
             cancellationToken
         );
 
-        await _categoryRepository.SaveChangesAsync(
+        await unitOfWork.SaveChangesAsync(
             cancellationToken
         );
 
-        return _mapper.Map<CategoryDto>(category);
+        return mapper.Map<CategoryDto>(category);
     }
 
     public async Task<CategoryDto> UpdateAsync(
@@ -110,7 +109,7 @@ public class CategoryService(
         var name = updateCategoryDto.Name.Trim();
         var categoryType = ToCategoryType(updateCategoryDto.Type);
 
-        var exists = await _categoryRepository.ExistAsync(
+        var exists = await categoryRepository.ExistAsync(
             userId,
             name,
             categoryType,
@@ -129,11 +128,11 @@ public class CategoryService(
         category.Type = categoryType;
         category.UpdatedAt = DateTime.UtcNow;
 
-        await _categoryRepository.SaveChangesAsync(
+        await unitOfWork.SaveChangesAsync(
             cancellationToken
         );
 
-        return _mapper.Map<CategoryDto>(category);
+        return mapper.Map<CategoryDto>(category);
     }
 
     public async Task DeleteAsync(
@@ -155,9 +154,9 @@ public class CategoryService(
             );
         }
 
-        _categoryRepository.Remove(category);
+        categoryRepository.Remove(category);
 
-        await _categoryRepository.SaveChangesAsync(
+        await unitOfWork.SaveChangesAsync(
             cancellationToken
         );
     }
@@ -168,7 +167,7 @@ public class CategoryService(
         CancellationToken cancellationToken
     )
     {
-        var category = await _categoryRepository.GetByIdAsync(
+        var category = await categoryRepository.GetByIdAsync(
             categoryId,
             userId,
             cancellationToken

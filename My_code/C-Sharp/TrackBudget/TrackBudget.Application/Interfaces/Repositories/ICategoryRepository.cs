@@ -6,7 +6,8 @@ namespace TrackBudget.Application.Interfaces.Repositories;
 public interface ICategoryRepository
 {
     Task<List<Category>> GetAllByUserIdAsync(
-    Guid userId, CancellationToken cancellationToken = default);
+        Guid userId, 
+        CancellationToken cancellationToken = default);
 
     Task<Category?> GetByIdAsync(
         Guid categoryId, Guid userId,
@@ -25,6 +26,4 @@ public interface ICategoryRepository
         Category category, CancellationToken cancellationToken = default);
 
     void Remove(Category category);
-
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

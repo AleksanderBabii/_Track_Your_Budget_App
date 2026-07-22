@@ -15,6 +15,6 @@ public class Account : BaseEntity
     public ICollection<Transfer> OutgoingTransfers { get; set; }
     = new List<Transfer>();
 
-public ICollection<Transfer> IncomingTransfers { get; set; }
+    public ICollection<Transfer> IncomingTransfers { get; set; }
     = new List<Transfer>();
 }

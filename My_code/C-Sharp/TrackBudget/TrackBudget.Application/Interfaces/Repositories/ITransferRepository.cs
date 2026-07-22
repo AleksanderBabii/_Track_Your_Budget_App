@@ -20,7 +20,4 @@ public interface ITransferRepository
         CancellationToken cancellationToken = default
     );
 
-    Task SaveChangesAsync(
-        CancellationToken cancellationToken = default
-    );
 }

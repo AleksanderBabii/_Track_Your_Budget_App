@@ -5,24 +5,18 @@ using TrackBudget.Application.Interfaces.Authentication;
 using TrackBudget.Application.Interfaces.Services;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Exceptions;
+using TrackBudget.Application.Interfaces.Persistence;
 
 using TrackBudget.Domain.Entities;
 
 namespace TrackBudget.Application.Services;
 
-public class AuthService : IAuthService
+public class AuthService(
+    IUserRepository userRepository,
+    IPasswordHasher passwordHasher,
+    IJwtProvider jwtProvider,
+    IUnitOfWork unitOfWork) : IAuthService
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly IJwtProvider _jwtProvider;
-
-    public AuthService(IUserRepository userRepository, IPasswordHasher passwordHasher, IJwtProvider jwtProvider)
-    {
-        _userRepository = userRepository;
-        _passwordHasher = passwordHasher;
-        _jwtProvider = jwtProvider;
-    }
-
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto, CancellationToken cancellationToken = default)
     {
         var userName = dto.Username.Trim();
@@ -33,14 +27,14 @@ public class AuthService : IAuthService
             throw new UnauthorizedException("Username, email, and password are required.");
         }
 
-        var existingUser = await _userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
+        var existingUser = await userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
 
         if (existingUser != null)
         {
             throw new UnauthorizedException("User with this email already exists.");
         }
 
-        var hashedPassword = _passwordHasher.HashPassword(dto.Password);
+        var hashedPassword = passwordHasher.HashPassword(dto.Password);
         var user = new User
         {
             Username = userName,
@@ -49,9 +43,10 @@ public class AuthService : IAuthService
             CreatedAt = DateTime.UtcNow
         };
 
-        await _userRepository.AddUserAsync(user, cancellationToken);
+        await userRepository.AddUserAsync(user, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var token = _jwtProvider.GenerateToken(user);
+        var token = jwtProvider.GenerateToken(user);
 
         return new AuthResponseDto
         {
@@ -65,13 +60,13 @@ public class AuthService : IAuthService
     public async Task<AuthResponseDto> LoginAsync(LoginDto dto, CancellationToken cancellationToken = default)
     {
         var normalizedEmail = dto.Email.Trim().ToLower();
-        var user = await _userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
-        if (user == null || !_passwordHasher.VerifyPassword(dto.Password, user.PasswordHash))
+        var user = await userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
+        if (user == null || !passwordHasher.VerifyPassword(dto.Password, user.PasswordHash))
         {
             throw new UnauthorizedException("Invalid email or password.");
         }
 
-        var token = _jwtProvider.GenerateToken(user);
+        var token = jwtProvider.GenerateToken(user);
 
         return new AuthResponseDto
         {

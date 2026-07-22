@@ -4,7 +4,7 @@ using TrackBudget.Application.DTOs.Transactions;
 using TrackBudget.Application.Exceptions;
 using TrackBudget.Application.Interfaces.Repositories;
 using TrackBudget.Application.Interfaces.Services;
-using TrackBudget.Applicatioin.Exceptions;
+using TrackBudget.Application.Interfaces.Persistence;
 
 using TrackBudget.Domain.Entities;
 using TrackBudget.Domain.Enums;
@@ -15,19 +15,16 @@ public class TransactionService(
     ITransactionRepository transactionRepository,
     IAccountRepository accountRepository,
     ICategoryRepository categoryRepository,
-    IMapper mapper) : ITransactionService
+    IMapper mapper,
+    IUnitOfWork unitOfWork
+) : ITransactionService
 {
-    private readonly ITransactionRepository _transactionRepository = transactionRepository;
-    private readonly IAccountRepository _accountRepository = accountRepository;
-    private readonly ICategoryRepository _categoryRepository = categoryRepository;
-    private readonly IMapper _mapper = mapper;
-
     public async Task<IReadOnlyCollection<TransactionDto>> GetAllAsync(
         Guid userId,
         CancellationToken cancellationToken = default)
     {
-        var transactions = await _transactionRepository.GetAllByUserIdAsync(userId, cancellationToken);
-        return _mapper.Map<List<TransactionDto>>(transactions);
+        var transactions = await transactionRepository.GetAllByUserIdAsync(userId, cancellationToken);
+        return mapper.Map<List<TransactionDto>>(transactions);
     }
 
     public async Task<TransactionDto> GetByIdAsync(
@@ -36,7 +33,7 @@ public class TransactionService(
         CancellationToken cancellationToken = default)
     {
         var transaction = await GetOwnedTransactionAsync(transactionId, userId, cancellationToken);
-        return _mapper.Map<TransactionDto>(transaction);
+        return mapper.Map<TransactionDto>(transaction);
     }
 
     public async Task<TransactionDto> CreateAsync(
@@ -65,10 +62,10 @@ public class TransactionService(
             Category = category
         };
 
-        await _transactionRepository.AddAsync(transaction, cancellationToken);
-        await _transactionRepository.SaveChangesAsync(cancellationToken);
+        await transactionRepository.AddAsync(transaction, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<TransactionDto>(transaction);
+        return mapper.Map<TransactionDto>(transaction);
     }
 
     public async Task<TransactionDto> UpdateAsync(
@@ -126,9 +123,9 @@ public class TransactionService(
         transaction.Category = category;
         transaction.UpdatedAt = DateTime.UtcNow;
 
-        await _transactionRepository.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<TransactionDto>(transaction);
+        return mapper.Map<TransactionDto>(transaction);
     }
 
     public async Task DeleteAsync(
@@ -147,8 +144,8 @@ public class TransactionService(
             reverse: true
         );
 
-        _transactionRepository.Remove(transaction);
-        await _transactionRepository.SaveChangesAsync(cancellationToken);
+        transactionRepository.Remove(transaction);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     private async Task<Transaction> GetOwnedTransactionAsync(
@@ -156,7 +153,7 @@ public class TransactionService(
         Guid userId,
         CancellationToken cancellationToken)
     {
-        return await _transactionRepository.GetByIdAsync(transactionId, userId, cancellationToken)
+        return await transactionRepository.GetByIdAsync(transactionId, userId, cancellationToken)
             ?? throw new NotFoundException("Transaction not found.");
     }
 
@@ -165,7 +162,7 @@ public class TransactionService(
         Guid userId,
         CancellationToken cancellationToken)
     {
-        return await _accountRepository.GetTrackedByIdAsync(accountId, userId, cancellationToken)
+        return await accountRepository.GetTrackedByIdAsync(accountId, userId, cancellationToken)
             ?? throw new NotFoundException("Account not found.");
     }
 
@@ -174,7 +171,7 @@ public class TransactionService(
         Guid userId,
         CancellationToken cancellationToken)
     {
-        return await _categoryRepository.GetTrackedByIdAsync(categoryId, userId, cancellationToken)
+        return await categoryRepository.GetTrackedByIdAsync(categoryId, userId, cancellationToken)
             ?? throw new NotFoundException("Category not found.");
     }
 
