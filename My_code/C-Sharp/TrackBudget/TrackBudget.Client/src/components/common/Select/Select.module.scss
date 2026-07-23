@@ -1,0 +1,59 @@
+@use '../../../styles/variable' as *;
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-text;
+}
+
+.required {
+    margin-left: 0.25rem;
+    color: $color-error;
+}
+
+.select {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.5rem;
+
+    border: 1px solid $color-border;
+    border-radius: 0.25rem;
+    background-color: $color-surface;
+    color: $color-text;
+
+    font-size: 1rem;
+
+    outline: none;
+    cursor: pointer;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+        border-color: $color-primary;
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+
+    &:disabled {
+        background-color: $color-disabled;
+        color: $color-text-disabled;
+        cursor: not-allowed;
+    }
+}
+
+.selectError {
+    border-color: $color-error;
+    box-shadow: 0 0 0 2px rgba($color-error, 0.2);
+}
+
+.error {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: $color-error;
+}

@@ -1,0 +1,61 @@
+@use '../../../styles/variable' as *;
+
+.wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+    display: inline-block;
+
+    border-style: solid;
+    border-color: $color-border;
+    border-top: 4px solid $color-primary;
+    border-radius: 50%;
+
+  width: 50px;
+  height: 50px;
+  
+  
+  animation: spin 1s linear infinite;
+}
+
+.small {
+  width: 30px;
+  height: 30px;
+  border-width: 3px;
+}
+
+.medium {
+  width: 50px;
+  height: 50px;
+  border-width: 4px;
+}
+
+.large {
+  width: 70px;
+  height: 70px;
+  border-width: 5px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

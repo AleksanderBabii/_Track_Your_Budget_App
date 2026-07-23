@@ -1,0 +1,76 @@
+@use '../../../styles/variable' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-small;
+  width: 100%;
+}
+
+.label {
+    font-size: $font-size-small;
+    font-weight: 600;
+    color: $color-text;
+}
+
+.required {
+    margin-left: 3px;
+    color: $color-error;
+}
+
+.input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+
+    border: 1px solid $color-border;
+    border-radius: $border-radius-md;
+    background: $color-surface;
+    color: $color-text;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease-in-out,
+        box-shadow 0.2s ease-in-out;
+
+        &::placeholder{
+            color: $color-placeholder;
+        }
+
+        &:hover:not(:disabled) {
+            border-color: $color-primary;
+        }
+
+        &:focus {
+            border-color: $color-primary;
+            box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+        }
+
+        &:disabled {
+            background: $color-disabled;
+            color: $color-text-disabled;
+            cursor: not-allowed;
+        }
+}
+
+.input-error {
+    border-color: $color-error;
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba($color-error, 0.2);
+        border-color: $color-error;
+    }
+}
+
+.message {
+    font-size: $font-size-small;
+}
+
+.error {
+    color: $color-error;
+}
+
+.hint {
+    color: $color-text-muted;
+}
