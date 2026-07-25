@@ -11,7 +11,7 @@ import { useAuthStore } from "../../../store/authStore";
 import { loginSchema, type LoginFromValues } from "../../../utils/authSchemas";
 import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
 
-import styles from "./LoginForm.module.css";
+import styles from "./LoginForm.module.scss";
 
 export function LoginForm() {
     const navigate = useNavigate();
@@ -34,7 +34,11 @@ export function LoginForm() {
         mutationFn: login,
 
         onSuccess: (response) => {
-            setSession(response.token, response.user ?? null);
+            setSession(response.token,{
+                id: response.user.id,
+                username: response.user.username,
+                email: response.user.email,
+            });
 
             toast.success("Login successful");
 

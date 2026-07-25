@@ -23,6 +23,7 @@ public class ExceptionMiddleware(
             var statusCode = exception switch
             {
                 AppValidationException => StatusCodes.Status400BadRequest,
+                UnauthorizedException => StatusCodes.Status401Unauthorized,
                 UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
                 ForbiddenException => StatusCodes.Status403Forbidden,
                 NotFoundException => StatusCodes.Status404NotFound,

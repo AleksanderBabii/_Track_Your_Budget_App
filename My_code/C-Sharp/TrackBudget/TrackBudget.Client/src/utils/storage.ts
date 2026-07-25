@@ -1,4 +1,4 @@
-const TOKEN_KEY = 'trackbudget_access_token';
+const TOKEN_KEY = "trackbudget_access_token";
 
 export const tokenStorage = {
     get(): string | null {

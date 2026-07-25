@@ -11,7 +11,7 @@ import { useAuthStore } from "../../../store/authStore";
 import { registerSchema, type RegisterFormValues } from "../../../utils/authSchemas";
 import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
 
-import styles from "./RegisterForm.module.css";
+import styles from "./RegisterForm.module.scss";
 
 export function RegisterForm() {
     const navigate = useNavigate();
@@ -27,6 +27,7 @@ export function RegisterForm() {
             username: "",
             email: "",
             password: "",
+            confirmPassword: "",
         },
     });
 
@@ -34,7 +35,11 @@ export function RegisterForm() {
         mutationFn: registerUser,
 
         onSuccess: (response) => {
-            setSession(response.token, response.user ?? null);
+            setSession(response.token, {
+                id: response.user.id,
+                username: response.user.username,
+                email: response.user.email,
+            });
 
             toast.success("Registration successful");
 
@@ -83,6 +88,15 @@ export function RegisterForm() {
                 hint="Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character."
                 error={errors.password?.message}
                 {...register("password")}
+            />
+
+            <Input
+                label="Confirm Password"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Confirm your password"
+                error={errors.confirmPassword?.message}
+                {...register("confirmPassword")}
             />
 
             <Button 

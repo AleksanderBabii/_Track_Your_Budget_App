@@ -51,9 +51,12 @@ public class AuthService(
         return new AuthResponseDto
         {
             Token = token,
-            UserId = user.Id,
-            Username = user.Username,
-            Email = user.Email
+            User = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email
+            }
         };
     }
 
@@ -71,9 +74,12 @@ public class AuthService(
         return new AuthResponseDto
         {
             Token = token,
-            UserId = user.Id,
-            Username = user.Username,
-            Email = user.Email
+            User = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email
+            }
         };
     }
 }

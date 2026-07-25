@@ -1,10 +1,10 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import clsx from 'clsx';
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import clsx from "clsx";
 
-import styles from './Button.module.scss';
+import styles from "./Button.module.scss";
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
-type ButtonSize = 'small' | 'medium' | 'large';
+type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
+type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
@@ -16,13 +16,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function Button({
     children,
-    variant = 'primary',
-    size = 'medium',
+    variant = "primary",
+    size = "medium",
     fullWidth = false,
     isLoading = false,
     disabled,
     className,
-    type = 'button',
+    type = "button",
     ...props
   }: ButtonProps) {
     return (
@@ -39,7 +39,7 @@ export function Button({
             disabled={disabled || isLoading}
             {...props}
         >
-            {isLoading ? 'Loading...' : children}
+            {isLoading ? "Loading..." : children}
         </button>
     );
 }
