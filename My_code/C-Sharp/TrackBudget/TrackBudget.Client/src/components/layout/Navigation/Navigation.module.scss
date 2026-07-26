@@ -1,0 +1,41 @@
+@use "../../../styles/variables" as *;
+
+.navigationItem{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.5rem 1rem;
+
+    border-radius: 0.5rem;
+
+    color: $color-text-muted;
+    font-weight: 500;
+
+    transition: all 0.2s ease-in-out;
+
+    svg{
+        flex-shrink: 0;
+    }
+
+    &:hover{
+        background-color: $color-background-hover;
+        color: $color-text;
+    }
+}
+
+.active{
+    background-color: $color-background-hover;
+    color: $color-text;
+
+    font-weight: 600;
+}
+
+.icon{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.label{
+    font-size: 1rem;
+}

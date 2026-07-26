@@ -1,0 +1,92 @@
+@use "../../../styles/variables" as *;
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 280px;
+  height: 100vh;
+
+  padding: 28px;
+
+  border-right: 1px solid $color-border;
+
+  background: $color-surface;
+
+  position: sticky;
+  top: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-bottom: 40px;
+
+  p {
+    margin: 4px 0 0;
+    color: $color-text-muted;
+    font-size: 0.85rem;
+  }
+}
+
+.logoImage {
+  display: grid;
+  place-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 14px;
+
+  background: $color-primary;
+
+  color: white;
+
+  font-weight: 700;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  strong {
+    display: block;
+  }
+
+  span {
+    font-size: .85rem;
+    color: $color-text-muted;
+  }
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  background: $color-primary;
+
+  color: white;
+
+  font-weight: 700;
+}
