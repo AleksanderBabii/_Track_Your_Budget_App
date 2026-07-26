@@ -18,10 +18,17 @@
     color: $color-error;
 }
 
+.selectWrapper {
+    position: relative;
+    width: 100%;
+}
+
 .select {
     width: 100%;
     min-height: 2.5rem;
     padding: 0.5rem;
+
+    appearance: none;
 
     border: 1px solid $color-border;
     border-radius: 0.25rem;
@@ -33,7 +40,11 @@
     outline: none;
     cursor: pointer;
 
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+
+    &:hover:not(:disabled) {
+        border-color: $color-primary;
+    }
 
     &:focus {
         border-color: $color-primary;
@@ -50,10 +61,43 @@
 .selectError {
     border-color: $color-error;
     box-shadow: 0 0 0 2px rgba($color-error, 0.2);
+
+    &:focus {
+        border-color: $color-error;
+        box-shadow: 0 0 0 2px rgba($color-error, 0.2);
+    }
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%) rotate(45deg);
+    pointer-events: none;
+
+    border-right: 0.25rem solid $color-text-muted;
+    border-bottom: 0.25rem solid $color-text-muted;
+
+    width: 1rem;
+    height: 1rem;
+
+    fill: $color-text;
+}
+
+.select:disabled + .arrow {
+    border-right-color: $color-text-disabled;
+    border-bottom-color: $color-text-disabled;
+    opacity: 0.5;
 }
 
 .error {
     margin-top: 0.25rem;
     font-size: 0.75rem;
     color: $color-error;
+}
+
+.hint {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: $color-text-muted;
 }
