@@ -16,7 +16,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   hint?: string;
   placeholder?: string;
   options: SelectOption[];
-  showPlacwolder?: boolean;
+  showPlaceholder?: boolean;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
@@ -27,7 +27,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       hint,
       placeholder = "Select an option",
       options,
-      showPlacwolder = true,
+      showPlaceholder = true,
       id,
       className,
       required,
@@ -66,7 +66,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             disabled={disabled}
             {...props}
           >
-            {showPlacwolder && (
+            {showPlaceholder && (
               <option value="" disabled hidden>
                 {placeholder}
               </option>

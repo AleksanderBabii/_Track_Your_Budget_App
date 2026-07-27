@@ -8,7 +8,7 @@ interface AuthLayoutProps {
   subtitle: string;
   children: ReactNode;
   footerText: string;
-  foooterLink: string;
+  footerLink: string;
   footerLinkTo: string;
 }
 export function AuthLayout({
@@ -16,7 +16,7 @@ export function AuthLayout({
   subtitle,
   children,
   footerText,
-  foooterLink,
+  footerLink,
   footerLinkTo,
 }: AuthLayoutProps) {
   return (
@@ -44,7 +44,7 @@ export function AuthLayout({
           <p className={styles.cardFooter}>
             {footerText}{" "}
             <Link className={styles.cardFooterLink} to={footerLinkTo}>
-              {foooterLink}
+              {footerLink}
             </Link>
           </p>
         </div>

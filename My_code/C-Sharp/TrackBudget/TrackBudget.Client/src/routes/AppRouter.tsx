@@ -3,11 +3,16 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AppLayout } from "../components/layout/AppLayout/AppLayout";
 
 import { Dashboard } from "../pages/Dashboard/Dashboard";
+import { Accounts } from "../pages/Accounts/Accounts";
 import { Login } from "../pages/Login/Login";
 import { Register } from "../pages/Register/Register";
 
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
+
+function PlaceholderPage({ title }: { title: string }) {
+  return <div>{title} Page</div>;
+}
 
 export function AppRouter() {
   return (
@@ -36,23 +41,23 @@ export function AppRouter() {
             <AppLayout />
           </PrivateRoute>
         }
-      />
+      >
+        <Route index element={<Navigate to="/dashboard" replace />} />
 
-      <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
-      <Route path="/accounts" element={<div>Accounts Page</div>} />
+        <Route path="/accounts" element={<Accounts />} />
 
-      <Route path="/categories" element={<div>Categories Page</div>} />
+        <Route path="/categories" element={<PlaceholderPage title="Categories" />} />
 
-      <Route path="/transactions" element={<div>Transactions Page</div>} />
+        <Route path="/transactions" element={<PlaceholderPage title="Transactions" />} />
 
-      <Route path="/transfers" element={<div>Transfers Page</div>} />
+        <Route path="/transfers" element={<PlaceholderPage title="Transfers" />} />
 
-      <Route path="/reports" element={<div>Reports Page</div>} />
+        <Route path="/reports" element={<PlaceholderPage title="Reports" />} />
 
-      <Route path="/settings" element={<div>Settings Page</div>} />
-
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
+      </Route>
 
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>

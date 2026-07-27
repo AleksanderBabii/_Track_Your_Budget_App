@@ -1,9 +1,14 @@
 export type Currency =
   | "PLN"
-  | "EUR"
   | "USD"
+  | "EUR"
   | "GBP"
-  | "UAH";
+  | "UAH"
+  | "JPY"
+  | "CHF"
+  | "CAD"
+  | "AUD"
+  | "CNY";
 
 export interface Account {
   id: string;

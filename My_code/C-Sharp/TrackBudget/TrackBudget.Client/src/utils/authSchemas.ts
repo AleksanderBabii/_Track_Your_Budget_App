@@ -16,7 +16,7 @@ export const registerSchema = z
       .string()
       .trim()
       .min(1, "Username is required")
-      .max(20, "Username must be less than 20 characters"),
+      .max(30, "Username must be at most 30 characters"),
 
     email: z
       .string()
@@ -27,7 +27,7 @@ export const registerSchema = z
     password: z
       .string()
       .trim()
-      .min(8, "Password must be at least 8 characters long")
+      .min(6, "Password must be at least 6 characters long")
 
       .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
       .regex(/[a-z]/, "Password must contain at least one lowercase letter")

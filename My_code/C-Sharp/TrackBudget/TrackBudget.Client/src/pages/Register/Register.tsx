@@ -7,7 +7,7 @@ export function Register() {
             title="Create an account"
             subtitle="Start tracking your finances with a clear overview of your money."
             footerText="Already have an account?"
-            foooterLink="Log in"
+            footerLink="Log in"
             footerLinkTo="/login"
         >
             <RegisterForm />

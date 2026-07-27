@@ -61,7 +61,7 @@ export function Modal({
   return createPortal(
     <div
       className={styles.backdrop}
-      onMouseDown={handleBackdropClick}
+      onClick={handleBackdropClick}
       role="presentation"
     >
       <section
@@ -69,6 +69,7 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
+        onClick={(event) => event.stopPropagation()}
       >
         <header className={styles.header}>
           <h2 id={titleId} className={styles.title}>
@@ -76,6 +77,7 @@ export function Modal({
           </h2>
 
           <Button
+            type="button"
             variant="ghost"
             size="small"
             aria-label="Close modal"

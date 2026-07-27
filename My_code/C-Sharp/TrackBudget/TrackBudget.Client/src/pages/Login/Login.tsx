@@ -7,7 +7,7 @@ export function Login() {
             title="Welcome back!"
             subtitle="Please enter your credentials to log in."
             footerText="Don't have an account?"
-            foooterLink="Sign up"
+            footerLink="Sign up"
             footerLinkTo="/register"
         >
             <LoginForm />

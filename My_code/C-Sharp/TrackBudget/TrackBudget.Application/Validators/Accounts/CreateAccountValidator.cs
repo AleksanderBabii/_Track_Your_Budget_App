@@ -10,8 +10,8 @@ public class CreateAccountValidator : AbstractValidator<CreateAccountDto>
         RuleFor(account => account.Name)
         .NotEmpty()
         .WithMessage("Account name is required.")
-        .MinimumLength(3)
-        .WithMessage("Account name must be at least 3 characters long.")
+        .MinimumLength(2)
+        .WithMessage("Account name must contain at least 2 characters.")
         .MaximumLength(50)
         .WithMessage("Account name must be at most 50 characters long.");
 

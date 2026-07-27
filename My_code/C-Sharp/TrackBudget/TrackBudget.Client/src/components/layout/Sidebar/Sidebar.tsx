@@ -58,7 +58,6 @@ export function Sidebar() {
           <FiLogOut />
           Logout
         </Button>
-        \
       </div>
     </aside>
   );
