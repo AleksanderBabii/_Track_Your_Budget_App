@@ -20,6 +20,7 @@ public class ExceptionMiddleware(
 
             context.Response.ContentType = "application/json";
             
+            // Map domain/application exceptions to consistent HTTP status codes.
             var statusCode = exception switch
             {
                 AppValidationException => StatusCodes.Status400BadRequest,
@@ -33,6 +34,7 @@ public class ExceptionMiddleware(
 
             context.Response.StatusCode = statusCode;
 
+            // Include stack trace details only in development.
             var response = env.IsDevelopment()
                 ? new ApiException(
                     statusCode, 

@@ -60,6 +60,7 @@ public class TransferService(
         CancellationToken cancellationToken = default
     )
     {
+        // Both accounts must belong to current user.
         var fromAccount =
             await accountRepository.GetTrackedByIdAsync(
                 dto.FromAccountId,
@@ -90,6 +91,7 @@ public class TransferService(
 
         if (fromAccount.Currency != toAccount.Currency)
         {
+            // Currency conversion is intentionally unsupported at this stage.
             throw new BusinessRuleException(
                 "Transfers between different currencies are not supported yet."
             );
@@ -97,11 +99,13 @@ public class TransferService(
 
         if (fromAccount.Balance < dto.Amount)
         {
+            // Prevent overdraft on source account.
             throw new BusinessRuleException(
                 "The source account does not have enough funds."
             );
         }
 
+        // Transfer moves value atomically by updating both account balances.
         fromAccount.Balance -= dto.Amount;
         toAccount.Balance += dto.Amount;
 

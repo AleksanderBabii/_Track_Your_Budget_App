@@ -15,17 +15,20 @@ export function CreateAccountModal({
   isOpen,
   onClose,
 }: CreateAccountModalProps) {
+  // Mutation encapsulates API call + cache refresh + success/error toasts.
   const createAccountMutation = useCreateAccount();
 
   async function handleSubmit(
     values: AccountFormValues,
   ): Promise<void> {
+    // Map validated form values to API contract.
     await createAccountMutation.mutateAsync({
       name: values.name,
       initialBalance: values.initialBalance,
       currency: values.currency,
     });
 
+    // Close modal only after successful create.
     onClose();
   }
 

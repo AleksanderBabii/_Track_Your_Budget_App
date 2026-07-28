@@ -5,8 +5,10 @@
   flex-direction: column;
   justify-content: space-between;
 
+  flex: 0 0 280px;
   width: 280px;
   height: 100vh;
+  overflow-y: auto;
 
   padding: 28px;
 
@@ -16,6 +18,64 @@
 
   position: sticky;
   top: 0;
+  transition: width 0.2s ease, padding 0.2s ease;
+}
+
+.sidebarCollapsed {
+  width: 92px;
+  flex-basis: 92px;
+  padding: 20px 14px;
+}
+
+.topRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.collapseButton {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid $color-border;
+  border-radius: 10px;
+  background: $color-surface;
+  color: $color-text-secondary;
+  cursor: pointer;
+
+  &:hover {
+    background: $color-background;
+    color: $color-text;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    flex: 0 0 auto;
+    height: auto;
+    max-height: none;
+    border-right: 0;
+    border-bottom: 1px solid $color-border;
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .sidebarCollapsed {
+    width: 100%;
+    flex-basis: auto;
+    padding: 16px;
+  }
+
+  .logo {
+    margin-bottom: 20px;
+  }
+
+  .topRow {
+    justify-content: flex-start;
+  }
 }
 
 .logo {
@@ -27,8 +87,23 @@
 
   p {
     margin: 4px 0 0;
-    color: $color-text-muted;
+    color: $color-text-secondary;
     font-size: 0.85rem;
+  }
+}
+
+.logoText {
+  strong {
+    color: $color-text;
+  }
+}
+
+.logoCollapsed {
+  justify-content: center;
+  margin-bottom: 24px;
+
+  .logoText {
+    display: none;
   }
 }
 
@@ -67,11 +142,24 @@
 
   strong {
     display: block;
+    color: $color-text;
   }
 
   span {
     font-size: .85rem;
-    color: $color-text-muted;
+    color: $color-text-secondary;
+  }
+}
+
+.userText {
+  min-width: 0;
+}
+
+.userCollapsed {
+  justify-content: center;
+
+  .userText {
+    display: none;
   }
 }
 
@@ -89,4 +177,25 @@
   color: white;
 
   font-weight: 700;
+}
+
+.logoutButton {
+  color: $color-text-secondary;
+
+  &:hover {
+    color: $color-text;
+  }
+}
+
+.logoutButtonCollapsed {
+  justify-content: center;
+  padding-inline: 0.5rem;
+
+  .logoutText {
+    display: none;
+  }
+}
+
+.logoutText {
+  white-space: nowrap;
 }

@@ -20,6 +20,7 @@ export function AuthLayout({
   footerLinkTo,
 }: AuthLayoutProps) {
   return (
+    // Shared layout for login/register screens.
     <main className={styles.page}>
       <section className={styles.panel}>
         <div className={styles.brand}>
@@ -34,6 +35,7 @@ export function AuthLayout({
         </div>
 
         <div className={styles.card}>
+          {/* Card header + routed form content */}
           <header className={styles.cardHeader}>
             <h1 className={styles.cardTitle}>{title}</h1>
             <p className={styles.cardSubtitle}>{subtitle}</p>
@@ -51,6 +53,7 @@ export function AuthLayout({
       </section>
 
       <aside className={styles.visual}>
+        {/* Marketing/preview block shown on larger auth layouts */}
         <div className={styles.visualContent}>
           <span className={styles.eyebrow}> Your financial overview</span>
           <h2 className={styles.visualTitle}>

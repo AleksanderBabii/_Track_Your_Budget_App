@@ -10,6 +10,7 @@ interface PublicRouteProps {
 export function PublicRoute({ children }: PublicRouteProps) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
+  // Prevent signed-in users from returning to auth-only pages.
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }

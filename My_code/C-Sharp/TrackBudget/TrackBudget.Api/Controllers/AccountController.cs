@@ -16,6 +16,9 @@ namespace TrackBudget.Api.Controllers;
 public class AccountController(IAccountService accountService) : ControllerBase
 {
     private readonly IAccountService _accountService = accountService;
+
+    // Every account endpoint is user-scoped; this extracts the authenticated user id
+    // from JWT claims and ensures it is a valid Guid.
     private Guid GetUserIdFromClaims()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -32,6 +35,7 @@ public class AccountController(IAccountService accountService) : ControllerBase
         CancellationToken cancellationToken = default
     )
     {
+        // Return only accounts owned by the current user.
         var userId = GetUserIdFromClaims();
         var accounts = await _accountService.GetAllAsync(userId, cancellationToken);
         return Ok(accounts);
@@ -49,9 +53,11 @@ public class AccountController(IAccountService accountService) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<AccountDto>> CreateAsync(CreateAccountDto createAccountDto, CancellationToken cancellationToken = default)
     {
+        // Create under current user ownership and return canonical REST location.
+        // Using Created(...) avoids runtime route-resolution failures from CreatedAtAction.
         var userId = GetUserIdFromClaims();
         var account = await _accountService.CreateAsync(createAccountDto, userId, cancellationToken);
-        return CreatedAtAction(nameof(GetByIdAsync), new { accountId = account.Id }, account);
+        return Created($"/api/accounts/{account.Id}", account);
     }
 
     [HttpPut("{accountId:guid}")]
@@ -65,7 +71,7 @@ public class AccountController(IAccountService accountService) : ControllerBase
     [HttpDelete("{accountId:guid}")]
     public async Task<IActionResult> DeleteAsync(Guid accountId, CancellationToken cancellationToken = default)
     {
-        var account = await _accountService.GetByIdAsync(accountId, GetUserIdFromClaims(), cancellationToken);
+        await _accountService.DeleteAsync(accountId, GetUserIdFromClaims(), cancellationToken);
 
         return NoContent();
     }

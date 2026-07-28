@@ -1,0 +1,57 @@
+@use "../../../styles/variables" as *;
+
+.accountListGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+}
+
+.accountListState,
+.accountListEmptyState {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    justify-content: center;
+    align-items: center;
+    
+    padding: 48px 24px;
+
+    height: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+    border: 1px dashed $color-border;
+    border-radius: $border-radius-md;
+    background: $color-surface;
+}
+
+.accountListState h2,
+.accountListEmptyState h2 {
+    margin: 16px 0 8px;
+    color: $color-text;
+}
+
+.accountListState p,
+.accountListEmptyState p {
+    max-width: 400px;
+    margin: 0;
+    color: $color-text-secondary;
+    line-height: 1.5;
+}
+
+.accountListEmptyStateIcon {
+    display: grid;
+    width: 56px;
+    height: 56px;
+    place-items: center;
+
+    border-radius: 50%;
+    background-color: $color-primary-light;
+    color: $color-primary;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 700px) {
+    .accountListGrid {
+        grid-template-columns: 1fr;
+    }
+}

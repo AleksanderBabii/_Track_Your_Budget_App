@@ -1,5 +1,6 @@
-import { FiLogOut } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiLogOut } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
 
 import { navigationItems } from "../../../config/navigation";
 import { useAuthStore } from "../../../store/authStore";
@@ -10,22 +11,45 @@ import { Button } from "../../common/Button/Button";
 
 import styles from "./Sidebar.module.scss";
 
-export function Sidebar() {
+interface SidebarProps {
+  isCollapsed: boolean;
+  onToggle: () => void;
+}
+
+export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
+  // Fallback keeps avatar stable before profile data is loaded.
+  const userInitial = (user?.username?.charAt(0) ?? "U").toUpperCase();
 
   const handleLogout = () => {
+    // Clear session state and move to public auth route.
     logout();
     navigate("/login", { replace: true }); // Use replace to prevent going back to the previous page after logout
   };
 
   return (
-    <aside className={styles.sidebar}>
+    <aside
+      className={clsx(styles.sidebar, isCollapsed && styles.sidebarCollapsed)}
+      aria-label="Main navigation"
+    >
       <div>
-        <div className={styles.logo}>
+        <div className={styles.topRow}>
+          <button
+            type="button"
+            className={styles.collapseButton}
+            onClick={onToggle}
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-expanded={!isCollapsed}
+          >
+            {isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
+          </button>
+        </div>
+
+        <div className={clsx(styles.logo, isCollapsed && styles.logoCollapsed)}>
           <div className={styles.logoImage}> TB </div>
 
-          <div>
+          <div className={styles.logoText}>
             <strong>TrackBudget</strong>
 
             <p>Track your budget with ease</p>
@@ -33,30 +57,36 @@ export function Sidebar() {
         </div>
 
         <nav className={styles.navigation}>
+          {/* Navigation labels collapse to icons when sidebar is compact. */}
           {navigationItems.map((item) => (
-            <NavigationItem key={item.path} item={item} isActive />
+            <NavigationItem
+              key={item.path}
+              item={item}
+              isCollapsed={isCollapsed}
+            />
           ))}
         </nav>
       </div>
 
       <div className={styles.footer}>
-        <div className={styles.user}>
+        <div className={clsx(styles.user, isCollapsed && styles.userCollapsed)}>
           <div className={styles.avatar}>
-            {user?.username.charAt(0).toUpperCase()}
+            {userInitial}
           </div>
 
-          <div>
+          <div className={styles.userText}>
             <strong>{user?.username}</strong>
             <span>{user?.email}</span>
           </div>
         </div>
         <Button
-          className={styles.logoutButton}
+          className={clsx(styles.logoutButton, isCollapsed && styles.logoutButtonCollapsed)}
           onClick={handleLogout}
           variant="ghost"
+          aria-label="Logout"
         >
           <FiLogOut />
-          Logout
+          <span className={styles.logoutText}>Logout</span>
         </Button>
       </div>
     </aside>

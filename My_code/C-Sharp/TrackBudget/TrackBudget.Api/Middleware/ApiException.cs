@@ -1,6 +1,7 @@
 
 namespace TrackBudget.Api.Middleware;
 
+// Standard error payload returned by global exception middleware.
 public class ApiException
 {
     public ApiException(int statusCode, string message, string? details = null)

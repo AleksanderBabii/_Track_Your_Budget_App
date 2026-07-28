@@ -19,6 +19,7 @@ public class AuthService(
 {
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto, CancellationToken cancellationToken = default)
     {
+        // Normalize identity fields before validation and uniqueness checks.
         var userName = dto.Username.Trim();
         var normalizedEmail = dto.Email.Trim().ToLower();
 
@@ -34,6 +35,7 @@ public class AuthService(
             throw new UnauthorizedException("User with this email already exists.");
         }
 
+        // Persist hashed credentials only; never store raw password.
         var hashedPassword = passwordHasher.HashPassword(dto.Password);
         var user = new User
         {
@@ -62,6 +64,7 @@ public class AuthService(
 
     public async Task<AuthResponseDto> LoginAsync(LoginDto dto, CancellationToken cancellationToken = default)
     {
+        // Login lookup is case-insensitive by normalized email.
         var normalizedEmail = dto.Email.Trim().ToLower();
         var user = await userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
         if (user == null || !passwordHasher.VerifyPassword(dto.Password, user.PasswordHash))

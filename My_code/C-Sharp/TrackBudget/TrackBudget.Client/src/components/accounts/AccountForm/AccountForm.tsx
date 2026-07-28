@@ -49,6 +49,7 @@ export function AccountForm({
     handleSubmit,
     formState: { errors },
   } = useForm<AccountFormValues>({
+    // Zod schema is the single source of truth for form validation.
     resolver: zodResolver(accountSchema),
     defaultValues: {
       name: defaultValues.name ?? "",
@@ -79,6 +80,7 @@ export function AccountForm({
         disabled={isSubmitting}
         required
         {...register("initialBalance", {
+          // Keep numeric field as number, not string.
           valueAsNumber: true,
         })}
       />

@@ -9,9 +9,11 @@ export function useCreateAccount() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    // Sends POST /accounts request.
     mutationFn: createAccount,
 
     onSuccess: async () => {
+      // Refresh account list so newly created account appears immediately.
       await queryClient.invalidateQueries({
         queryKey: accountKeys.all,
       });
@@ -20,6 +22,7 @@ export function useCreateAccount() {
     },
 
     onError: (error) => {
+      // Normalize API error shape for user-friendly toast output.
       const errorMessage = getApiErrorMessage(error);
       toast.error(`Failed to create account: ${errorMessage}`);
     },

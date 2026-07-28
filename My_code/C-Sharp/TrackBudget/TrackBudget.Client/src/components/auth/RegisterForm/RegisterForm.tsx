@@ -22,6 +22,7 @@ export function RegisterForm() {
         handleSubmit,
         formState: { errors },
     } = useForm<RegisterFormValues>({
+        // Registration schema validates password policy and confirmation match.
         resolver: zodResolver(registerSchema),
         defaultValues: {
             username: "",
@@ -35,6 +36,7 @@ export function RegisterForm() {
         mutationFn: registerUser,
 
         onSuccess: (response) => {
+            // Auto-login right after successful registration.
             setSession(response.token, {
                 id: response.user.id,
                 username: response.user.username,

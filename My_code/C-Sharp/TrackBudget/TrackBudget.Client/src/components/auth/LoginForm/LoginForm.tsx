@@ -23,6 +23,7 @@ export function LoginForm() {
         handleSubmit,
         formState: { errors },
     } = useForm<LoginFromValues>({
+        // Shared Zod schema keeps client-side auth validation centralized.
         resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
@@ -34,6 +35,7 @@ export function LoginForm() {
         mutationFn: login,
 
         onSuccess: (response) => {
+            // Persist token + user in auth store for protected routes and API interceptor.
             setSession(response.token,{
                 id: response.user.id,
                 username: response.user.username,
@@ -43,6 +45,7 @@ export function LoginForm() {
             toast.success("Login successful");
 
             navigate("/dashboard", {
+                // Replace avoids returning to login with browser back button.
                 replace: true,
             });
     },

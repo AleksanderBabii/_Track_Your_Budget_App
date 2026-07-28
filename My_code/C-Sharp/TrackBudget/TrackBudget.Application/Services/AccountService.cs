@@ -23,6 +23,7 @@ public class AccountService(
         CancellationToken cancellationToken = default
     )
     {
+        // All reads are user-scoped to keep accounts isolated per owner.
         var accounts = await accountRepository.GetAllByUserIdAsync(
             userId,
             cancellationToken
@@ -65,6 +66,7 @@ public class AccountService(
         CancellationToken cancellationToken = default
     )
     {
+        // Initial balance is applied at creation and owned by current user.
         var account = new Account
         {
             Name = dto.Name.Trim(),
@@ -136,6 +138,7 @@ public class AccountService(
         CancellationToken cancellationToken
     )
     {
+        // Centralized ownership guard reused by get/update/delete operations.
         var account = await accountRepository.GetByIdAsync(
             accountId,
             userId,

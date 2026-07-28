@@ -18,6 +18,7 @@ const titles: Record<string, string> = {
 export function Header() {
   const location = useLocation();
   const user = useAuthStore((state) => state.user);
+  const userInitial = (user?.username?.charAt(0) ?? "U").toUpperCase();
 
   const pageTitle = titles[location.pathname] ?? "TrackBudget";
 
@@ -27,17 +28,17 @@ export function Header() {
         <h1 className={styles.title}>{pageTitle}</h1>
 
         <span>
-          Welcome back, <strong> {user?.username}</strong>
+          Welcome back, <strong>{user?.username ?? "User"}</strong>
         </span>
       </div>
 
       <div className={styles.right}>
-        <button className={styles.notificationButton}>
+        <button className={styles.notification}>
           <FiBell size={20} />
         </button>
 
         <div className={styles.avatar}>
-          {user?.username.charAt(0).toUpperCase()}
+          {userInitial}
         </div>
       </div>
     </header>

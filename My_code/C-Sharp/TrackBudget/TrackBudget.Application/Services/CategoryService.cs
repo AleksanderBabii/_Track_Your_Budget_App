@@ -55,6 +55,7 @@ public class CategoryService(
     {
         ArgumentNullException.ThrowIfNull(createCategoryDto);
 
+        // Normalize and map external DTO values to domain types.
         var name = createCategoryDto.Name.Trim();
         var categoryType = ToCategoryType(createCategoryDto.Type);
 
@@ -67,6 +68,7 @@ public class CategoryService(
 
         if (exists)
         {
+            // Enforce unique category name per user and category type.
             throw new BusinessRuleException(
                 "A category with this name and type already exists."
             );
@@ -149,6 +151,7 @@ public class CategoryService(
 
         if (category.Transactions.Count > 0)
         {
+            // Keep referential/business integrity: used categories cannot be removed.
             throw new BusinessRuleException(
                 "A category used by transactions cannot be deleted."
             );

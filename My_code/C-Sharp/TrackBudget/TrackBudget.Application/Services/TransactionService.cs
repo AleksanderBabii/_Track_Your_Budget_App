@@ -41,11 +41,14 @@ public class TransactionService(
         CreateTransactionDto createTransactionDto,
         CancellationToken cancellationToken = default)
     {
+        // Validate foreign resources are owned by current user.
         var account = await GetOwnedAccountAsync(createTransactionDto.AccountId, userId, cancellationToken);
         var category = await GetOwnedCategoryAsync(createTransactionDto.CategoryId, userId, cancellationToken);
 
+        // Category type must match transaction direction (income/expense).
         ValidateTransactionType(category.Type, createTransactionDto.Type);
 
+        // Apply account balance change before persisting transaction entity.
         ApplyBalanceChange(account, createTransactionDto.Amount, createTransactionDto.Type, reverse: false);
 
         var transaction = new Transaction
@@ -208,6 +211,8 @@ public class TransactionService(
         decimal newAmount,
         TransactionType newType)
     {
+        // Simulate both reverse/apply operations first; throw early if any path
+        // would produce invalid balances.
         var oldBalanceAfterReverse = ComputeBalanceAfter(
             oldAccount.Balance,
             oldAmount,
