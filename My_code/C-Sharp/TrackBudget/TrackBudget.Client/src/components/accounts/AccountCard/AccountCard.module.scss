@@ -67,6 +67,15 @@
     font-size: 14px;
 }
 
+.accountCardActions {
+    display: flex;
+    gap: 8px;
+
+    &:hover {
+        color: $color-primary;
+    }
+}
+
 @media (max-width: 768px) {
     .accountCard {
         min-height: 200px;

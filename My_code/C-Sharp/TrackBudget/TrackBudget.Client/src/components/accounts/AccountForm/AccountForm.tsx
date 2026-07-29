@@ -33,16 +33,23 @@ const currencyOptions = currencyValues.map((currency) => ({
 
 interface AccountFormProps {
   onSubmit: (values: AccountFormValues) => void | Promise<void>;
+  onCancel?: () => void;
+
   isSubmitting?: boolean;
   submitLabel?: string;
+
   defaultValues?: Partial<AccountFormValues>;
+
+  isEditMode?: boolean;
 }
 
 export function AccountForm({
   onSubmit,
+  onCancel,
   isSubmitting = false,
   submitLabel = "Submit",
   defaultValues = {},
+  isEditMode = false,
 }: AccountFormProps) {
   const {
     register,
@@ -70,20 +77,22 @@ export function AccountForm({
         {...register("name")}
       />
 
-      <Input
-        label="Initial Balance"
-        type="number"
-        min={0}
-        step={0.01}
-        placeholder="Enter initial balance"
-        error={errors.initialBalance?.message}
-        disabled={isSubmitting}
-        required
-        {...register("initialBalance", {
-          // Keep numeric field as number, not string.
-          valueAsNumber: true,
-        })}
-      />
+      {!isEditMode && (
+        <Input
+          label="Initial Balance"
+          type="number"
+          min={0}
+          step={0.01}
+          placeholder="Enter initial balance"
+          error={errors.initialBalance?.message}
+          disabled={isSubmitting}
+          required
+          {...register("initialBalance", {
+            // Keep numeric field as number, not string.
+            valueAsNumber: true,
+          })}
+        />
+      )}
 
       <Select
         label="Currency"
@@ -96,6 +105,17 @@ export function AccountForm({
       />
 
       <div className={styles.actions}>
+        {onCancel && (
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onCancel}
+            disabled={isSubmitting}
+          >
+            Cancel
+          </Button>
+        )}
+
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : submitLabel}
         </Button>

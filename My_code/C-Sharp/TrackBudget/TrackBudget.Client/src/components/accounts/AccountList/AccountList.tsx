@@ -9,11 +9,12 @@ import { AccountCard } from "../AccountCard/AccountCard";
 import styles from "./AccountList.module.scss";
 
 interface AccountListProps {
+    onEdit: (account: Account) => void;
     onDelete: (account: Account) => void;
     onCreate: () => void;
 }
 
-export function AccountList({ onDelete, onCreate }: AccountListProps) {
+export function AccountList({ onDelete, onCreate, onEdit }: AccountListProps) {
     // Query handles loading/error/data lifecycle for account list.
     const {
         data: accounts = [],
@@ -78,6 +79,7 @@ export function AccountList({ onDelete, onCreate }: AccountListProps) {
                     key={account.id}
                     account={account}
                     onDelete={onDelete}
+                    onEdit={onEdit}
                 />
             ))}
         </div>
