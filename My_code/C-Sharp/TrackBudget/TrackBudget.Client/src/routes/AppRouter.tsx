@@ -4,6 +4,7 @@ import { AppLayout } from "../components/layout/AppLayout/AppLayout";
 
 import { Dashboard } from "../pages/Dashboard/Dashboard";
 import { Accounts } from "../pages/Accounts/Accounts";
+import { Categories } from "../pages/Categories/Categories";
 import { Login } from "../pages/Login/Login";
 import { Register } from "../pages/Register/Register";
 
@@ -48,7 +49,7 @@ export function AppRouter() {
 
         <Route path="/accounts" element={<Accounts />} />
 
-        <Route path="/categories" element={<PlaceholderPage title="Categories" />} />
+        <Route path="/categories" element={<Categories />} />
 
         <Route path="/transactions" element={<PlaceholderPage title="Transactions" />} />
 

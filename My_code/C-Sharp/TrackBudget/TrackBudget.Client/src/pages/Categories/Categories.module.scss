@@ -1,0 +1,37 @@
+@use "../../styles/variables" as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.title {
+  margin: 0;
+  color: $color-text;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.description {
+  margin: 8px 0 0;
+  color: $color-text-muted;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .header > button {
+    width: 100%;
+  }
+}
