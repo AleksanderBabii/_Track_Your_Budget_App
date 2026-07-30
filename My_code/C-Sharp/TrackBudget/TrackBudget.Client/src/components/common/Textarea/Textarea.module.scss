@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.required {
+  color: red;
+  margin-left: .25rem;
+}
+
+.textarea {
+  resize: vertical;
+
+  min-height: 120px;
+
+  padding: .75rem;
+
+  border-radius: 10px;
+
+  font: inherit;
+}
+
+.error {
+  border-color: #dc2626;
+}
+
+.errorMessage {
+  color: #dc2626;
+  font-size: .85rem;
+}
