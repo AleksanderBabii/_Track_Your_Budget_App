@@ -1,29 +1,48 @@
-import { Select} from "../Select/Select";
+import {
+  Controller,
+  type Control,
+  type FieldValues,
+  type FieldPath,
+} from "react-hook-form";
+
+import { Select } from "../Select/Select";
 
 import { useAccounts } from "../../../hooks/useAccounts";
 
-interface AccountSelectProps {
-  value: string;
-  onChange: (value: string) => void;
-  error?: string;
+interface AccountSelectProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  label?: string;
   disabled?: boolean;
 }
 
-export function AccountSelect({ value, onChange, error, disabled }: AccountSelectProps) {
+export function AccountSelect<T extends FieldValues>({
+  control,
+  name,
+  label = "Account",
+  disabled,
+}: AccountSelectProps<T>) {
   const { data: accounts = [], isLoading } = useAccounts();
 
   return (
-    <Select
-    label="Account"
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    options={accounts.map((account) => ({
-      value: account.id,
-      label: `${account.name} (${account.currency})`,
-    }))}
-    error={error}
-    placeholder={isLoading ? "Loading accounts..." : "Select an account"}
-    disabled={disabled || isLoading}
-  />
+    <Controller
+      control={control}
+      name={name}
+      render={({ field, fieldState }) => (
+        <Select
+          label={label}
+          value={field.value}
+          onChange={(e) => field.onChange(e.target.value)}
+          options={accounts.map((account) => ({
+            value: account.id,
+            label: `${account.name} (${account.currency})`,
+          }))}
+          placeholder={isLoading ? "Loading accounts..." : "Select an account"}
+          error={fieldState.error?.message}
+          disabled={disabled || isLoading}
+          required
+        />
+      )}
+    />
   );
 }

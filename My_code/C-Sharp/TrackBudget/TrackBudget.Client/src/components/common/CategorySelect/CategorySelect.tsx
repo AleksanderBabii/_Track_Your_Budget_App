@@ -1,24 +1,35 @@
+import {
+  Controller,
+  type Control,
+  type FieldPath,
+  type FieldValues,
+} from "react-hook-form";
+
 import { Select } from "../Select/Select";
 
 import { useCategories } from "../../../hooks/useCategories";
 
 import type { CategoryType } from "../../../types/category";
 
-interface CategorySelectProps {
-  value?: string;
-  onChange: (value: string) => void;
+interface CategorySelectProps<T extends FieldValues> {
+  control: Control<T>;
+
+  name: FieldPath<T>;
+
   type?: CategoryType;
-  error?: string;
+
+  label?: string;
+
   disabled?: boolean;
 }
 
-export function CategorySelect({
-  value,
+export function CategorySelect<T extends FieldValues>({
+  control,
+  name,
   type,
-  onChange,
-  error,
+  label = "Category",
   disabled,
-}: CategorySelectProps) {
+}: CategorySelectProps<T>) {
   const { data: categories = [], isLoading } = useCategories();
 
   const filteredCategories = type
@@ -26,18 +37,24 @@ export function CategorySelect({
     : categories;
 
   return (
-    <Select
-      label="Category"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      options={filteredCategories.map((category) => ({
-        value: category.id,
-        label: category.name,
-      }))}
-      placeholder="Select a category"
-      error={error}
-      disabled={disabled || isLoading}
-      required
+    <Controller
+      control={control}
+      name={name}
+      render={({ field, fieldState }) => (
+        <Select
+          label={label}
+          value={field.value}
+          onChange={(e) => field.onChange(e.target.value)}
+          options={filteredCategories.map((category) => ({
+            value: category.id,
+            label: category.name,
+          }))}
+          placeholder="Choose category"
+          error={fieldState.error?.message}
+          disabled={disabled || isLoading}
+          required
+        />
+      )}
     />
   );
 }
