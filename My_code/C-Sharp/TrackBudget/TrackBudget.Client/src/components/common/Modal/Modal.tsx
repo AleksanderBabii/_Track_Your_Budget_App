@@ -1,5 +1,5 @@
 import type { MouseEvent, ReactNode } from "react";
-import { useEffect, useId } from "react";
+import { useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
 import { FiX } from "react-icons/fi";
 
@@ -15,6 +15,8 @@ interface ModalProps {
   onClose: () => void;
 }
 
+const EXIT_ANIMATION_DURATION_MS = 180;
+
 export function Modal({
   isOpen,
   title,
@@ -23,9 +25,52 @@ export function Modal({
   onClose,
 }: ModalProps) {
   const titleId = useId();
+  const [isMounted, setIsMounted] = useState(isOpen);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
-    if (!isOpen) {
+    let rafId: number | null = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    if (isOpen) {
+      rafId = requestAnimationFrame(() => {
+        setIsMounted(true);
+        setIsClosing(false);
+      });
+    } else if (isMounted) {
+      rafId = requestAnimationFrame(() => {
+        setIsClosing(true);
+      });
+
+      timeoutId = setTimeout(() => {
+        setIsMounted(false);
+        setIsClosing(false);
+      }, EXIT_ANIMATION_DURATION_MS);
+    }
+
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (timeoutId !== null) clearTimeout(timeoutId);
+    };
+  }, [isOpen, isMounted]);
+
+  useEffect(() => {
+    if (!isClosing) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setIsMounted(false);
+      setIsClosing(false);
+    }, EXIT_ANIMATION_DURATION_MS);
+
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  }, [isClosing]);
+
+  useEffect(() => {
+    if (!isMounted) {
       return;
     }
 
@@ -44,28 +89,34 @@ export function Modal({
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = originalOverflow;
     };
-  }, [isOpen, onClose]);
+  }, [isMounted, onClose]);
 
-  if (!isOpen) {
+  if (!isMounted) {
     return null;
   }
 
-  const handleBackdropClick = (
-    event: MouseEvent<HTMLDivElement>,
-  ) => {
+  const handleBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       onClose();
     }
   };
 
+  const backdropClassName = isClosing
+    ? `${styles.backdrop} ${styles.backdropClosing}`
+    : `${styles.backdrop} ${styles.backdropOpening}`;
+
+  const modalClassName = isClosing
+    ? `${styles.modal} ${styles.modalClosing}`
+    : `${styles.modal} ${styles.modalOpening}`;
+
   return createPortal(
     <div
-      className={styles.backdrop}
+      className={backdropClassName}
       onClick={handleBackdropClick}
       role="presentation"
     >
       <section
-        className={styles.modal}
+        className={modalClassName}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}

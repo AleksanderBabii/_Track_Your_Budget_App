@@ -16,7 +16,7 @@ export const transactionSchema = z.object({
     accountId: z
         .string()
         .uuid("Please select an account."),
-
+        
     categoryId: z
         .string()
         .uuid("Please select a category."),

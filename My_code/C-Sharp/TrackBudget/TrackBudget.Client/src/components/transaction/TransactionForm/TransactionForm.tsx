@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Input } from "../../common/Input/Input";
@@ -7,6 +7,7 @@ import { Button } from "../../common/Button/Button";
 
 import { AccountSelect } from "../../common/AccountSelect";
 import { CategorySelect } from "../../common/CategorySelect";
+import { useAccounts } from "../../../hooks/accountsHooks/useAccounts";
 
 import {
     transactionSchema,
@@ -54,6 +55,19 @@ export function TransactionForm({
         },
     });
 
+    const selectedAccountId = useWatch({
+        control,
+        name: "accountId",
+    });
+
+    const { data: accounts = [] } = useAccounts();
+    const selectedAccount = accounts.find(
+        (account) => account.id === selectedAccountId,
+    );
+    const amountHint = selectedAccount
+        ? `Amount will be recorded in ${selectedAccount.currency}.`
+        : "Select an account to apply its currency.";
+
     return (
         <form
             className={styles.form}
@@ -76,6 +90,7 @@ export function TransactionForm({
                 placeholder="0.00"
                 step="0.01"
                 min="0"
+                hint={amountHint}
                 error={errors.amount?.message}
                 disabled={isSubmitting}
                 required

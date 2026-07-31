@@ -1,4 +1,4 @@
-import { useCreateCategory } from "../../../hooks/useCreateCategory";
+import { useCreateCategory } from "../../../hooks/categoryHooks/useCreateCategory";
 import type { CategoryFormValues } from "../../../utils/categorySchema";
 import { Modal } from "../../common/Modal/Modal";
 import { CategoryForm } from "../CategoryForm/CategoryForm";

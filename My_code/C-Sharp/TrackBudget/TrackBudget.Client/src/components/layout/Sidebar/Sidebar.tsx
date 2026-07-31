@@ -13,12 +13,18 @@ import styles from "./Sidebar.module.scss";
 
 interface SidebarProps {
   isCollapsed: boolean;
+  isCompactViewport?: boolean;
   onToggle: () => void;
 }
 
-export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
+export function Sidebar({
+  isCollapsed,
+  isCompactViewport = false,
+  onToggle,
+}: SidebarProps) {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
+  const isVisualCollapsed = isCollapsed && !isCompactViewport;
   // Fallback keeps avatar stable before profile data is loaded.
   const userInitial = (user?.username?.charAt(0) ?? "U").toUpperCase();
 
@@ -30,7 +36,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
 
   return (
     <aside
-      className={clsx(styles.sidebar, isCollapsed && styles.sidebarCollapsed)}
+      className={clsx(styles.sidebar, isVisualCollapsed && styles.sidebarCollapsed)}
       aria-label="Main navigation"
     >
       <div>
@@ -39,14 +45,14 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             type="button"
             className={styles.collapseButton}
             onClick={onToggle}
-            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-            aria-expanded={!isCollapsed}
+            aria-label={isVisualCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-expanded={!isVisualCollapsed}
           >
-            {isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
+            {isVisualCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
           </button>
         </div>
 
-        <div className={clsx(styles.logo, isCollapsed && styles.logoCollapsed)}>
+        <div className={clsx(styles.logo, isVisualCollapsed && styles.logoCollapsed)}>
           <div className={styles.logoImage}> TB </div>
 
           <div className={styles.logoText}>
@@ -62,14 +68,14 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             <NavigationItem
               key={item.path}
               item={item}
-              isCollapsed={isCollapsed}
+              isCollapsed={isVisualCollapsed}
             />
           ))}
         </nav>
       </div>
 
       <div className={styles.footer}>
-        <div className={clsx(styles.user, isCollapsed && styles.userCollapsed)}>
+        <div className={clsx(styles.user, isVisualCollapsed && styles.userCollapsed)}>
           <div className={styles.avatar}>
             {userInitial}
           </div>
@@ -80,7 +86,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
           </div>
         </div>
         <Button
-          className={clsx(styles.logoutButton, isCollapsed && styles.logoutButtonCollapsed)}
+          className={clsx(styles.logoutButton, isVisualCollapsed && styles.logoutButtonCollapsed)}
           onClick={handleLogout}
           variant="ghost"
           aria-label="Logout"

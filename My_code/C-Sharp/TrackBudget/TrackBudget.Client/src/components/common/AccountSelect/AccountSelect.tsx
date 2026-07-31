@@ -7,7 +7,7 @@ import {
 
 import { Select } from "../Select/Select";
 
-import { useAccounts } from "../../../hooks/useAccounts";
+import { useAccounts } from "../../../hooks/accountsHooks/useAccounts";
 
 interface AccountSelectProps<T extends FieldValues> {
   control: Control<T>;

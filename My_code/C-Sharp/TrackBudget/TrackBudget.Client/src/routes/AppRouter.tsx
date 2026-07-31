@@ -7,6 +7,7 @@ import { Accounts } from "../pages/Accounts/Accounts";
 import { Categories } from "../pages/Categories/Categories";
 import { Login } from "../pages/Login/Login";
 import { Register } from "../pages/Register/Register";
+import { TransactionPage } from "../pages/TransactionPage/TransactionPage";
 
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
@@ -51,7 +52,7 @@ export function AppRouter() {
 
         <Route path="/categories" element={<Categories />} />
 
-        <Route path="/transactions" element={<PlaceholderPage title="Transactions" />} />
+        <Route path="/transactions" element={<TransactionPage/>} />
 
         <Route path="/transfers" element={<PlaceholderPage title="Transfers" />} />
 

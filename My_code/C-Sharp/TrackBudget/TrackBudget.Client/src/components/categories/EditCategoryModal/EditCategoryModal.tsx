@@ -1,4 +1,4 @@
-import { useUpdateCategory } from "../../../hooks/useUpdateCategory";
+import { useUpdateCategory } from "../../../hooks/categoryHooks/useUpdateCategory";
 import type { Category } from "../../../types/category";
 import type { CategoryFormValues } from "../../../utils/categorySchema";
 import { Modal } from "../../common/Modal/Modal";

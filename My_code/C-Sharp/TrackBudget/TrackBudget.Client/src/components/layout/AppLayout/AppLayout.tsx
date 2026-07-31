@@ -34,6 +34,13 @@ export const AppLayout = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
         getInitialSidebarCollapsedState,
     );
+    const [isCompactViewport, setIsCompactViewport] = useState(() => {
+        if (typeof window === "undefined") {
+            return false;
+        }
+
+        return window.matchMedia(TABLET_BREAKPOINT_QUERY).matches;
+    });
 
     useEffect(() => {
         if (typeof window === "undefined") {
@@ -44,13 +51,12 @@ export const AppLayout = () => {
         const hasStoredPreference =
             window.localStorage.getItem(SIDEBAR_COLLAPSED_KEY) !== null;
 
-        if (hasStoredPreference) {
-            // Do not auto-toggle if user explicitly chose a state.
-            return;
-        }
-
         const handleViewportChange = (event: MediaQueryListEvent) => {
-            setIsSidebarCollapsed(event.matches);
+            setIsCompactViewport(event.matches);
+
+            if (!hasStoredPreference) {
+                setIsSidebarCollapsed(event.matches);
+            }
         };
 
         mediaQueryList.addEventListener("change", handleViewportChange);
@@ -76,6 +82,7 @@ export const AppLayout = () => {
         <div className={styles.appLayout}>
             <Sidebar
                 isCollapsed={isSidebarCollapsed}
+                isCompactViewport={isCompactViewport}
                 onToggle={handleToggleSidebar}
             />
 

@@ -4,9 +4,9 @@ import {
 } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-import { deleteAccount } from "../api/accountApi";
+import { deleteAccount } from "../../api/accountApi";
 import { accountKeys } from "./useAccounts";
-import { getApiErrorMessage } from "../utils/getApiErrorMessage";
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage";
 
 export function useDeleteAccount() {
     const queryClient = useQueryClient();

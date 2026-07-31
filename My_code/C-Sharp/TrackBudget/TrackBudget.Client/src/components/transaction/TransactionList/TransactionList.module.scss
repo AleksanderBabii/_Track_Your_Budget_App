@@ -1,0 +1,29 @@
+@use "../../../styles/variables" as *;
+
+.transactionList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.noTransactions {
+  text-align: center;
+  color: $color-text-muted;
+  font-size: $font-size-medium;
+  line-height: 1.5;
+}
+
+.dateHeader {
+  font-size: $font-size-medium;
+  font-weight: 600;
+  color: $color-text-secondary;
+  margin-bottom: 0.5rem;
+}
+
+.groupedTransactions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+

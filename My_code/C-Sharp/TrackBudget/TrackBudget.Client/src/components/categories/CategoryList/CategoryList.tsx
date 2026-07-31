@@ -1,6 +1,6 @@
 import { FiFolder } from "react-icons/fi";
 
-import { useCategories } from "../../../hooks/useCategories";
+import { useCategories } from "../../../hooks/categoryHooks/useCategories";
 import type { Category } from "../../../types/category";
 import { Button } from "../../common/Button/Button";
 import { Spinner } from "../../common/Spinner/Spinner";

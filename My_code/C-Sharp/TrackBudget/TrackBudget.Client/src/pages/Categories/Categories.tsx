@@ -7,7 +7,7 @@ import { CreateCategoryModal } from "../../components/categories/CreateCategoryM
 import { EditCategoryModal } from "../../components/categories/EditCategoryModal/EditCategoryModal";
 import { CategoryList } from "../../components/categories/CategoryList/CategoryList";
 import { PageContainer } from "../../components/layout/PageContainer/PageContainer";
-import { useDeleteCategory } from "../../hooks/useDeleteCategory";
+import { useDeleteCategory } from "../../hooks/categoryHooks/useDeleteCategory";
 import type { Category } from "../../types/category";
 
 import styles from "./Categories.module.scss";

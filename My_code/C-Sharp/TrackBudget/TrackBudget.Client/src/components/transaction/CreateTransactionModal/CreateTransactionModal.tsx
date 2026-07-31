@@ -1,9 +1,10 @@
 import { Modal } from "../../common/Modal/Modal";
+import toast from "react-hot-toast";
 
 import { TransactionForm } from "../TransactionForm/TransactionForm";
 
 import { useCreateTransaction } from "../../../hooks/transactionHooks/useCreateTransactions";
-import { useCategories } from "../../../hooks/useCategories";
+import { useCategories } from "../../../hooks/categoryHooks/useCategories";
 
 import type { TransactionFormValues } from "../../../utils/transactionSchema";
 
@@ -26,6 +27,7 @@ export function CreateTransactionModal({
     const category = categories.find((c) => c.id === values.categoryId);
 
     if (!category) {
+      toast.error("Please select a valid category before saving.");
       return;
     }
 

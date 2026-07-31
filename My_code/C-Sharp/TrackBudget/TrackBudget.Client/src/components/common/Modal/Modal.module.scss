@@ -13,6 +13,15 @@
   backdrop-filter: blur(3px);
 }
 
+.backdropOpening {
+  animation: backdropFadeIn 180ms ease-out both;
+}
+
+.backdropClosing {
+  animation: backdropFadeOut 180ms ease-in both;
+  pointer-events: none;
+}
+
 .modal {
   width: min(100%, 560px);
   max-height: calc(100vh - 40px);
@@ -21,8 +30,14 @@
   border-radius: $border-radius-lg;
   background: $color-surface;
   box-shadow: 0 24px 64px rgb(16 24 40 / 28%);
+}
 
-  animation: modalEnter 180ms ease-out;
+.modalOpening {
+  animation: modalEnter 180ms ease-out both;
+}
+
+.modalClosing {
+  animation: modalExit 180ms ease-in both;
 }
 
 .header {
@@ -62,5 +77,46 @@
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalExit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdropOpening,
+  .backdropClosing,
+  .modalOpening,
+  .modalClosing {
+    animation-duration: 1ms;
   }
 }

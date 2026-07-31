@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getAccounts } from "../api/accountApi";
+import { getAccounts } from "../../api/accountApi";
 
 export const accountKeys = {
   // Shared query key used for listing and cache invalidation.

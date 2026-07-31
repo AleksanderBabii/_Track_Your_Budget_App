@@ -1,6 +1,6 @@
 import { FiCreditCard } from "react-icons/fi";
 
-import { useAccounts } from "../../../hooks/useAccounts";
+import { useAccounts } from "../../../hooks/accountsHooks/useAccounts";
 import type { Account } from "../../../types/account";
 import { Button } from "../../common/Button/Button";
 import { Spinner } from "../../common/Spinner/Spinner";
