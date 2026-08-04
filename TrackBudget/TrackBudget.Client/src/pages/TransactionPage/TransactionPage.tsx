@@ -1,6 +1,9 @@
 import { useState } from "react";
 
 import { Button } from "../../components/common/Button/Button";
+import { EmptyState } from "../../components/common/EmptyState/EmptyState";
+import { ErrorState } from "../../components/common/ErrorState/ErrorState";
+import { LoadingState } from "../../components/common/LoadingState/LoadingState";
 
 import { CreateTransactionModal } from "../../components/transaction/CreateTransactionModal/CreateTransactionModal";
 import { EditTransactionModal } from "../../components/transaction/EditTransactionModal/EditTransactionModal";
@@ -48,11 +51,20 @@ export function TransactionPage() {
   };
 
   if (isLoading) {
-    return <div className={styles.state}>Loading...</div>;
+    return <LoadingState message=" Loading transactions..." />;
   }
 
   if (error) {
-    return <div className={styles.state}>Error: {error.message}</div>;
+    return <ErrorState message={error.message} onRetry={() => refetch()} />;
+  }
+
+  if (transactions.length === 0) {
+    return <EmptyState 
+    title="No Transactions" 
+    description="Create your first transaction to start tracking your finances."
+    actionLabel="+ New Transaction"
+    onActionClick={() => setIsCreateOpen(true)}
+  />;
   }
 
   return (

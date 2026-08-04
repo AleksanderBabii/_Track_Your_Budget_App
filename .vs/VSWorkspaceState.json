@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\TrackBudget",
+    "\\TrackBudget\\TrackBudget.Client",
+    "\\TrackBudget\\TrackBudget.Client\\src",
+    "\\TrackBudget\\TrackBudget.Client\\src\\components",
+    "\\TrackBudget\\TrackBudget.Client\\src\\components\\common",
+    "\\TrackBudget\\TrackBudget.Client\\src\\components\\common\\EmptyState",
+    "\\TrackBudget\\TrackBudget.Client\\src\\components\\common\\ErrorState",
+    "\\TrackBudget\\TrackBudget.Client\\src\\pages",
+    "\\TrackBudget\\TrackBudget.Client\\src\\pages\\TransactionPage"
+  ],
+  "SelectedNode": "\\TrackBudget\\TrackBudget.Client\\src\\pages\\TransactionPage\\TransactionPage.module.scss",
+  "PreviewInSolutionExplorer": false
+}
