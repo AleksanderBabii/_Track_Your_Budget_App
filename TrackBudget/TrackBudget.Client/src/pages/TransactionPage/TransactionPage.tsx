@@ -8,9 +8,9 @@ import { LoadingState } from "../../components/common/LoadingState/LoadingState"
 import { CreateTransactionModal } from "../../components/transaction/CreateTransactionModal/CreateTransactionModal";
 import { EditTransactionModal } from "../../components/transaction/EditTransactionModal/EditTransactionModal";
 import { TransactionList } from "../../components/transaction/TransactionList/TransactionList";
+import { DeleteTransactionDialog } from "../../components/transaction/DeleteTransactionDialog/DeleteTransactionDialog";
 
 import { useAccounts } from "../../hooks/accountsHooks/useAccounts";
-import { useDeleteTransaction } from "../../hooks/transactionHooks/useDeleteTransactions";
 import { useTransactions } from "../../hooks/transactionHooks/useTransactions";
 
 import type { Currency } from "../../types/account";
@@ -23,10 +23,10 @@ export function TransactionPage() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [transactionToEdit, setTransactionToEdit] =
     useState<Transaction | null>(null);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const { data: transactions = [], isLoading, error } = useTransactions();
   const { data: accounts = [] } = useAccounts();
-  const deleteTransactionMutation = useDeleteTransaction();
 
   const accountCurrencyById = accounts.reduce(
     (map, account) => {
@@ -47,15 +47,26 @@ export function TransactionPage() {
   };
 
   const handleDelete = (transactionId: string) => {
-    deleteTransactionMutation.mutate(transactionId);
+    const transaction = transactions.find((item) => item.id === transactionId);
+
+    if (!transaction) {
+      return;
+    }
+
+    setTransactionToEdit(transaction);
+    setIsDeleteOpen(true);
   };
 
   if (isLoading) {
     return <LoadingState message=" Loading transactions..." />;
   }
-
   if (error) {
-    return <ErrorState message={error.message} onRetry={() => refetch()} />;
+    return (
+      <ErrorState
+        title="Failed to load transactions."
+        description="Please try again in a moment."
+      />
+    );
   }
 
   if (transactions.length === 0) {
@@ -96,7 +107,13 @@ export function TransactionPage() {
         onClose={handleCloseEditModal}
       />
 
-      {/* Delete dialog will go here */}
+      {isDeleteOpen && (
+        <DeleteTransactionDialog
+          transaction={transactionToEdit}
+          isOpen={isDeleteOpen}
+          onClose={() => setIsDeleteOpen(false)}
+        />
+      )}
     </div>
   );
 }

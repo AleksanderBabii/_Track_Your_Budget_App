@@ -1,7 +1,7 @@
 import styles from "./LoadingState.module.scss";
 
 interface LoadingStateProps {
-    message ?: string;W
+    message ?: string;
 }
 
 export function LoadingState({ message }: LoadingStateProps) {

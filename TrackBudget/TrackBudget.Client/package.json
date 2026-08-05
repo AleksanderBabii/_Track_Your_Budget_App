@@ -19,7 +19,8 @@
     "react-hook-form": "^7.82.0",
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.7.0",
-    "react-router-dom": "^7.18.1",
+    "react-router": "^8.3.0",
+    "react-router-dom": "^7.18.2",
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },
@@ -37,5 +38,13 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.62.0",
     "vite": "^8.1.1"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true
+  },
+  "overrides": {
+    "react-router-dom": {
+      "react-router": "^8.3.0"
+    }
   }
 }
