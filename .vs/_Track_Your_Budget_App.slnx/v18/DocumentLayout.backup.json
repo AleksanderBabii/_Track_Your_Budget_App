@@ -14,16 +14,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -32,10 +24,14 @@
               "RelativeDocumentMoniker": "TrackBudget\\TrackBudget.Client\\src\\pages\\TransactionPage\\TransactionPage.tsx",
               "ToolTip": "D:\\Job\\GitHub\\_Track_Your_Budget_App\\TrackBudget\\TrackBudget.Client\\src\\pages\\TransactionPage\\TransactionPage.tsx",
               "RelativeToolTip": "TrackBudget\\TrackBudget.Client\\src\\pages\\TransactionPage\\TransactionPage.tsx",
-              "ViewState": "AgIAACkAAAAAAAAAAAAQwDgAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-08-04T17:24:41.476Z",
+              "WhenOpened": "2026-08-04T19:10:30.487Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             }
           ]
         }

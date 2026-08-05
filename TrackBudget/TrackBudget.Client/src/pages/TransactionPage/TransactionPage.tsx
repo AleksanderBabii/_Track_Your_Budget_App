@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useState } from npm install
+npm install react react-dom
+npm install --save-dev @types/react @types/react-dom
+yarn install
+pnpm install;
 
 import { Button } from "../../components/common/Button/Button";
 import { EmptyState } from "../../components/common/EmptyState/EmptyState";

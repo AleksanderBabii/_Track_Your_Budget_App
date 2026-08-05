@@ -11,6 +11,6 @@
     "\\TrackBudget\\TrackBudget.Client\\src\\pages",
     "\\TrackBudget\\TrackBudget.Client\\src\\pages\\TransactionPage"
   ],
-  "SelectedNode": "\\TrackBudget\\TrackBudget.Client\\src\\pages\\TransactionPage\\TransactionPage.module.scss",
+  "SelectedNode": "\\TrackBudget\\TrackBudget.Client\\src\\pages\\TransactionPage\\TransactionPage.tsx",
   "PreviewInSolutionExplorer": false
 }
