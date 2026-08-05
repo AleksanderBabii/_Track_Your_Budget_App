@@ -1,6 +1,5 @@
-import toast from "react-hot-toast";
-
 import { Modal } from "../../common/Modal/Modal";
+import { notify } from "../../../utils/toast";
 import { TransactionForm } from "../TransactionForm/TransactionForm";
 
 import { useCategories } from "../../../hooks/categoryHooks/useCategories";
@@ -35,7 +34,7 @@ export function EditTransactionModal({
     const category = categories.find((item) => item.id === values.categoryId);
 
     if (!category) {
-      toast.error("Please select a valid category before saving.");
+      notify.error("Please select a valid category before saving.");
       return;
     }
 

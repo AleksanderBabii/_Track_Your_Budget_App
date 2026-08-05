@@ -2,7 +2,8 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+
+import { notify } from "../../../utils/toast";
 
 import {login } from "../../../api/authApi";
 import { Button } from "../../common/Button/Button";
@@ -42,7 +43,7 @@ export function LoginForm() {
                 email: response.user.email,
             });
 
-            toast.success("Login successful");
+            notify.success("Login successful");
 
             navigate("/dashboard", {
                 // Replace avoids returning to login with browser back button.
@@ -51,8 +52,7 @@ export function LoginForm() {
     },
 
         onError: (error) => {
-            toast.error(getApiErrorMessage(error, "Login failed"),
-        );
+            notify.error(getApiErrorMessage(error, "Login failed"));
     },
     });
 

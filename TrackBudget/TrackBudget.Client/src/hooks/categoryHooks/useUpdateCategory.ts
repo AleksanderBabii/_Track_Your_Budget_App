@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 import { updateCategory } from "../../api/categoryApi";
+import { notify } from "../../utils/toast";
 import { categoryKeys } from "./useCategories";
 import { getApiErrorMessage } from "../../utils/getApiErrorMessage";
 
@@ -13,11 +13,11 @@ export function useUpdateCategory() {
       updateCategory(categoryId, request),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: categoryKeys.all });
-      toast.success("Category updated successfully");
+      notify.success("Category updated successfully");
     },
     onError: (error) => {
       const errorMessage = getApiErrorMessage(error);
-      toast.error(`Failed to update category: ${errorMessage}`);
+      notify.error(`Failed to update category: ${errorMessage}`);
     },
   });
 }
