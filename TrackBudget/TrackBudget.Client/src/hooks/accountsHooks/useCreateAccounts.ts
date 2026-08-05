@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 import { createAccount } from "../../api/accountApi";
+import { notify } from "../../utils/toast";
 import { accountKeys } from "./useAccounts";
 import { getApiErrorMessage } from "../../utils/getApiErrorMessage";
 
@@ -18,13 +18,13 @@ export function useCreateAccount() {
         queryKey: accountKeys.all,
       });
 
-      toast.success("Account created successfully");
+      notify.success("Account created successfully");
     },
 
     onError: (error) => {
       // Normalize API error shape for user-friendly toast output.
       const errorMessage = getApiErrorMessage(error);
-      toast.error(`Failed to create account: ${errorMessage}`);
+      notify.error(`Failed to create account: ${errorMessage}`);
     },
   });
 }

@@ -2,7 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+
+import { notify } from "../../../utils/toast";
 
 import { register as registerUser } from "../../../api/authApi";
 import { Button } from "../../common/Button/Button";
@@ -43,7 +44,7 @@ export function RegisterForm() {
                 email: response.user.email,
             });
 
-            toast.success("Registration successful");
+            notify.success("Registration successful");
 
             navigate("/dashboard", {
                 replace: true,
@@ -51,7 +52,7 @@ export function RegisterForm() {
         },
 
         onError: (error) => {
-            toast.error(getApiErrorMessage(error, "Registration failed"));
+            notify.error(getApiErrorMessage(error, "Registration failed"));
         },
     });
 

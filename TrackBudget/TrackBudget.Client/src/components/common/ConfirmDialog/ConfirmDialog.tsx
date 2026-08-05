@@ -11,6 +11,8 @@ interface ConfirmDialogProps {
   confirmText?: string;
   cancelText?: string;
 
+  variant?: "primary" | "secondary" | "danger";
+
   isLoading?: boolean;
 
   onConfirm: () => void;
