@@ -1,3 +1,4 @@
+import type { ChangeEvent } from "react";
 import {
   Controller,
   type Control,
@@ -11,50 +12,81 @@ import { useCategories } from "../../../hooks/categoryHooks/useCategories";
 
 import type { CategoryType } from "../../../types/category";
 
-interface CategorySelectProps<T extends FieldValues> {
-  control: Control<T>;
-
-  name: FieldPath<T>;
-
+type SharedProps = {
   type?: CategoryType;
-
   label?: string;
-
   disabled?: boolean;
-}
+};
 
-export function CategorySelect<T extends FieldValues>({
-  control,
-  name,
-  type,
-  label = "Category",
-  disabled,
-}: CategorySelectProps<T>) {
+type ControlledProps = SharedProps & {
+  value: string | null | undefined;
+  onChange: (value: string | null) => void;
+  control?: never;
+  name?: never;
+};
+
+type FormProps<T extends FieldValues> = SharedProps & {
+  control: Control<T>;
+  name: FieldPath<T>;
+  value?: never;
+  onChange?: never;
+};
+
+type CategorySelectProps<T extends FieldValues> = ControlledProps | FormProps<T>;
+
+export function CategorySelect<T extends FieldValues>(props: CategorySelectProps<T>) {
   const { data: categories = [], isLoading } = useCategories();
 
-  const filteredCategories = type
-    ? categories.filter((category) => category.type === type)
+  const filteredCategories = "type" in props && props.type
+    ? categories.filter((category) => category.type === props.type)
     : categories;
 
+  if ("control" in props && "name" in props) {
+    const { control, name, label = "Category", disabled } = props;
+    const fieldName = name as FieldPath<T>;
+
+    return (
+      <Controller
+        control={control}
+        name={fieldName}
+        render={({ field, fieldState }) => (
+          <Select
+            label={label}
+            value={field.value ?? ""}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              field.onChange(e.target.value || null)
+            }
+            options={filteredCategories.map((category) => ({
+              value: category.id,
+              label: category.name,
+            }))}
+            placeholder="Choose category"
+            error={fieldState.error?.message}
+            disabled={disabled || isLoading}
+            required
+          />
+        )}
+      />
+    );
+  }
+
+  const { label = "Category", disabled, value, onChange } = props;
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    onChange(e.target.value || null);
+  };
+
   return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field, fieldState }) => (
-        <Select
-          label={label}
-          value={field.value}
-          onChange={(e) => field.onChange(e.target.value)}
-          options={filteredCategories.map((category) => ({
-            value: category.id,
-            label: category.name,
-          }))}
-          placeholder="Choose category"
-          error={fieldState.error?.message}
-          disabled={disabled || isLoading}
-          required
-        />
-      )}
+    <Select
+      label={label}
+      value={value ?? ""}
+      onChange={handleChange}
+      options={filteredCategories.map((category) => ({
+        value: category.id,
+        label: category.name,
+      }))}
+      placeholder="Choose category"
+      disabled={disabled || isLoading}
+      required
     />
   );
 }

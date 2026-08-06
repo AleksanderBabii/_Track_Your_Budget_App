@@ -157,7 +157,22 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate();
+
+    try
+    {
+        if (dbContext.Database.CanConnect())
+        {
+            dbContext.Database.Migrate();
+        }
+        else
+        {
+            app.Logger.LogWarning("Database is not reachable at startup; migrations were skipped.");
+        }
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogWarning(ex, "Database migrations could not be applied at startup. The API will continue running without the database.");
+    }
 }
 
 app.UseMiddleware<ExceptionMiddleware>();

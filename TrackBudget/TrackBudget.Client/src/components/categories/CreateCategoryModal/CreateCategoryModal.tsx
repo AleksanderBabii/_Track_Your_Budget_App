@@ -1,4 +1,5 @@
 import { useCreateCategory } from "../../../hooks/categoryHooks/useCreateCategory";
+import { useCategoryFormSubmission } from "../../../hooks/categoryHooks/useCategoryFormSubmission";
 import type { CategoryFormValues } from "../../../utils/categorySchema";
 import { Modal } from "../../common/Modal/Modal";
 import { CategoryForm } from "../CategoryForm/CategoryForm";
@@ -12,13 +13,10 @@ interface CreateCategoryModalProps {
 
 export function CreateCategoryModal({ isOpen, onClose }: CreateCategoryModalProps) {
   const createCategoryMutation = useCreateCategory();
+  const buildCategoryPayload = useCategoryFormSubmission();
 
   async function handleSubmit(values: CategoryFormValues): Promise<void> {
-    await createCategoryMutation.mutateAsync({
-      name: values.name,
-      type: values.type,
-    });
-
+    await createCategoryMutation.mutateAsync(buildCategoryPayload(values));
     onClose();
   }
 

@@ -10,7 +10,7 @@ import { ConfirmDialog } from "../../components/common/ConfirmDialog/ConfirmDial
 import { EditAccountModal } from "../../components/accounts/EditAccountModal/EditAccountModal";
 
 // Hooks
-import { useDeleteAccount } from "../../hooks/accountsHooks/useDeleteAccount";
+import { useDeleteAccount } from "../../hooks/accountHooks/useDeleteAccount";
 
 // Types
 import type { Account } from "../../types/account";

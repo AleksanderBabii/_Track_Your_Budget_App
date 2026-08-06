@@ -1,9 +1,8 @@
 import { Modal } from "../../common/Modal/Modal";
-import { notify } from "../../../utils/toast";
 import { TransactionForm } from "../TransactionForm/TransactionForm";
 
-import { useCategories } from "../../../hooks/categoryHooks/useCategories";
 import { useUpdateTransaction } from "../../../hooks/transactionHooks/useUpdateTransactions";
+import { useTransactionFormSubmission } from "../../../hooks/transactionHooks/useTransactionFormSubmission";
 
 import type { Transaction } from "../../../types/transaction";
 import type { TransactionFormValues } from "../../../utils/transactionSchema";
@@ -22,7 +21,7 @@ export function EditTransactionModal({
   onClose,
 }: EditTransactionModalProps) {
   const updateTransactionMutation = useUpdateTransaction();
-  const { data: categories = [] } = useCategories();
+  const { submitTransaction } = useTransactionFormSubmission();
 
   if (!transaction) {
     return null;
@@ -31,24 +30,15 @@ export function EditTransactionModal({
   const currentTransaction = transaction;
 
   async function handleSubmit(values: TransactionFormValues) {
-    const category = categories.find((item) => item.id === values.categoryId);
+    const payload = await submitTransaction(values);
 
-    if (!category) {
-      notify.error("Please select a valid category before saving.");
+    if (!payload) {
       return;
     }
 
     await updateTransactionMutation.mutateAsync({
       transactionId: currentTransaction.id,
-      request: {
-        title: values.title,
-        amount: values.amount,
-        accountId: values.accountId,
-        categoryId: values.categoryId,
-        date: values.date.toISOString(),
-        notes: values.notes,
-        type: category.type,
-      },
+      request: payload,
     });
 
     onClose();

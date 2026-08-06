@@ -1,4 +1,5 @@
 import { useUpdateCategory } from "../../../hooks/categoryHooks/useUpdateCategory";
+import { useCategoryFormSubmission } from "../../../hooks/categoryHooks/useCategoryFormSubmission";
 import type { Category } from "../../../types/category";
 import type { CategoryFormValues } from "../../../utils/categorySchema";
 import { Modal } from "../../common/Modal/Modal";
@@ -14,6 +15,7 @@ interface EditCategoryModalProps {
 
 export function EditCategoryModal({ category, isOpen, onClose }: EditCategoryModalProps) {
   const updateCategoryMutation = useUpdateCategory();
+  const buildCategoryPayload = useCategoryFormSubmission();
 
   if (!category) {
     return null;
@@ -24,10 +26,7 @@ export function EditCategoryModal({ category, isOpen, onClose }: EditCategoryMod
   async function handleSubmit(values: CategoryFormValues) {
     await updateCategoryMutation.mutateAsync({
       categoryId: currentCategory.id,
-      request: {
-        name: values.name,
-        type: values.type,
-      },
+      request: buildCategoryPayload(values),
     });
 
     onClose();

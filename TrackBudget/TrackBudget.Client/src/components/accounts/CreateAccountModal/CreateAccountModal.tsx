@@ -1,4 +1,4 @@
-import { useCreateAccount } from "../../../hooks/accountsHooks/useCreateAccounts";
+import { useCreateAccount } from "../../../hooks/accountHooks/useCreateAccount";
 import type { AccountFormValues } from "../../../utils/accountSchema";
 import { Button } from "../../common/Button/Button";
 import { Modal } from "../../common/Modal/Modal";

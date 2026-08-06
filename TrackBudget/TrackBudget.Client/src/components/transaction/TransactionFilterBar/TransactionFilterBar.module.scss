@@ -2,7 +2,7 @@
 
 .filterBar {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr repeat(4, 1fr);
   gap: 1rem;
 
   align-items: end;
