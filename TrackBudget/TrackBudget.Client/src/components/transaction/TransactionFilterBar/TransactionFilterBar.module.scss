@@ -1,0 +1,9 @@
+@use "../../../styles/variables" as *;
+
+.filterBar {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+
+  align-items: end;
+}

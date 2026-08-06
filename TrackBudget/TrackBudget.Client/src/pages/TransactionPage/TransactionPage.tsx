@@ -10,6 +10,7 @@ import { CreateTransactionModal } from "../../components/transaction/CreateTrans
 import { EditTransactionModal } from "../../components/transaction/EditTransactionModal/EditTransactionModal";
 import { TransactionList } from "../../components/transaction/TransactionList/TransactionList";
 import { DeleteTransactionDialog } from "../../components/transaction/DeleteTransactionDialog/DeleteTransactionDialog";
+import { TransactionFilterBar } from "../../components/transaction/TransactionFilterBar/TransactionFilterBar";
 
 
 import { useAccounts } from "../../hooks/accountsHooks/useAccounts";
@@ -17,6 +18,7 @@ import { useTransactions } from "../../hooks/transactionHooks/useTransactions";
 
 import type { Currency } from "../../types/account";
 import type { Transaction } from "../../types/transaction";
+import type { TransactionFilters } from "../../types/transactionFilters";
 
 import styles from "./TransactionPage.module.scss";
 
@@ -26,7 +28,8 @@ export function TransactionPage() {
   const [transactionToEdit, setTransactionToEdit] =
     useState<Transaction | null>(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [filters] = useState({
+
+  const initialFilters = {
     search: "",
     accountId: null,
     categoryId: null,
@@ -34,7 +37,9 @@ export function TransactionPage() {
     sortBy: "newest",
     startDate: null,
     endDate: null,
-  });
+  } satisfies TransactionFilters;
+  
+  const [filters, setFilters] = useState<TransactionFilters>(initialFilters);
 
   const { data: transactions = [], isLoading, error } = useTransactions();
   const { data: accounts = [] } = useAccounts();
@@ -120,7 +125,12 @@ export function TransactionPage() {
         <Button onClick={() => setIsCreateOpen(true)}>+ New Transaction</Button>
       </div>
 
-      {transactions.length === 0 ? (
+      <TransactionFilterBar
+        filters={filters}
+        onFiltersChange={setFilters}
+      />
+
+      {filteredTransactions.length === 0 ? (
         <EmptyState
           title="No Transactions"
           description="Create your first transaction to start tracking your finances."
