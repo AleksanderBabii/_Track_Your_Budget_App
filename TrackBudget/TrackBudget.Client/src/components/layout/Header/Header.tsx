@@ -28,7 +28,7 @@ export function Header() {
         <h1 className={styles.title}>{pageTitle}</h1>
 
         <span>
-          Welcome back, <strong>{user?.username ?? "User"}</strong>
+          Manage your budget with <strong>Track Budget!</strong>
         </span>
       </div>
 

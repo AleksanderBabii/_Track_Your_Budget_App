@@ -1,4 +1,5 @@
 import { FiEdit2, FiTag, FiTrash2 } from "react-icons/fi";
+import clsx from "clsx";
 
 import type { Category } from "../../../types/category";
 import { Button } from "../../common/Button/Button";
@@ -14,7 +15,12 @@ interface CategoryCardProps {
 
 export function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
   return (
-    <Card className={styles.card}>
+    <Card
+      className={clsx(
+        styles.card,
+        category.type === "Income" ? styles.cardIncome : styles.cardExpense,
+      )}
+    >
       <div className={styles.header}>
         <div className={styles.icon}>
           <FiTag aria-hidden="true" />

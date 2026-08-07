@@ -1,9 +1,20 @@
 @use "../../../styles/variables" as *;
 
 .card {
+  --category-accent: #{$color-primary};
+
   display: flex;
   flex-direction: column;
   gap: 18px;
+  border-left: 4px solid var(--category-accent);
+}
+
+.cardIncome {
+  --category-accent: #16a34a;
+}
+
+.cardExpense {
+  --category-accent: #dc2626;
 }
 
 .header {
@@ -19,8 +30,8 @@
   width: 44px;
   height: 44px;
   border-radius: 999px;
-  background: rgba(37, 99, 235, 0.1);
-  color: $color-primary;
+  background: rgb(37 99 235 / 12%);
+  color: var(--category-accent);
   font-size: 1.1rem;
 }
 
@@ -38,7 +49,8 @@
 .name {
   margin: 0;
   color: $color-text;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .income {
@@ -47,7 +59,7 @@
   width: fit-content;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #dcfce7;
+  background: rgb(22 163 74 / 14%);
   color: #166534;
   font-size: 0.85rem;
   font-weight: 600;
@@ -59,8 +71,18 @@
   width: fit-content;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #fee2e2;
+  background: rgb(220 38 38 / 14%);
   color: #991b1b;
   font-size: 0.85rem;
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .card {
+    gap: 14px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
 }

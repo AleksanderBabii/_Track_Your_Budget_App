@@ -1,9 +1,83 @@
 @use "../../../styles/variables" as *;
 
 .filterBar {
-  display: grid;
-  grid-template-columns: 2fr repeat(4, 1fr);
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: stretch;
+  padding: 1.25rem;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  background: $color-surface;
+}
 
-  align-items: end;
+.quickFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dashed $color-border;
+}
+
+.quickFilterButton {
+  border: 1px solid $color-border;
+  border-radius: 999px;
+}
+
+.quickFilterButtonActive {
+  border-color: $color-primary;
+  background: rgb(37 99 235 / 10%);
+  color: $color-primary;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.actions {
+  display: flex;
+  align-items: flex-end;
+}
+
+.actions button {
+  width: 100%;
+}
+
+@media (min-width: 1025px) {
+  .fields {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: end;
+    row-gap: 1.15rem;
+  }
+
+  .searchField {
+    grid-column: span 3;
+  }
+
+  .accountField {
+    grid-column: span 3;
+  }
+
+  .categoryField,
+  .typeField,
+  .sortField {
+    grid-column: span 2;
+  }
+
+  .fromField,
+  .toField {
+    grid-column: span 3;
+  }
+
+  .actions {
+    grid-column: span 6;
+    justify-content: flex-end;
+  }
+
+  .actions button {
+    width: auto;
+  }
 }

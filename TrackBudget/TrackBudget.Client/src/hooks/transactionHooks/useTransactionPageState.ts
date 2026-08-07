@@ -45,6 +45,7 @@ export function useTransactionPageState() {
       result = result.filter((transaction) => {
         const searchableText = [
           transaction.title,
+          transaction.categoryName ?? "",
           transaction.categoryId,
           transaction.accountId,
           transaction.accountName,
@@ -70,11 +71,36 @@ export function useTransactionPageState() {
       result = result.filter((transaction) => transaction.type === filters.type);
     }
 
-    result.sort((a, b) => {
-      const first = new Date(a.date).getTime();
-      const second = new Date(b.date).getTime();
+    if (filters.startDate) {
+      const startDate = new Date(filters.startDate);
+      startDate.setHours(0, 0, 0, 0);
 
-      return filters.sortBy === "newest" ? second - first : first - second;
+      result = result.filter(
+        (transaction) => new Date(transaction.date).getTime() >= startDate.getTime(),
+      );
+    }
+
+    if (filters.endDate) {
+      const endDate = new Date(filters.endDate);
+      endDate.setHours(23, 59, 59, 999);
+
+      result = result.filter(
+        (transaction) => new Date(transaction.date).getTime() <= endDate.getTime(),
+      );
+    }
+
+    result.sort((a, b) => {
+      switch (filters.sortBy) {
+        case "oldest":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "highestAmount":
+          return b.amount - a.amount;
+        case "lowestAmount":
+          return a.amount - b.amount;
+        case "newest":
+        default:
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
     });
 
     return result;

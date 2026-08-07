@@ -1,11 +1,24 @@
 @use "../../../styles/variables" as *;
 
 .transactionCard {
+  --tx-accent: #047857;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: $gap-medium;
   width: 100%;
+  border: 1px solid $color-border;
+  border-left: 4px solid var(--tx-accent);
+  border-radius: $border-radius-md;
+  background: $color-surface;
+}
+
+.transactionCardIncome {
+  --tx-accent: #047857;
+}
+
+.transactionCardExpense {
+  --tx-accent: #dc2626;
 }
 
 .left {
@@ -76,6 +89,7 @@
 .transactionCardAmountExpense {
   font-size: $font-size-medium;
   white-space: nowrap;
+  font-weight: 700;
 }
 
 .transactionCardAmountIncome {
@@ -86,19 +100,10 @@
   color: $color-danger;
 }
 
-.transactionCardDateIncome,
-.transactionCardDateExpense {
+.transactionCardDate {
   color: $color-text-muted;
   font-size: $font-size-small;
   white-space: nowrap;
-}
-
-.transactionCardDateIncome{
-  color: #047857;
-}
-
-.transactionCardDateExpense {
-  color: $color-danger;
 }
 
 .transactionCardActions {
@@ -107,7 +112,7 @@
   gap: $gap-small;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .transactionCard {
     flex-direction: column;
     align-items: stretch;

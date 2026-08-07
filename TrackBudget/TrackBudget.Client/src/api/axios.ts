@@ -7,9 +7,11 @@ const apiBaseUrl = (import.meta.env.VITE_API_URL ?? "http://localhost:5098")
   .replace(/\/$/, "")
   .replace(/\/api$/, "");
 
+const apiRoot = import.meta.env.DEV ? "/api" : `${apiBaseUrl}/api`;
+
 // Centralized axios instance used by all feature APIs.
 export const api = axios.create({
-  baseURL: `${apiBaseUrl}/api`,
+  baseURL: apiRoot,
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,6 +1,7 @@
 import { FiCreditCard, FiTrash2, FiEdit2 } from "react-icons/fi";
 
 import type { Account } from "../../../types/account";
+import { formatCurrency } from "../../../utils/formatCurrency";
 import { Button } from "../../common/Button/Button";
 import { Card } from "../../common/Card/Card";
 
@@ -14,10 +15,7 @@ interface AccountCardProps {
 
 export function AccountCard({ account, onEdit, onDelete }: AccountCardProps) {
   // Format money and date for readable card output.
-  const formattedBalance = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: account.currency,
-  }).format(account.balance);
+  const formattedBalance = formatCurrency(account.balance, account.currency);
 
   // Format date to a more readable format (e.g., "Jan 01, 2023").
   const formattedDate = new Intl.DateTimeFormat("en-US", {

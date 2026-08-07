@@ -1,9 +1,8 @@
 @use "../../styles/variables" as *;
 
-.container {
+.dashboard {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    background-color: $color-surface;
+    gap: $gap-small;
+
 }

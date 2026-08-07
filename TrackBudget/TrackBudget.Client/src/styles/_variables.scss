@@ -5,6 +5,11 @@ $font-size-small: 14px;
 $font-size-medium: 16px;
 $font-size-large: 20px;
 
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
 $gap-small: 8px;
 $gap-medium: 16px;
 $gap-large: 24px;
@@ -24,6 +29,15 @@ $color-placeholder: #a1a1aa;
 $color-disabled: #f5f7fb;
 $color-text-disabled: #9ca3af;
 $color-border-disabled: #d1d5db;
+$color-success: #16a34a;
+$color-warning: #f59e0b;
+$color-secondary: #6b7280;
+$color-on-primary: #ffffff;
+$color-on-secondary: #ffffff;
+$color-on-success: #ffffff;
+$color-on-warning: #ffffff;
+$color-on-error: #ffffff;
+$color-on-surface: #000000;
 
 $border-radius-sm: 6px;
 $border-radius-md: 10px;
