@@ -1,0 +1,40 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.chartCard {
+  @include premium-panel(18px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 360px;
+}
+
+.header {
+  h3 {
+    margin: 0;
+    font-size: $font-size-large;
+    color: $color-text;
+  }
+
+  p {
+    margin-top: 6px;
+    color: $color-text-muted;
+    font-size: $font-size-small;
+  }
+}
+
+.chartBody {
+  flex: 1;
+  min-height: 280px;
+}
+
+.empty {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: $color-text-muted;
+  font-size: $font-size-small;
+  border: 1px dashed $color-border;
+  border-radius: $border-radius-md;
+  background: rgb(255 255 255 / 60%);
+}

@@ -1,50 +1,71 @@
 @use "sass:color";
 
-$font-family-primary: Inter, system-ui, sans-serif;
-$font-size-small: 14px;
-$font-size-medium: 16px;
-$font-size-large: 20px;
+$font-family-primary: "Plus Jakarta Sans", "Manrope", "Segoe UI", sans-serif;
+$font-family-heading: "Space Grotesk", "Plus Jakarta Sans", "Segoe UI", sans-serif;
+
+$font-size-small: 0.875rem;
+$font-size-medium: 1rem;
+$font-size-large: 1.25rem;
+$font-size-xl: 1.5rem;
+$font-size-2xl: 1.875rem;
 
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-semibold: 600;
 $font-weight-bold: 700;
 
+$gap-2xs: 4px;
+$gap-xs: 6px;
 $gap-small: 8px;
 $gap-medium: 16px;
 $gap-large: 24px;
+$gap-xl: 32px;
+$gap-2xl: 40px;
 
-$color-background: #f5f7fb;
-$color-background-secondary: rgb(53, 162, 235);
+$color-background: #f2f5fb;
+$color-background-secondary: #0d72de;
+$color-background-elevated: #f8fafe;
 $color-surface: #ffffff;
-$color-text: #18212f;
-$color-text-secondary: #475467;
-$color-text-muted: #667085;
-$color-primary: #2563eb;
-$color-primary-light: #4eb0f1;
+$color-text: #121c2d;
+$color-text-secondary: #4a5f7f;
+$color-text-muted: #6f7f99;
+$color-primary: #0f5cc8;
+$color-primary-light: #2890ff;
 $color-danger: #dc2626;
-$color-border: #e4e7ec;
+$color-border: #dbe4f2;
 $color-error: #dc2626;
-$color-placeholder: #a1a1aa;
-$color-disabled: #f5f7fb;
+$color-placeholder: #96a2b8;
+$color-disabled: #eef2f8;
 $color-text-disabled: #9ca3af;
-$color-border-disabled: #d1d5db;
+$color-border-disabled: #cbd5e1;
 $color-success: #16a34a;
 $color-warning: #f59e0b;
-$color-secondary: #6b7280;
+$color-secondary: #53627f;
 $color-on-primary: #ffffff;
 $color-on-secondary: #ffffff;
 $color-on-success: #ffffff;
 $color-on-warning: #ffffff;
 $color-on-error: #ffffff;
-$color-on-surface: #000000;
+$color-on-surface: #0f172a;
+
+$gradient-page: linear-gradient(165deg, #f9fbff 0%, #edf3ff 48%, #f6f9ff 100%);
+$gradient-brand: linear-gradient(140deg, #0f5cc8 0%, #2aa9ff 100%);
+$gradient-brand-soft: linear-gradient(140deg, rgb(15 92 200 / 14%) 0%, rgb(42 169 255 / 10%) 100%);
 
 $border-radius-sm: 6px;
 $border-radius-md: 10px;
 $border-radius-lg: 16px;
+$border-radius-xl: 22px;
+$border-radius-pill: 999px;
 
-$shadow-sm: 0 2px 8px rgb(16 24 40 / 6%);
-$shadow-md: 0 8px 24px rgb(16 24 40 / 10%);
+$shadow-sm: 0 1px 2px rgb(15 23 42 / 7%), 0 8px 20px rgb(15 23 42 / 5%);
+$shadow-md: 0 10px 30px rgb(15 23 42 / 11%), 0 2px 8px rgb(15 23 42 / 7%);
+$shadow-lg: 0 20px 45px rgb(15 23 42 / 18%), 0 4px 14px rgb(15 23 42 / 10%);
+
+$duration-fast: 160ms;
+$duration-normal: 240ms;
+$duration-slow: 380ms;
+$easing-standard: cubic-bezier(0.2, 0.7, 0.2, 1);
 
 $color-primary-hover: color.adjust($color-primary, $lightness: -10%);
 $color-background-hover: color.adjust($color-background, $lightness: -5%);

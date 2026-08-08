@@ -23,12 +23,11 @@ public class DashboardController : ControllerBase
     public async Task<IActionResult> GetDashboardData(CancellationToken cancellationToken)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-        if (userIdClaim == null)
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
         {
             return Unauthorized();
         }
 
-        var userId = Guid.Parse(userIdClaim.Value);
         var dashboardData = await dashboardService.GetDashboardDataAsync(userId, cancellationToken);
 
         return Ok(dashboardData);

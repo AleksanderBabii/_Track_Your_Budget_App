@@ -1,0 +1,44 @@
+@use "../../../styles/variables" as *;
+
+.chartRoot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chartSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.axis {
+  stroke: #d1d5db;
+  stroke-width: 1;
+}
+
+.line {
+  fill: none;
+  stroke: #0f5cc8;
+  stroke-width: 3;
+}
+
+.point {
+  fill: #0f5cc8;
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  opacity: 0.78;
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

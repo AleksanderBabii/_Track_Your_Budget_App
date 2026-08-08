@@ -1,0 +1,105 @@
+@use "../../../styles/variables" as *;
+
+.chartRoot {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.donut {
+  width: 100%;
+  height: 100%;
+}
+
+.baseRing {
+  fill: none;
+  stroke: #e5e7eb;
+  stroke-width: 28;
+}
+
+.arc {
+  fill: none;
+  stroke-width: 28;
+  stroke-linecap: butt;
+}
+
+.c0 {
+  stroke: #0f5cc8;
+  background: #0f5cc8;
+}
+
+.c1 {
+  stroke: #2890ff;
+  background: #2890ff;
+}
+
+.c2 {
+  stroke: #0ea5a5;
+  background: #0ea5a5;
+}
+
+.c3 {
+  stroke: #16a34a;
+  background: #16a34a;
+}
+
+.c4 {
+  stroke: #f59e0b;
+  background: #f59e0b;
+}
+
+.c5 {
+  stroke: #dc2626;
+  background: #dc2626;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.legendCategory {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.categoryText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.percentage {
+  font-weight: $font-weight-semibold;
+}
+
+@media (max-width: 900px) {
+  .chartRoot {
+    grid-template-columns: 1fr;
+  }
+
+  .donut {
+    max-height: 220px;
+  }
+}

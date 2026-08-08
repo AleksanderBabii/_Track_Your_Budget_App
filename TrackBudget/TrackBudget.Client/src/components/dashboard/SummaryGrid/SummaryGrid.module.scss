@@ -4,10 +4,19 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: $gap-medium;
-  margin-top: $gap-medium;
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 740px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .summaryGrid > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1140px) {
   .summaryGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: stretch;

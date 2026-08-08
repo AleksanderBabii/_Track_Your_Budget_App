@@ -3,6 +3,7 @@
 .dashboard {
     display: flex;
     flex-direction: column;
-    gap: $gap-small;
+    gap: $gap-large;
+    padding: 6px 2px 14px;
 
 }

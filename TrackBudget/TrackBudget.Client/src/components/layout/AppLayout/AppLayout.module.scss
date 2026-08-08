@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: row;
   min-height: 100vh;
-  background-color: $color-background;
+  background: $gradient-page;
 }
 
 .mainContent {
@@ -12,12 +12,13 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 20px;
-  transition: padding 0.2s ease;
+  padding: 22px;
+  gap: $gap-medium;
+  transition: padding $duration-normal $easing-standard;
 }
 
 .mainContentExpanded {
-  padding-left: 24px;
+  padding-left: 18px;
 }
 
 @media (max-width: 1024px) {

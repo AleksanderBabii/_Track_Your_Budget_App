@@ -1,0 +1,27 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.quickStats {
+	@include fluid-grid(160px);
+}
+
+.stat {
+	@include premium-panel(16px);
+	text-align: center;
+}
+
+.statTitle {
+	margin: 0;
+	font-size: $font-size-small;
+	color: $color-text-muted;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.statValue {
+	margin-top: 8px;
+	font-size: clamp(1.4rem, 2vw, 1.9rem);
+	font-weight: $font-weight-bold;
+	color: $color-text;
+	font-family: $font-family-heading;
+}

@@ -9,8 +9,8 @@
   place-items: center;
 
   padding: 20px;
-  background: rgb(16 24 40 / 55%);
-  backdrop-filter: blur(3px);
+  background: rgb(7 15 31 / 52%);
+  backdrop-filter: blur(8px);
 }
 
 .backdropOpening {
@@ -27,9 +27,10 @@
   max-height: calc(100vh - 40px);
   overflow-y: auto;
 
-  border-radius: $border-radius-lg;
-  background: $color-surface;
-  box-shadow: 0 24px 64px rgb(16 24 40 / 28%);
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: $border-radius-xl;
+  background: linear-gradient(180deg, rgb(255 255 255 / 96%) 0%, rgb(255 255 255) 100%);
+  box-shadow: $shadow-lg;
 }
 
 .modalOpening {
@@ -46,13 +47,14 @@
   justify-content: space-between;
   gap: 20px;
 
-  padding: 20px 24px;
+  padding: 22px 24px;
   border-bottom: 1px solid $color-border;
 }
 
 .title {
   margin: 0;
-  font-size: 1.125rem;
+  font-size: $font-size-large;
+  font-weight: $font-weight-bold;
 }
 
 .content {

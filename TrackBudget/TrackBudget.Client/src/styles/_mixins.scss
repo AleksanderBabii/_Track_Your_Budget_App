@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "./variables" as *;
+
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -5,6 +8,40 @@
 }
 
 @mixin page-container {
-  width: min(100% - 32px, 1400px);
+  width: min(100% - 32px, 1320px);
   margin-inline: auto;
+}
+
+@mixin focus-ring($tone: $color-primary) {
+  outline: none;
+  box-shadow:
+    0 0 0 1px color.adjust($tone, $lightness: -8%),
+    0 0 0 4px color.change($tone, $alpha: 0.2);
+}
+
+@mixin premium-panel($padding: 20px) {
+  padding: $padding;
+  border: 1px solid color.change($color-border, $alpha: 0.9);
+  border-radius: $border-radius-lg;
+  background: linear-gradient(180deg, rgb(255 255 255 / 94%) 0%, rgb(255 255 255 / 100%) 100%);
+  box-shadow: $shadow-sm;
+}
+
+@mixin interactive-lift {
+  transition:
+    transform $duration-normal $easing-standard,
+    box-shadow $duration-normal $easing-standard,
+    border-color $duration-fast $easing-standard,
+    background-color $duration-fast $easing-standard;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+@mixin fluid-grid($min-size: 220px) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($min-size, 1fr));
+  gap: $gap-medium;
 }

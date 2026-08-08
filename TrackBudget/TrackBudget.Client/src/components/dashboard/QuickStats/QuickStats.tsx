@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 import styles from "./QuickStats.module.scss";
 
 interface QuickStatsProps {
@@ -12,16 +10,16 @@ export const QuickStats = ({ accountsCount, categoriesCount, transactionsCount }
     return (
         <section className={styles.quickStats}>
             <div className={styles.stat}>
-                <h3>Accounts</h3>
-                <p>{accountsCount}</p>
+                <h3 className={styles.statTitle}>Accounts</h3>
+                <p className={styles.statValue}>{accountsCount}</p>
             </div>
             <div className={styles.stat}>
-                <h3>Categories</h3>
-                <p>{categoriesCount}</p>
+                <h3 className={styles.statTitle}>Categories</h3>
+                <p className={styles.statValue}>{categoriesCount}</p>
             </div>
             <div className={styles.stat}>
-                <h3>Transactions</h3>
-                <p>{transactionsCount}</p>
+                <h3 className={styles.statTitle}>Transactions</h3>
+                <p className={styles.statValue}>{transactionsCount}</p>
             </div>
         </section>
     );

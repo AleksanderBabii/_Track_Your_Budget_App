@@ -1,21 +1,21 @@
+@use "../../../styles/variables" as *;
+
 .dashboardContent {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  padding: 2rem;
-  margin-top: 2rem;
+  gap: $gap-medium;
 }
 
 .leftContent, .rightContent {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: $gap-medium;
 }
 
-@media (min-width: 1025px) {
+@media (max-width: 1024px) {
   .dashboardContent {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: $gap-medium;
   }
 
   .leftContent, .rightContent {

@@ -1,4 +1,6 @@
+@use "sass:color";
 @use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
 .button {
   display: inline-flex;
@@ -10,47 +12,50 @@
   border-radius: $border-radius-md;
 
   font-weight: 600;
+  letter-spacing: 0.01em;
   line-height: 1;
+  user-select: none;
 
   transition:
-    background-color 150ms ease,
-    border-color 150ms ease,
-    color 150ms ease,
-    transform 150ms ease,
-    box-shadow 150ms ease;
+    background-color $duration-fast $easing-standard,
+    border-color $duration-fast $easing-standard,
+    color $duration-fast $easing-standard,
+    transform $duration-fast $easing-standard,
+    box-shadow $duration-fast $easing-standard;
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
   }
 
   &:focus-visible {
-    outline: 3px solid rgb(37 99 235 / 20%);
-    outline-offset: 2px;
+    @include focus-ring();
   }
 
   &:disabled {
     cursor: not-allowed;
     opacity: 0.6;
+    transform: none;
   }
 }
 
 .primary {
-  background: $color-primary;
+  background: $gradient-brand;
   color: #fff;
+  box-shadow: 0 10px 24px rgb(15 92 200 / 24%);
 
   &:hover:not(:disabled) {
-    background: #1d4ed8;
-    box-shadow: 0 6px 16px rgb(37 99 235 / 25%);
+    box-shadow: 0 14px 30px rgb(15 92 200 / 30%);
   }
 }
 
 .secondary {
   border-color: $color-border;
-  background: $color-surface;
+  background: rgb(255 255 255 / 92%);
   color: $color-text;
 
   &:hover:not(:disabled) {
-    background: #f9fafb;
+    border-color: color.adjust($color-primary, $lightness: 20%);
+    background: $color-background-elevated;
   }
 }
 
@@ -66,11 +71,16 @@
 .ghost {
   background: transparent;
   color: $color-text-muted;
+  border-color: transparent;
 
   &:hover:not(:disabled) {
-    background: #f2f4f7;
+    background: rgb(15 92 200 / 8%);
     color: $color-text;
   }
+}
+
+.loading {
+  pointer-events: none;
 }
 
 .small {

@@ -8,14 +8,23 @@
 
 html {
   font-family: $font-family-primary;
-  background: $color-background;
+  background: $gradient-page;
   color: $color-text;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  line-height: 1.5;
+  background: $gradient-page;
+  color: $color-text;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 button,
@@ -29,13 +38,36 @@ button {
   cursor: pointer;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-family: $font-family-heading;
+  color: $color-text;
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0;
+  color: $color-text-secondary;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+  transition: color $duration-fast $easing-standard;
 }
 
 img,
 svg {
   display: block;
   max-width: 100%;
+}
+
+::selection {
+  background: rgb(41 144 255 / 25%);
+  color: $color-on-surface;
 }

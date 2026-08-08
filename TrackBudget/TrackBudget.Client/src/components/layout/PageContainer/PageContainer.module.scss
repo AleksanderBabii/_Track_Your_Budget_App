@@ -1,11 +1,14 @@
 @use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
 .pageContainer {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: min(100%, 1280px);
+  margin-inline: auto;
   min-height: 0;
-  background-color: $color-background;
+  background: transparent;
   color: $color-text;
-  padding: 1rem;
+  padding: 0 2px 18px;
+  gap: $gap-medium;
 }

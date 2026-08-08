@@ -1,16 +1,16 @@
 @use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
 .dashboardHeader {
   display: flex;
-  flex-direction: column;
-  gap: $gap-small;
-  padding: $gap-medium;
-  background-color: $color-surface;
-  border-radius: $border-radius-md;
+  align-items: end;
+  justify-content: space-between;
+  gap: $gap-medium;
+  @include premium-panel(20px);
 }
 
 .title {
-  font-size: $font-size-large;
+  font-size: $font-size-xl;
   font-weight: $font-weight-bold;
   color: $color-on-surface;
 }
@@ -21,4 +21,27 @@
   gap: $gap-small;
   font-size: $font-size-medium;
   color: $color-text-secondary;
+
+  label {
+    white-space: nowrap;
+    font-size: $font-size-small;
+    font-weight: $font-weight-medium;
+    color: $color-text-muted;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboardHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .title {
+    font-size: $font-size-large;
+  }
+
+  .accountSelector {
+    width: 100%;
+    flex-wrap: wrap;
+  }
 }

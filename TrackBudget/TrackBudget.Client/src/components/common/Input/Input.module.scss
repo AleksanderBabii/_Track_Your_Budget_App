@@ -1,4 +1,6 @@
+@use "sass:color";
 @use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
 .field {
   display: flex;
@@ -9,7 +11,7 @@
 
 .label {
     font-size: $font-size-small;
-    font-weight: 600;
+    font-weight: $font-weight-semibold;
     color: $color-text;
 }
 
@@ -20,31 +22,34 @@
 
 .input {
     width: 100%;
-    min-height: 44px;
-    padding: 10px 12px;
+    min-height: 46px;
+    padding: 11px 14px;
 
     border: 1px solid $color-border;
     border-radius: $border-radius-md;
-    background: $color-surface;
+    background: rgb(255 255 255 / 92%);
     color: $color-text;
+    font-size: $font-size-medium;
 
     outline: none;
 
     transition:
-        border-color 0.2s ease-in-out,
-        box-shadow 0.2s ease-in-out;
+        border-color $duration-fast $easing-standard,
+        box-shadow $duration-fast $easing-standard,
+        background-color $duration-fast $easing-standard;
 
-        &::placeholder{
+        &::placeholder {
             color: $color-placeholder;
         }
 
         &:hover:not(:disabled) {
-            border-color: $color-primary;
+            border-color: color.adjust($color-primary, $lightness: 20%);
         }
 
         &:focus {
             border-color: $color-primary;
-            box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+            @include focus-ring();
+            background: $color-surface;
         }
 
         &:disabled {
@@ -54,11 +59,11 @@
         }
 }
 
-.input-error {
+.inputError {
     border-color: $color-error;
 
     &:focus {
-        box-shadow: 0 0 0 3px rgba($color-error, 0.2);
+        @include focus-ring($color-error);
         border-color: $color-error;
     }
 }

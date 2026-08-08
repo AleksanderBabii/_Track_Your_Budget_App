@@ -12,6 +12,7 @@ namespace TrackBudget.Application.Services;
 public class DashboardService(
     IAccountRepository accountRepository,
     ITransactionRepository transactionRepository,
+    ICategoryRepository categoryRepository,
     IMapper mapper
 ) : IDashboardService
 {
@@ -80,6 +81,11 @@ public class DashboardService(
             cancellationToken
         );
 
+        var categories = await categoryRepository.GetAllByUserIdAsync(
+            userId,
+            cancellationToken
+        );
+
         var totalBalance = CalculateTotalBalance(accounts);
         var monthlyIncome = CalculateMonthlyIncome(allTransactions);
         var monthlyExpenses = CalculateMonthlyExpenses(allTransactions);
@@ -87,6 +93,9 @@ public class DashboardService(
 
         return new DashboardDto
         {
+            AccountsCount = accounts.Count,
+            CategoriesCount = categories.Count,
+            TransactionsCount = allTransactions.Count,
             TotalBalance = totalBalance,
             MonthlyIncome = monthlyIncome,
             MonthlyExpenses = monthlyExpenses,
