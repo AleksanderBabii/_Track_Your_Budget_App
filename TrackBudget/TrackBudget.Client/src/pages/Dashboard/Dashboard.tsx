@@ -13,6 +13,7 @@ import { SummaryCard } from "../../components/dashboard/SummaryCard/SummaryCard"
 import { SummaryGrid } from "../../components/dashboard/SummaryGrid/SummaryGrid";
 import { RecentTransactions } from "../../components/dashboard/RecentTransactions/RecentTransactions";
 import { DashboardHeader } from "../../components/dashboard/DashboardHeader/DashboardHeader";
+import { QuickStats } from "../../components/dashboard/QuickStats/QuickStats";
 
 import styles from "./Dashboard.module.scss";
 
@@ -141,6 +142,13 @@ export function Dashboard() {
 
         <RecentTransactions transactions={recentTransactions} />
       </SummaryGrid>
+
+      <QuickStats
+        accountsCount={dashboardData?.accountsCount ?? 0}
+        categoriesCount={dashboardData?.categoriesCount ?? 0}
+        transactionsCount={dashboardData?.transactionsCount ?? 0}
+      />
+
     </div>
   );
 }
