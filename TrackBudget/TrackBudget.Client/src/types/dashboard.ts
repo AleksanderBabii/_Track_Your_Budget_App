@@ -5,5 +5,10 @@ export interface Dashboard {
     monthlyIncome: number;
     monthlyExpenses: number;
     monthlySavings: number;
+
+    accountsCount: number;
+    categoriesCount: number;
+    transactionsCount: number;
+
     recentTransactions: Transaction[];
 }

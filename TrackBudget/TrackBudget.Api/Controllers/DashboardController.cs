@@ -14,23 +14,39 @@ public class DashboardController : ControllerBase
 {
     private readonly IDashboardService dashboardService;
 
-    public DashboardController(IDashboardService dashboardService)
+    private readonly IDashboardAnalyticsService dashboardAnalyticsService;
+
+    public DashboardController(IDashboardService dashboardService, IDashboardAnalyticsService dashboardAnalyticsService)
     {
         this.dashboardService = dashboardService;
+        this.dashboardAnalyticsService = dashboardAnalyticsService;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetDashboardData(CancellationToken cancellationToken)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-        if (userIdClaim == null)
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
         {
             return Unauthorized();
         }
 
-        var userId = Guid.Parse(userIdClaim.Value);
         var dashboardData = await dashboardService.GetDashboardDataAsync(userId, cancellationToken);
 
         return Ok(dashboardData);
+    }
+
+    [HttpGet("analytics")]
+    public async Task<IActionResult> GetDashboardAnalytics(CancellationToken cancellationToken)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var dashboardAnalytics = await dashboardAnalyticsService.GetDashboardAnalyticsAsync(userId, cancellationToken);
+
+        return Ok(dashboardAnalytics);
     }
 }

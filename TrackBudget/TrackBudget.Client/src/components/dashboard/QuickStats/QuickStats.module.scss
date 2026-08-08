@@ -1,0 +1,36 @@
+@use "../../../styles/variables" as *;
+
+.quickStats
+{
+    background-color: $color-surface;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: $shadow-sm;
+}
+
+.stat
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: $color-background-secondary;
+    color: $color-on-primary;
+    text-align: center;
+
+    &__value
+    {
+        font-size: $font-size-large;
+        font-weight: $font-weight-bold;
+        margin-bottom: 4px;
+    }
+
+    &__label
+    {
+        font-size: $font-size-medium;
+        font-weight: $font-weight-medium;
+        color: $color-text-secondary;
+    }
+}
