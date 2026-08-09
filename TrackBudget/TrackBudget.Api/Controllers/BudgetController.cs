@@ -22,7 +22,13 @@ public class BudgetController : ControllerBase
     [HttpGet("{budgetId:guid}")]
     public async Task<ActionResult<BudgetDto>> GetById(Guid budgetId, CancellationToken cancellationToken)
     {
-        var budget = await _budgetService.GetBudgetByIdAsync(budgetId, cancellationToken);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var budget = await _budgetService.GetBudgetByIdAsync(budgetId, userId, cancellationToken);
 
         return Ok(budget);
     }
@@ -36,28 +42,35 @@ public class BudgetController : ControllerBase
             return Unauthorized();
         }
 
-        var budgets = await _budgetService.GetBudgetsByUserIdAsync(userId, cancellationToken);
+        var budgets = await _budgetService.GetBudgetByUserIdAsync(userId, cancellationToken);
 
         return Ok(budgets);
     }
 
     [HttpPost]
-    public async Task<ActionResult<BudgetDto>> Create(BudgetDto budgetDto, CancellationToken cancellationToken)
+    public async Task<ActionResult<BudgetDto>> Create(CreateBudgetDto budgetDto, CancellationToken cancellationToken)
     {
-        var createdBudget = await _budgetService.CreateBudgetAsync(budgetDto, cancellationToken);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var createdBudget = await _budgetService.CreateBudgetAsync(budgetDto, userId, cancellationToken);
 
         return CreatedAtAction(nameof(GetById), new { budgetId = createdBudget.Id }, createdBudget);
     }
 
     [HttpPut("{budgetId:guid}")]
-    public async Task<IActionResult> Update(Guid budgetId, BudgetDto budgetDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update(Guid budgetId, UpdateBudgetDto budgetDto, CancellationToken cancellationToken)
     {
-        if (budgetId != budgetDto.Id)
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
         {
-            return BadRequest("Budget ID mismatch.");
+            return Unauthorized();
         }
 
-        await _budgetService.UpdateBudgetAsync(budgetDto, cancellationToken);
+        await _budgetService.UpdateBudgetAsync(budgetDto, userId, budgetId, cancellationToken);
 
         return NoContent();
     }
@@ -65,7 +78,13 @@ public class BudgetController : ControllerBase
     [HttpDelete("{budgetId:guid}")]
     public async Task<IActionResult> Delete(Guid budgetId, CancellationToken cancellationToken)
     {
-        await _budgetService.DeleteBudgetAsync(budgetId, cancellationToken);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        await _budgetService.DeleteBudgetAsync(budgetId, userId, cancellationToken);
 
         return NoContent();
     }

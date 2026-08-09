@@ -14,4 +14,6 @@ public class Category : BaseEntity
     public User User { get; set; } = null!;
 
     public ICollection<Transaction> Transactions { get; set; } = [];
+
+    public ICollection<Budget> Budgets { get; set; } = new List<Budget>();
 }

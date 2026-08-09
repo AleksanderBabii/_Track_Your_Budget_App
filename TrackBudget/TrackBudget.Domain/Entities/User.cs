@@ -19,4 +19,6 @@ public class User : BaseEntity
     public ICollection<Transfer> Transfers { get; set; }
     = new List<Transfer>();
 
+    public ICollection<Budget> Budgets { get; set; } = new List<Budget>();
+
 }

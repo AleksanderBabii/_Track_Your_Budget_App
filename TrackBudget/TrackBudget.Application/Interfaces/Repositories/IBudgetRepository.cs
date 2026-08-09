@@ -6,6 +6,8 @@ public interface IBudgetRepository
 
     Task<List<Budget>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
+    Task<Budget?> GetByCategoryAndPeriodAsync(Guid categoryId, int month, int year, Guid userId, CancellationToken cancellationToken = default);
+
     Task AddAsync(Budget budget, CancellationToken cancellationToken = default);
 
     void Update(Budget budget);
