@@ -1,11 +1,9 @@
-using TrackBudget.Domain.Entities;
 using TrackBudget.Domain.Common;
 
+namespace TrackBudget.Domain.Entities;
 
-public class Budget
+public class Budget : BaseEntity
 {
-    public Guid Id { get; set; }
-
     public decimal Limit { get; set; }
 
     public int Month { get; set; }

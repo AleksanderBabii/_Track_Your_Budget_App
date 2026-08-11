@@ -8,6 +8,7 @@ import {
     FiRepeat,
     FiSettings,
     FiUser,
+    FiTarget,
 } from "react-icons/fi";
 
 export interface NavigationItem {
@@ -42,6 +43,11 @@ export const navigationItems: NavigationItem[] = [
         label: "Transfers",
         path: "/transfers",
         icon: FiRepeat,
+    },
+    {
+        label: "Budgets",
+        path: "/budgets",
+        icon: FiTarget, // Replace with your wallet icon component when available
     },
     {
         label: "Reports",

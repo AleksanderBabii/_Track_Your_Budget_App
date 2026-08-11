@@ -1,0 +1,127 @@
+@use "../../../styles/variables" as *;
+
+.card {
+  --budget-accent: #{$color-primary};
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-left: 4px solid var(--budget-accent);
+}
+
+.cardWarning {
+  --budget-accent: #{$color-warning};
+}
+
+.cardDanger {
+  --budget-accent: #{$color-danger};
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgb(15 92 200 / 12%);
+  color: $color-primary;
+  font-size: 1.1rem;
+}
+
+.iconWarning {
+  background: rgb(245 158 11 / 14%);
+  color: $color-warning;
+}
+
+.iconDanger {
+  background: rgb(220 38 38 / 12%);
+  color: $color-danger;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.label {
+  margin: 0 0 4px;
+  color: $color-text-muted;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.name {
+  margin: 0;
+  color: $color-text;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.period {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progressBar {
+  overflow: hidden;
+  height: 8px;
+  border-radius: 999px;
+  background: $color-border;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: $color-primary;
+  transition: width 0.3s ease;
+}
+
+.progressFillWarning {
+  background: $color-warning;
+}
+
+.progressFillDanger {
+  background: $color-danger;
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  color: $color-text-muted;
+  font-size: 0.8rem;
+}
+
+.remaining {
+  padding-top: 12px;
+  border-top: 1px solid $color-border;
+  color: $color-success;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.remainingDanger {
+  color: $color-danger;
+}

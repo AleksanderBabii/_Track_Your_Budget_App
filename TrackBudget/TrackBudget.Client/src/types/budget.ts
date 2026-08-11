@@ -11,7 +11,6 @@ export interface Budget {
 }
 
 export interface CreateBudget {
-    userId: string;
     limit: number;
     month: number;
     year: number;
@@ -19,8 +18,6 @@ export interface CreateBudget {
 }
 
 export interface UpdateBudget {
-    id: string;
-    userId: string;
     limit: number;
     month: number;
     year: number;
