@@ -16,10 +16,13 @@ interface BudgetCardProps {
   onDelete: (budget: Budget) => void;
 }
 
-export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
-  const percentage = budget.limit > 0
-    ? Math.min((budget.spent / budget.limit) * 100, 100)
-    : 0;
+export function BudgetCard({ 
+  budget, 
+  onEdit, 
+  onDelete 
+}: BudgetCardProps) {
+  const percentage =
+    budget.limit > 0 ? Math.min((budget.spent / budget.limit) * 100, 100) : 0;
 
   const isOverspent = budget.remaining < 0;
   const isWarning = !isOverspent && percentage >= 75;
@@ -32,14 +35,18 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
         isWarning && styles.cardWarning,
       )}
     >
-
       <div className={styles.header}>
-        <div className={clsx(styles.icon, isOverspent && styles.iconDanger, isWarning && styles.iconWarning)}>
+        <div
+          className={clsx(
+            styles.icon,
+            isOverspent && styles.iconDanger,
+            isWarning && styles.iconWarning,
+          )}
+        >
           <FiTarget aria-hidden="true" />
         </div>
 
         <div className={styles.actions}>
-
           <Button
             type="button"
             variant="ghost"
@@ -57,7 +64,6 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
           >
             <FiTrash2 aria-hidden="true" />
           </Button>
-
         </div>
       </div>
 
@@ -69,7 +75,9 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
 
         <div>
           <p className={styles.label}>Period</p>
-          <p className={styles.period}>{MONTH_NAMES[budget.month - 1]} {budget.year}</p>
+          <p className={styles.period}>
+            {MONTH_NAMES[budget.month - 1]} {budget.year}
+          </p>
         </div>
       </div>
 
@@ -95,12 +103,16 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
         </div>
       </div>
 
-      <div className={clsx(styles.remaining, isOverspent && styles.remainingDanger)}>
+      <div
+        className={clsx(
+          styles.remaining,
+          isOverspent && styles.remainingDanger,
+        )}
+      >
         {isOverspent
           ? `Overspent by ${formatCurrency(Math.abs(budget.remaining))}`
           : `${formatCurrency(budget.remaining)} remaining`}
       </div>
-      
     </Card>
   );
 }

@@ -10,19 +10,19 @@ import type { UpdateBudget } from "../../types/budget";
 
 interface UseUpdateBudgetPayload {
     budgetId: string;
-    requestBody: UpdateBudget;
+    request: UpdateBudget;
 }
 
 export function useUpdateBudget() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ budgetId, requestBody }: UseUpdateBudgetPayload) => {
+        mutationFn: async ({ budgetId, request }: UseUpdateBudgetPayload) => {
             if (!budgetId) {
                 throw new Error("Budget ID is required.");
             }
 
-            return updateBudget(budgetId, requestBody);
+            return updateBudget(budgetId, request);
         },
         onSuccess: async () => {
             await Promise.all([

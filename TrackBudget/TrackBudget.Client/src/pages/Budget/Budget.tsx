@@ -1,70 +1,99 @@
 import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 
-import { useBudgets } from "../../hooks/budgetHooks/useBudgets";
+import { useDeleteBudget } from "../../hooks/budgetHooks/useDeleteBudget";
 
 import { CreateBudgetModal } from "../../components/budgets/CreateBudgetModal/CreateBudgetModal";
-import { BudgetCard } from "../../components/budgets/BudgetCard/BudgetCard";
+import { EditBudgetModal } from "../../components/budgets/EditBudgetModal/EditBudgetModal";
+import { BudgetList } from "../../components/budgets/BudgetList/BudgetList";
 
 import { Button } from "../../components/common/Button/Button";
-import { LoadingState } from "../../components/common/LoadingState/LoadingState";
-import { ErrorState } from "../../components/common/ErrorState/ErrorState";
-import { EmptyState } from "../../components/common/EmptyState/EmptyState";
+import { ConfirmDialog } from "../../components/common/ConfirmDialog/ConfirmDialog";
+
+import { PageContainer } from "../../components/layout/PageContainer/PageContainer";
+
+import type { Budget } from "../../types/budget";
 
 import styles from "./Budget.module.scss";
 
-
 export function BudgetPage() {
-  const { data: budgets, isLoading, isError } = useBudgets();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [budgetToEdit, setBudgetToEdit] = useState<Budget | null>(null);
+  const [budgetToDelete, setBudgetToDelete] = useState<Budget | null>(null);
+  const deleteBudgetMutation = useDeleteBudget();
 
-  if (isLoading) {
-    return <LoadingState message="Loading budgets..." />;
+  function handleEditBudget(budget: Budget) {
+    setBudgetToDelete(null);
+    setBudgetToEdit(budget);
+    setIsEditModalOpen(true);
   }
 
-  if (isError) {
-    return (
-      <ErrorState
-        title="Failed to load budgets."
-        description="Please try again in a moment"
-      />
-    );
+  function handleDeleteBudget(budget: Budget) {
+    setBudgetToEdit(null);
+    setIsEditModalOpen(false);
+    setBudgetToDelete(budget);
+  }
+
+  function handleConfirmDelete() {
+    if (budgetToDelete) {
+      deleteBudgetMutation.mutate(budgetToDelete.id);
+      setBudgetToDelete(null);
+    }
+  }
+
+  function handleCancelDelete() {
+    setBudgetToDelete(null);
   }
 
   return (
-    <div className={styles.budgetPage}>
-      <header className={styles.header}>
-        <h1>Budgets</h1>
-        <Button type="button" onClick={() => setIsCreateModalOpen(true)}>
-          <FiPlus aria-hidden="true" />
-          Create Budget
-        </Button>
-      </header>
+    <PageContainer>
+      <div className={styles.page}>
+        <div className={styles.header}>
+          <div>
+            <h1 className={styles.title}>Budgets</h1>
+            <p className={styles.description}>
+              Manage your budgets and track your spending.
+            </p>
+          </div>
 
-      {!budgets || budgets.length === 0 ? (
-        <EmptyState
-          title="No budgets found."
-          description="Create your first budget to get started!"
+          <Button type="button" onClick={() => setIsCreateModalOpen(true)}>
+            <FiPlus aria-hidden="true" />
+            New budget
+          </Button>
+        </div>
+
+        <BudgetList
+          onCreate={() => setIsCreateModalOpen(true)}
+          onEdit={handleEditBudget}
+          onDelete={handleDeleteBudget}
         />
-      ) : (
-        budgets.map((budget) => (
-          <BudgetCard
-            key={budget.id}
-            budget={budget}
-            onEdit={() => {
-              // Handle edit budget
-            }}
-            onDelete={() => {
-              // Handle delete budget
-            }}
-          />
-        ))
-      )}
+        
+        <CreateBudgetModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+        />
 
-      <CreateBudgetModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-      />
-    </div>
+        <EditBudgetModal
+          isOpen={isEditModalOpen}
+          budget={budgetToEdit}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setBudgetToEdit(null);
+          }}
+        />
+
+        <ConfirmDialog
+          isOpen={!!budgetToDelete}
+          title="Confirm Delete"
+          message="Are you sure you want to delete this budget?"
+          confirmText="Delete"
+          cancelText="Cancel"
+          isLoading={deleteBudgetMutation.isPending}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      </div>
+    </PageContainer>
   );
 }

@@ -1,5 +1,8 @@
 import { useCreateBudget } from "../../../hooks/budgetHooks/useCreateBudget";
+import { useBudgetFormSubmission } from "../../../hooks/budgetHooks/useBudgetFormSubmission";
+
 import type { BudgetFormValues } from "../../../utils/budgetSchema";
+
 import { Modal } from "../../common/Modal/Modal";
 import { BudgetForm } from "../BudgetForm/BudgetForm";
 
@@ -12,14 +15,10 @@ interface CreateBudgetModalProps {
 
 export function CreateBudgetModal({ isOpen, onClose }: CreateBudgetModalProps) {
   const createBudgetMutation = useCreateBudget();
+  const buildBudgetPayload = useBudgetFormSubmission();
 
   async function handleSubmit(values: BudgetFormValues): Promise<void> {
-    await createBudgetMutation.mutateAsync({
-      categoryId: values.categoryId,
-      limit: values.limit,
-      month: values.month,
-      year: values.year,
-    });
+    await createBudgetMutation.mutateAsync(buildBudgetPayload(values));
     onClose();
   }
 

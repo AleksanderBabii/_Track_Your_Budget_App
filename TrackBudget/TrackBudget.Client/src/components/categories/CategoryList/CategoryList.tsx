@@ -1,10 +1,11 @@
-import { FiFolder } from "react-icons/fi";
-
 import { useCategories } from "../../../hooks/categoryHooks/useCategories";
 import type { Category } from "../../../types/category";
-import { Button } from "../../common/Button/Button";
 import { Spinner } from "../../common/Spinner/Spinner";
 import { CategoryCard } from "../CategoryCard/CategoryCard";
+
+import { LoadingState } from "../../common/LoadingState/LoadingState";
+import { ErrorState } from "../../common/ErrorState/ErrorState";
+import { EmptyState } from "../../common/EmptyState/EmptyState";
 
 import styles from "./CategoryList.module.scss";
 
@@ -21,7 +22,7 @@ export function CategoryList({ onDelete, onCreate, onEdit }: CategoryListProps) 
     return (
       <div className={styles.state}>
         <Spinner />
-        <p>Loading categories...</p>
+        <LoadingState message="Loading categories..." />
       </div>
     );
   }
@@ -29,27 +30,23 @@ export function CategoryList({ onDelete, onCreate, onEdit }: CategoryListProps) 
   if (isError) {
     return (
       <div className={styles.state}>
-        <h2>Failed to load categories.</h2>
-        <p>Something went wrong while loading your categories. Please check your internet connection and try again.</p>
-        <Button type="button" onClick={() => refetch()}>
-          Retry
-        </Button>
+        <ErrorState
+          title="Failed to load categories."
+          description="Something went wrong while loading your categories. Please check your internet connection and try again."
+          onRetry={refetch}
+        />
       </div>
     );
   }
 
   if (categories.length === 0) {
     return (
-      <div className={styles.emptyState}>
-        <div className={styles.emptyIcon}>
-          <FiFolder aria-hidden="true" />
-        </div>
-        <h2>No categories yet</h2>
-        <p>You haven't added any categories yet. Click the button below to create your first category.</p>
-        <Button type="button" onClick={onCreate}>
-          Create Category
-        </Button>
-      </div>
+      <EmptyState
+        title="No categories found."
+        description="You haven't created any categories yet. Start by creating a new category to organize your budgets."
+        actionLabel="Create Category"
+        onActionClick={onCreate}
+      />
     );
   }
 

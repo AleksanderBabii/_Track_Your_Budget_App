@@ -21,6 +21,7 @@ interface BudgetFormProps {
   isSubmitting?: boolean;
   submitLabel?: string;
   defaultValues?: Partial<BudgetFormValues>;
+  isEditMode?: boolean;
 }
 
 export function BudgetForm({
@@ -54,6 +55,16 @@ export function BudgetForm({
         name="categoryId"
         label="Category"
         disabled={isSubmitting}
+      />
+
+      <Input
+        type="text"
+        label="Budget Name"
+        placeholder="Enter budget name"
+        error={errors.categoryId?.message}
+        disabled={isSubmitting}
+        required
+        {...register("categoryId")}
       />
 
       <Input
