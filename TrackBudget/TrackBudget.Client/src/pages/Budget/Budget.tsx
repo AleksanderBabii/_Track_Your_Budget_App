@@ -1,23 +1,18 @@
 import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 
-import { Button } from "../../components/common/Button/Button";
-import { Card } from "../../components/common/Card/Card";
-import { CreateBudgetModal } from "../../components/budgets/CreateBudgetModal/CreateBudgetModal";
-import { BudgetCard } from "../../components/budgets/BudgetCard/BudgetCard";
 import { useBudgets } from "../../hooks/budgetHooks/useBudgets";
 
+import { CreateBudgetModal } from "../../components/budgets/CreateBudgetModal/CreateBudgetModal";
+import { BudgetCard } from "../../components/budgets/BudgetCard/BudgetCard";
+
+import { Button } from "../../components/common/Button/Button";
 import { LoadingState } from "../../components/common/LoadingState/LoadingState";
 import { ErrorState } from "../../components/common/ErrorState/ErrorState";
 import { EmptyState } from "../../components/common/EmptyState/EmptyState";
 
-import { MONTH_NAMES } from "../../utils/budgetSchema";
-
 import styles from "./Budget.module.scss";
 
-function formatCurrency(value: number): string {
-  return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
 
 export function BudgetPage() {
   const { data: budgets, isLoading, isError } = useBudgets();
@@ -55,12 +50,13 @@ export function BudgetPage() {
         budgets.map((budget) => (
           <BudgetCard
             key={budget.id}
-            categoryName={budget.categoryName}
-            month={budget.month}
-            year={budget.year}
-            spent={budget.spent}
-            limit={budget.limit}
-            remaining={budget.remaining}
+            budget={budget}
+            onEdit={() => {
+              // Handle edit budget
+            }}
+            onDelete={() => {
+              // Handle delete budget
+            }}
           />
         ))
       )}

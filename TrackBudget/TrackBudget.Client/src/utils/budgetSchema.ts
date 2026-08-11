@@ -20,7 +20,7 @@ export const YEAR_OPTIONS = Array.from({ length: 6 }, (_, i) => currentYear - 1 
 export const budgetSchema = z.object({
   categoryId: z.string().min(1, "Category is required"),
   limit: z
-    .number({ invalid_type_error: "Limit must be a number" })
+    .number({ error: "Limit must be a number" })
     .positive("Limit must be greater than 0"),
   month: z.number().min(1).max(12),
   year: z.number().min(2020).max(2100),

@@ -32,12 +32,14 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
         isWarning && styles.cardWarning,
       )}
     >
+
       <div className={styles.header}>
         <div className={clsx(styles.icon, isOverspent && styles.iconDanger, isWarning && styles.iconWarning)}>
           <FiTarget aria-hidden="true" />
         </div>
 
         <div className={styles.actions}>
+
           <Button
             type="button"
             variant="ghost"
@@ -55,6 +57,7 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
           >
             <FiTrash2 aria-hidden="true" />
           </Button>
+
         </div>
       </div>
 
@@ -97,6 +100,7 @@ export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
           ? `Overspent by ${formatCurrency(Math.abs(budget.remaining))}`
           : `${formatCurrency(budget.remaining)} remaining`}
       </div>
+      
     </Card>
   );
 }
