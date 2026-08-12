@@ -13,7 +13,11 @@ interface EditCategoryModalProps {
   onClose: () => void;
 }
 
-export function EditCategoryModal({ category, isOpen, onClose }: EditCategoryModalProps) {
+export function EditCategoryModal({
+  category,
+  isOpen,
+  onClose,
+}: EditCategoryModalProps) {
   const updateCategoryMutation = useUpdateCategory();
   const buildCategoryPayload = useCategoryFormSubmission();
 

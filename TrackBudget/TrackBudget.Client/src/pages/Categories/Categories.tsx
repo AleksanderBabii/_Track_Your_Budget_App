@@ -3,11 +3,15 @@ import { FiPlus } from "react-icons/fi";
 
 import { Button } from "../../components/common/Button/Button";
 import { ConfirmDialog } from "../../components/common/ConfirmDialog/ConfirmDialog";
+
 import { CreateCategoryModal } from "../../components/categories/CreateCategoryModal/CreateCategoryModal";
 import { EditCategoryModal } from "../../components/categories/EditCategoryModal/EditCategoryModal";
 import { CategoryList } from "../../components/categories/CategoryList/CategoryList";
+
 import { PageContainer } from "../../components/layout/PageContainer/PageContainer";
+
 import { useDeleteCategory } from "../../hooks/categoryHooks/useDeleteCategory";
+
 import type { Category } from "../../types/category";
 
 import styles from "./Categories.module.scss";
@@ -78,7 +82,7 @@ export function Categories() {
         />
 
         <ConfirmDialog
-          isOpen={categoryToDelete !== null}
+          isOpen={!!categoryToDelete}
           title="Delete Category"
           message={`Are you sure you want to delete the category "${categoryToDelete?.name}"? This action cannot be undone.`}
           confirmText="Delete"
