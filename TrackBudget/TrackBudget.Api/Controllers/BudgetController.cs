@@ -10,14 +10,9 @@ namespace TrackBudget.Api.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/budgets")]
-public class BudgetController : ControllerBase
+public class BudgetController(IBudgetService budgetService) : ControllerBase
 {
-    private readonly IBudgetService _budgetService;
-
-    public BudgetController(IBudgetService budgetService)
-    {
-        _budgetService = budgetService;
-    }
+    private readonly IBudgetService _budgetService = budgetService;
 
     [HttpGet("{budgetId:guid}")]
     public async Task<ActionResult<BudgetDto>> GetById(Guid budgetId, CancellationToken cancellationToken)

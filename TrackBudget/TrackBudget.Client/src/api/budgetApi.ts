@@ -9,7 +9,7 @@ import type {
 export async function getBudgets(): Promise<Budget[]> {
     const response = await api.get<Budget[]>("/budgets");
     return response.data;
-}
+} 
 
 export async function getBudget(
     budgetId: string

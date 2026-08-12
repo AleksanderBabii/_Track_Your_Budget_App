@@ -50,7 +50,7 @@ export function BudgetCard({
           <Button
             type="button"
             variant="ghost"
-            aria-label={`Edit budget for ${budget.categoryName}`}
+            aria-label={`Edit budget for ${budget.categoryId}`}
             onClick={() => onEdit(budget)}
           >
             <FiEdit2 aria-hidden="true" />
@@ -59,7 +59,7 @@ export function BudgetCard({
           <Button
             type="button"
             variant="danger"
-            aria-label={`Delete budget for ${budget.categoryName}`}
+            aria-label={`Delete budget for ${budget.categoryId}`}
             onClick={() => onDelete(budget)}
           >
             <FiTrash2 aria-hidden="true" />
