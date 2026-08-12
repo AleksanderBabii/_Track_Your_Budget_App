@@ -31,12 +31,8 @@ export const YEAR_OPTIONS = Array.from(
 }));
 
 export const budgetSchema = z.object({
-  categoryId: z.string().min(1, "Category is required"),
-  categoryName: z
-    .string()
-    .min(1, "Category name is required")
-    .max(15, "Category name must be at most 15 characters")
-    .optional(),
+  budgetId: z.string().min(1, "Budget ID is required"),
+  budgetName: z.string().min(1, "Name is required").max(100, "Name must be at most 100 characters"),
   limit: z
     .number({ error: "Limit must be a number" })
     .positive("Limit must be greater than 0"),

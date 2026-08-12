@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+import { CategorySelect } from "../../common/CategorySelect/CategorySelect";
 import { Button } from "../../common/Button/Button";
 import { Input } from "../../common/Input/Input";
 import { Select } from "../../common/Select/Select";
-import { CategorySelect } from "../../common/CategorySelect/CategorySelect";
 
 import {
   budgetSchema,
@@ -41,7 +40,7 @@ export function BudgetForm({
   } = useForm<BudgetFormValues>({
     resolver: zodResolver(budgetSchema),
     defaultValues: {
-      categoryId: defaultValues.categoryId ?? "",
+      budgetName: defaultValues.budgetName ?? "",
       limit: defaultValues.limit,
       month: defaultValues.month ?? currentDate.getMonth() + 1,
       year: defaultValues.year ?? currentDate.getFullYear(),
@@ -50,21 +49,15 @@ export function BudgetForm({
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
-      <CategorySelect
-        control={control}
-        name="categoryId"
-        label="Category"
-        disabled={isSubmitting}
-      />
 
       <Input
         type="text"
         label="Budget Name"
         placeholder="Enter budget name"
-        error={errors.categoryId?.message}
+        error={errors.budgetName?.message}
         disabled={isSubmitting}
         required
-        {...register("categoryId")}
+        {...register("budgetName")}
       />
 
       <Input
