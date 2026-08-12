@@ -40,10 +40,10 @@ export function BudgetForm({
   } = useForm<BudgetFormValues>({
     resolver: zodResolver(budgetSchema),
     defaultValues: {
-      budgetName: defaultValues.budgetName ?? "",
       limit: defaultValues.limit,
       month: defaultValues.month ?? currentDate.getMonth() + 1,
       year: defaultValues.year ?? currentDate.getFullYear(),
+      categoryId: defaultValues.categoryId,
     },
   });
 
@@ -58,6 +58,16 @@ export function BudgetForm({
         disabled={isSubmitting}
         required
         {...register("budgetName")}
+      />
+
+      <Input
+        type="string"
+        label="Category Name"
+        placeholder="Enter category name"
+        error={errors.categoryName?.message}
+        disabled={isSubmitting}
+        required
+        {...register("categoryName")}
       />
 
       <Input

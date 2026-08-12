@@ -35,7 +35,7 @@ public class BudgetService(
             .Sum(t => t.Amount);
     }
 
-    private BudgetDto MapBudgetDto(Budget budget, IEnumerable<Transaction> transactions)
+    private BudgetDto CreateBudgetDto(Budget budget, IEnumerable<Transaction> transactions)
     {
         var budgetDto = mapper.Map<BudgetDto>(budget);
         budgetDto.Spent = CalculateSpent(budget, transactions);
@@ -47,25 +47,10 @@ public class BudgetService(
         var budgets = await unitOfWork.BudgetRepository.GetAllByUserIdAsync(userId, cancellationToken);
         var transactions = await unitOfWork.TransactionRepository.GetAllByUserIdAsync(userId, cancellationToken);
 
-        var result = mapper.Map<List<BudgetDto>>(budgets);
-
-        foreach (var budgetDto in result)
-        {
-            var correspondingBudget = budgets.FirstOrDefault(b => b.Id == budgetDto.Id);
-            if (correspondingBudget is not null)
-            {
-                var updatedBudgetDto = MapBudgetDto(correspondingBudget, transactions);
-                var index = result.FindIndex(b => b.Id == budgetDto.Id);
-                if (index >= 0)
-                {
-                    result[index] = updatedBudgetDto;
-                }
-            }
-        }
-
-        return result;
+        return budgets
+            .Select(budget => CreateBudgetDto(budget, transactions))
+            .ToList();
     }
-
     public async Task<BudgetDto> GetBudgetByIdAsync(Guid budgetId, Guid userId, CancellationToken cancellationToken = default)
     {
         var budget = await GetOwnedBudgetAsync(budgetId, userId, cancellationToken);
@@ -73,7 +58,7 @@ public class BudgetService(
         var transactions = await unitOfWork.TransactionRepository.GetAllByUserIdAsync(userId, cancellationToken);
     
 
-        return MapBudgetDto(budget, transactions);
+        return CreateBudgetDto(budget, transactions);
     }
 
     public async Task<BudgetDto> CreateBudgetAsync(CreateBudgetDto createBudgetDto, Guid userId, CancellationToken cancellationToken = default)
