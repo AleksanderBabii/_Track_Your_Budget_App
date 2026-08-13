@@ -5,14 +5,9 @@ using TrackBudget.Infrastructure.Data;
 
 namespace TrackBudget.Infrastructure.Repositories;
 
-public class TransferRepository : ITransferRepository
+public class TransferRepository(AppDbContext context ) : ITransferRepository
 {
-    private readonly AppDbContext _dbContext;
-
-    public TransferRepository(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = context;
 
     public Task<List<Transfer>> GetAllByUserIdAsync(
         Guid userId,

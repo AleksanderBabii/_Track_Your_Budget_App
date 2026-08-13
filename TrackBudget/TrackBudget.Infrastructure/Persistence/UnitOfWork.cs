@@ -13,6 +13,7 @@ public class UnitOfWork : IUnitOfWork
     public ITransactionRepository TransactionRepository { get; }
     public IUserRepository UserRepository { get; }
     public IBudgetRepository BudgetRepository { get; }
+    public ITransferRepository TransferRepository { get; }
 
     public UnitOfWork(AppDbContext dbContext)
     {
@@ -21,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
         AccountRepository = new AccountRepository(dbContext);
         CategoryRepository = new CategoryRepository(dbContext);
         TransactionRepository = new TransactionRepository(dbContext);
+        TransferRepository = new TransferRepository(dbContext);
         UserRepository = new UserRepository(dbContext);
         BudgetRepository = new BudgetRepository(dbContext);
     }

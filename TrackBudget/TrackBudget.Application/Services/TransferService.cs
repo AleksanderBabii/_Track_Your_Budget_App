@@ -7,7 +7,6 @@ using TrackBudget.Application.Interfaces.Services;
 using TrackBudget.Application.Interfaces.Persistence;
 
 using TrackBudget.Domain.Entities;
-using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Application.Services;
 

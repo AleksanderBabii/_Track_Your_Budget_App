@@ -1,17 +1,17 @@
 import { useMemo } from "react";
 
-import type { Transaction } from "../../types/transaction";
-import { formatTransactionDate } from "../../utils/date";
+import type { Transfer } from "../../types/transfer";
+import { formatTransferDate } from "../../utils/transferDate";
 
-export function useTransactionGroups(transactions: Transaction[]) {
+export function useTransferGroups(transfers: Transfer[]) {
   return useMemo(() => {
-    const sortedTransactions = [...transactions].sort(
+    const sortedTransfers = [...transfers].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     );
 
-    const groupedTransactions = sortedTransactions.reduce<Record<string, Transaction[]>>(
-      (groups, transaction) => {
-        const parsedDate = new Date(transaction.date);
+    const groupedTransfers = sortedTransfers.reduce<Record<string, Transfer[]>>(
+      (groups, transfer) => {
+        const parsedDate = new Date(transfer.date);
         const isValidDate = !Number.isNaN(parsedDate.getTime());
         const dateKey = isValidDate
           ? parsedDate.toISOString().slice(0, 10)
@@ -21,13 +21,13 @@ export function useTransactionGroups(transactions: Transaction[]) {
           groups[dateKey] = [];
         }
 
-        groups[dateKey].push(transaction);
+        groups[dateKey].push(transfer);
         return groups;
       },
       {},
     );
 
-    const dates = Object.keys(groupedTransactions).sort((a, b) => {
+    const dates = Object.keys(groupedTransfers).sort((a, b) => {
       if (a === "invalid-date") {
         return 1;
       }
@@ -40,10 +40,12 @@ export function useTransactionGroups(transactions: Transaction[]) {
     });
 
     return {
+      groupedTransfers,
       dates,
-      groupedTransactions,
       formatDateLabel: (dateKey: string) =>
-        dateKey === "invalid-date" ? "Unknown date" : formatTransactionDate(dateKey),
+        dateKey === "invalid-date"
+          ? "Unknown date"
+          : formatTransferDate(dateKey),
     };
-  }, [transactions]);
+  }, [transfers]);
 }

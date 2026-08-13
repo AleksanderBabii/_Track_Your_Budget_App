@@ -7,7 +7,7 @@ import { Button } from "../../common/Button/Button";
 
 import { AccountSelect } from "../../common/AccountSelect";
 import { CategorySelect } from "../../common/CategorySelect";
-import { useAccounts } from "../../../hooks/accountHooks/useAccounts";
+import { useAccounts } from "../../../hooks/accountsHooks/useAccounts";
 
 import {
     transactionSchema,

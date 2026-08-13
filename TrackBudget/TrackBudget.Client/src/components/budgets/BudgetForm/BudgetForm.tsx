@@ -50,14 +50,11 @@ export function BudgetForm({
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
 
-      <Input
-        type="text"
-        label="Budget Name"
-        placeholder="Enter budget name"
-        error={errors.budgetName?.message}
+      <CategorySelect
+        control={control}
+        name="categoryId"
+        label="Category"
         disabled={isSubmitting}
-        required
-        {...register("budgetName")}
       />
 
       <Input

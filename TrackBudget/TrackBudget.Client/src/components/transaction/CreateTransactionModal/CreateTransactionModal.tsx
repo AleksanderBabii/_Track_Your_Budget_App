@@ -2,8 +2,8 @@ import { Modal } from "../../common/Modal/Modal";
 
 import { TransactionForm } from "../TransactionForm/TransactionForm";
 
-import { useCreateTransaction } from "../../../hooks/transactionHooks/useCreateTransactions";
-import { useTransactionFormSubmission } from "../../../hooks/transactionHooks/useTransactionFormSubmission";
+import { useCreateTransaction } from "../../../hooks/transactionsHooks/useCreateTransactions";
+import { useTransactionFormSubmission } from "../../../hooks/transactionsHooks/useTransactionFormSubmission";
 
 import type { TransactionFormValues } from "../../../utils/transactionSchema";
 

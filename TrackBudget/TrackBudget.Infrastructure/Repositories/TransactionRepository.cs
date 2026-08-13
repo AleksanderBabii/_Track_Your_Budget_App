@@ -5,14 +5,9 @@ using TrackBudget.Infrastructure.Data;
 
 namespace TrackBudget.Infrastructure.Repositories;
 
-public class TransactionRepository : ITransactionRepository
+public class TransactionRepository(AppDbContext context) : ITransactionRepository
 {
-    private readonly AppDbContext _dbContext;
-
-    public TransactionRepository(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = context;
 
     public Task<List<Transaction>> GetAllByUserIdAsync(
         Guid userId,
@@ -36,8 +31,9 @@ public class TransactionRepository : ITransactionRepository
     )
     {
         return _dbContext.Transactions
-        .Include(transaction => transaction.Account)
-        .Include(transaction => transaction.Category)
+            .AsNoTracking()
+            .Include(transaction => transaction.Account)
+            .Include(transaction => transaction.Category)
             .SingleOrDefaultAsync(
                 transaction =>
                     transaction.Id == transactionId &&

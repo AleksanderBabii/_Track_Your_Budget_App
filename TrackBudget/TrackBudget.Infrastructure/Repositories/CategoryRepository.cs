@@ -6,14 +6,9 @@ using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Infrastructure.Repositories;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository(AppDbContext context) : ICategoryRepository
 {
-    private readonly AppDbContext _dbContext;
-
-    public CategoryRepository(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = context;
 
     public Task<List<Category>> GetAllByUserIdAsync(
         Guid userId,

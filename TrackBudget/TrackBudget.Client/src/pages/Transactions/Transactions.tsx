@@ -9,11 +9,11 @@ import { TransactionList } from "../../components/transaction/TransactionList/Tr
 import { DeleteTransactionDialog } from "../../components/transaction/DeleteTransactionDialog/DeleteTransactionDialog";
 import { TransactionFilterBar } from "../../components/transaction/TransactionFilterBar/TransactionFilterBar";
 
-import { useTransactionPageState } from "../../hooks/transactionHooks/useTransactionPageState";
+import { useTransactionPageState } from "../../hooks/transactionsHooks/useTransactionPageState";
 
-import styles from "./TransactionPage.module.scss";
+import styles from "./Transactions.module.scss";
 
-export function TransactionPage() {
+export function Transactions() {
   const {
     isCreateOpen,
     isEditOpen,

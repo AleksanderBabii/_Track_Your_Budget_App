@@ -1,5 +1,5 @@
 import { ConfirmDialog } from "../../common/ConfirmDialog/ConfirmDialog";
-import { useDeleteTransaction } from "../../../hooks/transactionHooks/useDeleteTransactions";
+import { useDeleteTransaction } from "../../../hooks/transactionsHooks/useDeleteTransactions";
 
 import type { Transaction } from "../../../types/transaction";
 

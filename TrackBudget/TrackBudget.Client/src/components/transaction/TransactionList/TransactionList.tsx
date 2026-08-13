@@ -2,7 +2,7 @@ import { Fragment } from "react";
 
 import { TransactionCard } from "../TransactionCard/TransactionCard";
 
-import { useTransactionGroups } from "../../../hooks/transactionHooks/useTransactionGroups";
+import { useTransactionGroups } from "../../../hooks/transactionsHooks/useTransactionGroups";
 
 import type { Currency } from "../../../types/account";
 import type { Transaction } from "../../../types/transaction";

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useMemo, useState } from "react";
 import { useDashboard } from "../../hooks/dashboardHooks/useDashboard";
-import { useAccounts } from "../../hooks/accountHooks/useAccounts";
-import { useCategories } from "../../hooks/categoryHooks/useCategories";
-import { useTransactions } from "../../hooks/transactionHooks/useTransactions";
+import { useAccounts } from "../../hooks/accountsHooks/useAccounts";
+import { useCategories } from "../../hooks/categoriesHooks/useCategories";
+import { useTransactions } from "../../hooks/transactionsHooks/useTransactions";
 import { useAuthStore } from "../../store/authStore";
 import type { Transaction } from "../../types/transaction";
 
