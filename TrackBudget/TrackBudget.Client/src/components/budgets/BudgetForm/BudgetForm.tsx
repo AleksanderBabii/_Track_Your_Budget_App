@@ -49,7 +49,6 @@ export function BudgetForm({
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
-
       <CategorySelect
         control={control}
         name="categoryId"

@@ -75,7 +75,10 @@ export function Transactions() {
         />
       )}
 
-      <CreateTransactionModal isOpen={isCreateOpen} onClose={closeCreateModal} />
+      <CreateTransactionModal
+        isOpen={isCreateOpen}
+        onClose={closeCreateModal}
+      />
 
       <EditTransactionModal
         transaction={transactionToEdit}

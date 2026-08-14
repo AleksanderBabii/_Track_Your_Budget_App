@@ -1,6 +1,6 @@
 @use "../../styles/variables" as *;
 
-.state{
+.state {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,14 +9,14 @@
     width: 100%;
 }
 
-.transactionPage{
+.transactionPage {
     display: flex;
     flex-direction: column;
     gap: $gap-medium;
     width: 100%;
 }
 
-.header{
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,7 +24,7 @@
     width: 100%;
 }
 
-.title{
+.title {
     margin: 0;
     color: $color-text;
     font-size: $font-size-large;
@@ -32,7 +32,7 @@
     line-height: 1.3;
 }
 
-.subtitle{
+.subtitle {
     margin: 0;
     color: $color-text-secondary;
     font-size: $font-size-medium;

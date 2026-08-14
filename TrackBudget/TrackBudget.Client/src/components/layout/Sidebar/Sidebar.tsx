@@ -36,7 +36,10 @@ export function Sidebar({
 
   return (
     <aside
-      className={clsx(styles.sidebar, isVisualCollapsed && styles.sidebarCollapsed)}
+      className={clsx(
+        styles.sidebar,
+        isVisualCollapsed && styles.sidebarCollapsed,
+      )}
       aria-label="Main navigation"
     >
       <div>
@@ -45,14 +48,21 @@ export function Sidebar({
             type="button"
             className={styles.collapseButton}
             onClick={onToggle}
-            aria-label={isVisualCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={
+              isVisualCollapsed ? "Expand sidebar" : "Collapse sidebar"
+            }
             aria-expanded={!isVisualCollapsed}
           >
             {isVisualCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
           </button>
         </div>
 
-        <div className={clsx(styles.logo, isVisualCollapsed && styles.logoCollapsed)}>
+        <div
+          className={clsx(
+            styles.logo,
+            isVisualCollapsed && styles.logoCollapsed,
+          )}
+        >
           <div className={styles.logoImage}> TB </div>
 
           <div className={styles.logoText}>
@@ -75,10 +85,13 @@ export function Sidebar({
       </div>
 
       <div className={styles.footer}>
-        <div className={clsx(styles.user, isVisualCollapsed && styles.userCollapsed)}>
-          <div className={styles.avatar}>
-            {userInitial}
-          </div>
+        <div
+          className={clsx(
+            styles.user,
+            isVisualCollapsed && styles.userCollapsed,
+          )}
+        >
+          <div className={styles.avatar}>{userInitial}</div>
 
           <div className={styles.userText}>
             <strong>{user?.username}</strong>
@@ -86,7 +99,10 @@ export function Sidebar({
           </div>
         </div>
         <Button
-          className={clsx(styles.logoutButton, isVisualCollapsed && styles.logoutButtonCollapsed)}
+          className={clsx(
+            styles.logoutButton,
+            isVisualCollapsed && styles.logoutButtonCollapsed,
+          )}
           onClick={handleLogout}
           variant="ghost"
           aria-label="Logout"

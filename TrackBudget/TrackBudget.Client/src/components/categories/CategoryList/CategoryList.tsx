@@ -15,8 +15,17 @@ interface CategoryListProps {
   onCreate: () => void;
 }
 
-export function CategoryList({ onDelete, onCreate, onEdit }: CategoryListProps) {
-  const { data: categories = [], isLoading, isError, refetch } = useCategories();
+export function CategoryList({
+  onDelete,
+  onCreate,
+  onEdit,
+}: CategoryListProps) {
+  const {
+    data: categories = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useCategories();
 
   if (isLoading) {
     return (

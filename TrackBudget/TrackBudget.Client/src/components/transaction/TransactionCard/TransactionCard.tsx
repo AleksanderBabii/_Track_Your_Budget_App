@@ -39,7 +39,7 @@ export function TransactionCard({
         isIncome ? styles.transactionCardIncome : styles.transactionCardExpense,
       )}
     >
-      <div className={styles.left}  >
+      <div className={styles.left}>
         <div
           className={
             isIncome
@@ -47,18 +47,12 @@ export function TransactionCard({
               : styles.transactionCardIconExpense
           }
         >
-          {isIncome ? (
-            <FiArrowUpCircle />
-          ) : (
-            <FiArrowDownCircle />
-          )}
+          {isIncome ? <FiArrowUpCircle /> : <FiArrowDownCircle />}
         </div>
 
         <div className={styles.transactionCardDetails}>
           <h3 className={styles.transactionCardTitle}>{transaction.title}</h3>
-          <p className={styles.transactionCardCategory}>
-            {categoryLabel}
-          </p>
+          <p className={styles.transactionCardCategory}>{categoryLabel}</p>
           <span className={styles.transactionCardName}>
             {transaction.accountName}
           </span>
@@ -73,7 +67,8 @@ export function TransactionCard({
               : styles.transactionCardAmountExpense
           }
         >
-          {isIncome ? "+" : "-"}{formattedAmount}
+          {isIncome ? "+" : "-"}
+          {formattedAmount}
         </strong>
 
         <small className={styles.transactionCardDate}>
@@ -82,7 +77,7 @@ export function TransactionCard({
 
         <div className={styles.transactionCardActions}>
           <Button
-          variant="ghost"
+            variant="ghost"
             onClick={() => onEdit(transaction)}
             aria-label="Edit Transaction"
           >

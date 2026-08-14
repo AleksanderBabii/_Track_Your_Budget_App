@@ -38,9 +38,7 @@ export function Header() {
           <FiBell size={20} />
         </button>
 
-        <div className={styles.avatar}>
-          {userInitial}
-        </div>
+        <div className={styles.avatar}>{userInitial}</div>
       </div>
     </header>
   );

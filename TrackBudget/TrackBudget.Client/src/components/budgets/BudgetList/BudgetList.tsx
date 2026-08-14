@@ -18,48 +18,48 @@ interface BudgetListProps {
 export function BudgetList({ onDelete, onCreate, onEdit }: BudgetListProps) {
   const { data: budgets = [], isLoading, isError, refetch } = useBudgets();
 
-    if (isLoading) {
+  if (isLoading) {
     return (
-        <div className={styles.state}>
+      <div className={styles.state}>
         <Spinner />
         <LoadingState message="Loading budgets..." />
-        </div>
+      </div>
     );
-    }
+  }
 
-    if (isError) {
+  if (isError) {
     return (
-        <div className={styles.state}>
+      <div className={styles.state}>
         <ErrorState
-            title="Failed to load budgets."
-            description="Something went wrong while loading your budgets. Please check your internet connection and try again."
-            onRetry={refetch}
+          title="Failed to load budgets."
+          description="Something went wrong while loading your budgets. Please check your internet connection and try again."
+          onRetry={refetch}
         />
-        </div>
+      </div>
     );
-    }
+  }
 
-    if (budgets.length === 0) {
+  if (budgets.length === 0) {
     return (
-        <EmptyState
+      <EmptyState
         title="No budgets found."
         description="You haven't created any budgets yet. Start by creating a new budget to manage your finances."
         actionLabel="Create Budget"
         onActionClick={onCreate}
-        />
+      />
     );
-    }
+  }
 
-    return (
+  return (
     <div className={styles.grid}>
-        {budgets.map((budget) => (
+      {budgets.map((budget) => (
         <BudgetCard
-            key={budget.id}
-            budget={budget}
-            onEdit={() => onEdit(budget)}
-            onDelete={() => onDelete(budget)}
+          key={budget.id}
+          budget={budget}
+          onEdit={() => onEdit(budget)}
+          onDelete={() => onDelete(budget)}
         />
-        ))}
+      ))}
     </div>
-    );
+  );
 }

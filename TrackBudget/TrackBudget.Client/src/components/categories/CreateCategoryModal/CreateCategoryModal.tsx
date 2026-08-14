@@ -13,7 +13,10 @@ interface CreateCategoryModalProps {
   onClose: () => void;
 }
 
-export function CreateCategoryModal({ isOpen, onClose }: CreateCategoryModalProps) {
+export function CreateCategoryModal({
+  isOpen,
+  onClose,
+}: CreateCategoryModalProps) {
   const createCategoryMutation = useCreateCategory();
   const buildCategoryPayload = useCategoryFormSubmission();
 

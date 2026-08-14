@@ -31,7 +31,9 @@ type FormProps<T extends FieldValues> = SharedProps & {
 
 type AccountSelectProps<T extends FieldValues> = ControlledProps | FormProps<T>;
 
-export function AccountSelect<T extends FieldValues>(props: AccountSelectProps<T>) {
+export function AccountSelect<T extends FieldValues>(
+  props: AccountSelectProps<T>,
+) {
   const { data: accounts = [], isLoading } = useAccounts();
 
   if ("control" in props && "name" in props) {
@@ -53,7 +55,9 @@ export function AccountSelect<T extends FieldValues>(props: AccountSelectProps<T
               value: account.id,
               label: `${account.name} (${account.currency})`,
             }))}
-            placeholder={isLoading ? "Loading accounts..." : "Select an account"}
+            placeholder={
+              isLoading ? "Loading accounts..." : "Select an account"
+            }
             error={fieldState.error?.message}
             disabled={disabled || isLoading}
             required

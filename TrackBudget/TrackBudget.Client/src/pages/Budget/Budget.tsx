@@ -68,7 +68,7 @@ export function BudgetPage() {
           onEdit={handleEditBudget}
           onDelete={handleDeleteBudget}
         />
-        
+
         <CreateBudgetModal
           isOpen={isCreateModalOpen}
           onClose={() => setIsCreateModalOpen(false)}

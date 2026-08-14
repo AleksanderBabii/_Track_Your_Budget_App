@@ -16,11 +16,7 @@ interface BudgetCardProps {
   onDelete: (budget: Budget) => void;
 }
 
-export function BudgetCard({ 
-  budget, 
-  onEdit, 
-  onDelete 
-}: BudgetCardProps) {
+export function BudgetCard({ budget, onEdit, onDelete }: BudgetCardProps) {
   const percentage =
     budget.limit > 0 ? Math.min((budget.spent / budget.limit) * 100, 100) : 0;
 

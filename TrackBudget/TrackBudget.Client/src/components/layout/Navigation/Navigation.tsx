@@ -10,7 +10,10 @@ interface NavigationItemProps {
   isCollapsed?: boolean;
 }
 
-export function NavigationItem({ item, isCollapsed = false }: NavigationItemProps) {
+export function NavigationItem({
+  item,
+  isCollapsed = false,
+}: NavigationItemProps) {
   const Icon = item.icon;
 
   return (
@@ -22,7 +25,9 @@ export function NavigationItem({ item, isCollapsed = false }: NavigationItemProp
       }
     >
       <Icon className={styles.icon} />
-      <span className={clsx(styles.label, isCollapsed && styles.labelCollapsed)}>
+      <span
+        className={clsx(styles.label, isCollapsed && styles.labelCollapsed)}
+      >
         {item.label}
       </span>
     </NavLink>

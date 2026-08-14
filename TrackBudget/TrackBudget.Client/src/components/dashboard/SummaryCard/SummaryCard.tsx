@@ -4,7 +4,12 @@ import { formatCurrency } from "../../../utils/formatCurrency";
 
 import styles from "./SummaryCard.module.scss";
 
-type SummaryCardVariant = "primary" | "secondary" | "success" | "warning" | "error";
+type SummaryCardVariant =
+  | "primary"
+  | "secondary"
+  | "success"
+  | "warning"
+  | "error";
 
 interface SummaryCardProps {
   title: string;
@@ -13,12 +18,7 @@ interface SummaryCardProps {
   variant?: SummaryCardVariant;
 }
 
-export function SummaryCard({
-  title,
-  value,
-  icon,
-  variant,
-}: SummaryCardProps) {
+export function SummaryCard({ title, value, icon, variant }: SummaryCardProps) {
   return (
     <div
       className={clsx(styles.summaryCard, {
@@ -29,11 +29,9 @@ export function SummaryCard({
         [styles.error]: variant === "error",
       })}
     >
-        <div className={styles.icon}>
-          {icon}
-        </div>
-        <h3 className={styles.title}>{title}</h3>
-        <p className={styles.value}>{formatCurrency(value)}</p>
+      <div className={styles.icon}>{icon}</div>
+      <h3 className={styles.title}>{title}</h3>
+      <p className={styles.value}>{formatCurrency(value)}</p>
     </div>
   );
 }

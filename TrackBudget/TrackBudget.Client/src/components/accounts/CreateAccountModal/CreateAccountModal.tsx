@@ -18,9 +18,7 @@ export function CreateAccountModal({
   // Mutation encapsulates API call + cache refresh + success/error toasts.
   const createAccountMutation = useCreateAccount();
 
-  async function handleSubmit(
-    values: AccountFormValues,
-  ): Promise<void> {
+  async function handleSubmit(values: AccountFormValues): Promise<void> {
     // Map validated form values to API contract.
     await createAccountMutation.mutateAsync({
       name: values.name,
@@ -33,15 +31,10 @@ export function CreateAccountModal({
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Create account"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title="Create account">
       <div className={styles.content}>
         <p className={styles.description}>
-          Add an account to start tracking its balance and
-          transactions.
+          Add an account to start tracking its balance and transactions.
         </p>
 
         <AccountForm

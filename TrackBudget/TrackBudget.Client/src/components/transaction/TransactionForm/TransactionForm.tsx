@@ -10,142 +10,127 @@ import { CategorySelect } from "../../common/CategorySelect";
 import { useAccounts } from "../../../hooks/accountsHooks/useAccounts";
 
 import {
-    transactionSchema,
-    type TransactionFormValues,
+  transactionSchema,
+  type TransactionFormValues,
 } from "../../../utils/transactionSchema";
 
 import styles from "./TransactionForm.module.scss";
 
 interface TransactionFormProps {
-    defaultValues?: Partial<TransactionFormValues>;
+  defaultValues?: Partial<TransactionFormValues>;
 
-    isSubmitting?: boolean;
+  isSubmitting?: boolean;
 
-    submitLabel?: string;
+  submitLabel?: string;
 
-    onCancel: () => void;
+  onCancel: () => void;
 
-    onSubmit: (
-        values: TransactionFormValues
-    ) => Promise<void> | void;
+  onSubmit: (values: TransactionFormValues) => Promise<void> | void;
 }
 
 export function TransactionForm({
-    defaultValues,
-    isSubmitting = false,
-    submitLabel = "Save",
-    onCancel,
-    onSubmit,
+  defaultValues,
+  isSubmitting = false,
+  submitLabel = "Save",
+  onCancel,
+  onSubmit,
 }: TransactionFormProps) {
-    const {
-        register,
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<TransactionFormValues>({
-        resolver: zodResolver(transactionSchema),
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TransactionFormValues>({
+    resolver: zodResolver(transactionSchema),
 
-        defaultValues: {
-            title: defaultValues?.title ?? "",
-            amount: defaultValues?.amount ?? 0,
-            accountId: defaultValues?.accountId ?? "",
-            categoryId: defaultValues?.categoryId ?? "",
-            date: defaultValues?.date ?? new Date(),
-            notes: defaultValues?.notes ?? "",
-        },
-    });
+    defaultValues: {
+      title: defaultValues?.title ?? "",
+      amount: defaultValues?.amount ?? 0,
+      accountId: defaultValues?.accountId ?? "",
+      categoryId: defaultValues?.categoryId ?? "",
+      date: defaultValues?.date ?? new Date(),
+      notes: defaultValues?.notes ?? "",
+    },
+  });
 
-    const selectedAccountId = useWatch({
-        control,
-        name: "accountId",
-    });
+  const selectedAccountId = useWatch({
+    control,
+    name: "accountId",
+  });
 
-    const { data: accounts = [] } = useAccounts();
-    const selectedAccount = accounts.find(
-        (account) => account.id === selectedAccountId,
-    );
-    const amountHint = selectedAccount
-        ? `Amount will be recorded in ${selectedAccount.currency}.`
-        : "Select an account to apply its currency.";
+  const { data: accounts = [] } = useAccounts();
+  const selectedAccount = accounts.find(
+    (account) => account.id === selectedAccountId,
+  );
+  const amountHint = selectedAccount
+    ? `Amount will be recorded in ${selectedAccount.currency}.`
+    : "Select an account to apply its currency.";
 
-    return (
-        <form
-            className={styles.form}
-            onSubmit={handleSubmit(onSubmit)}
-            noValidate
+  return (
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+      <Input
+        label="Title"
+        placeholder="Groceries"
+        error={errors.title?.message}
+        disabled={isSubmitting}
+        required
+        autoFocus
+        {...register("title")}
+      />
+
+      <Input
+        type="number"
+        label="Amount"
+        placeholder="0.00"
+        step="0.01"
+        min="0"
+        hint={amountHint}
+        error={errors.amount?.message}
+        disabled={isSubmitting}
+        required
+        {...register("amount", {
+          valueAsNumber: true,
+        })}
+      />
+
+      <AccountSelect control={control} name="accountId" />
+
+      <CategorySelect control={control} name="categoryId" />
+
+      <Input
+        type="date"
+        label="Date"
+        error={errors.date?.message}
+        disabled={isSubmitting}
+        required
+        {...register("date", {
+          valueAsDate: true,
+        })}
+      />
+
+      <Textarea
+        label="Notes"
+        rows={4}
+        placeholder="Additional notes (optional)"
+        error={errors.notes?.message}
+        disabled={isSubmitting}
+        {...register("notes")}
+      />
+
+      <div className={styles.actions}>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={onCancel}
+          disabled={isSubmitting}
         >
-            <Input
-                label="Title"
-                placeholder="Groceries"
-                error={errors.title?.message}
-                disabled={isSubmitting}
-                required
-                autoFocus
-                {...register("title")}
-            />
+          Cancel
+        </Button>
 
-            <Input
-                type="number"
-                label="Amount"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-                hint={amountHint}
-                error={errors.amount?.message}
-                disabled={isSubmitting}
-                required
-                {...register("amount", {
-                    valueAsNumber: true,
-                })}
-            />
-
-            <AccountSelect
-                control={control}
-                name="accountId"
-            />
-
-            <CategorySelect
-                control={control}
-                name="categoryId"
-            />
-
-            <Input
-                type="date"
-                label="Date"
-                error={errors.date?.message}
-                disabled={isSubmitting}
-                required
-                {...register("date", {
-                    valueAsDate: true,
-                })}
-            />
-
-            <Textarea
-                label="Notes"
-                rows={4}
-                placeholder="Additional notes (optional)"
-                error={errors.notes?.message}
-                disabled={isSubmitting}
-                {...register("notes")}
-            />
-
-            <div className={styles.actions}>
-                <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={onCancel}
-                    disabled={isSubmitting}
-                >
-                    Cancel
-                </Button>
-
-                <Button
-                    type="submit"
-                    isLoading={isSubmitting}
-                >
-                    {submitLabel}
-                </Button>
-            </div>
-        </form>
-    );
+        <Button type="submit" isLoading={isSubmitting}>
+          {submitLabel}
+        </Button>
+      </div>
+    </form>
+  );
 }

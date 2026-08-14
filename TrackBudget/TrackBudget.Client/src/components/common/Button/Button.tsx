@@ -15,31 +15,31 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Button({
-    children,
-    variant = "primary",
-    size = "medium",
-    fullWidth = false,
-    isLoading = false,
-    disabled,
-    className,
-    type = "button",
-    ...props
-  }: ButtonProps) {
-    return (
-        <button
-            type={type}
-            className={clsx(
-                styles.button,
-                styles[variant],
-                styles[size],
-                fullWidth && styles.fullWidth,
-                isLoading && styles.loading,
-                className
-            )}
-            disabled={disabled || isLoading}
-            {...props}
-        >
-            {isLoading ? "Loading..." : children}
-        </button>
-    );
+  children,
+  variant = "primary",
+  size = "medium",
+  fullWidth = false,
+  isLoading = false,
+  disabled,
+  className,
+  type = "button",
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      type={type}
+      className={clsx(
+        styles.button,
+        styles[variant],
+        styles[size],
+        fullWidth && styles.fullWidth,
+        isLoading && styles.loading,
+        className,
+      )}
+      disabled={disabled || isLoading}
+      {...props}
+    >
+      {isLoading ? "Loading..." : children}
+    </button>
+  );
 }

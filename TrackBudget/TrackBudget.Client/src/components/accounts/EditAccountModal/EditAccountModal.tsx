@@ -15,56 +15,46 @@ interface EditAccountModalProps {
 }
 
 export const EditAccountModal = ({
-    account,
-    isOpen,
-    onClose,
+  account,
+  isOpen,
+  onClose,
 }: EditAccountModalProps) => {
-    const updateAccountMutation = useUpdateAccount();
+  const updateAccountMutation = useUpdateAccount();
 
+  if (!account) {
+    return null;
+  }
+
+  async function handleSubmit(values: AccountFormValues) {
     if (!account) {
-        return null;
+      return;
     }
 
-   async function handleSubmit (values: AccountFormValues,) {
-        if (!account) {
-            return;
-        }
+    await updateAccountMutation.mutateAsync({
+      accountId: account.id,
+      request: {
+        name: values.name,
+        currency: values.currency,
+      },
+    });
+    onClose();
+  }
 
-        await updateAccountMutation.mutateAsync(
-            {
-                accountId: account.id,
-                request: {
-                    name: values.name,
-                    currency: values.currency,
-                },
-            });
-        onClose();
-    }
-
-    return (
-        <Modal
-            isOpen={isOpen}
-            onClose={onClose}
-            title="Edit Account"
-            >
-                <div className={styles.content}>
-                    <AccountForm
-                        isEditMode={true}
-                        defaultValues={{
-                            name: account.name,
-                            currency: account.currency,
-                        }}
-                        onSubmit={handleSubmit}
-                        onCancel={onClose}
-                        submitLabel="Update Account"
-                        isSubmitting={updateAccountMutation.isPending}
-                    />
-                </div>
-            </Modal>
-    );
-}
-
-
-         
-
-
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} title="Edit Account">
+      <div className={styles.content}>
+        <AccountForm
+          isEditMode={true}
+          defaultValues={{
+            name: account.name,
+            currency: account.currency,
+          }}
+          onSubmit={handleSubmit}
+          onCancel={onClose}
+          submitLabel="Update Account"
+          isSubmitting={updateAccountMutation.isPending}
+        />
+      </div>
+    </Modal>
+  );
+};

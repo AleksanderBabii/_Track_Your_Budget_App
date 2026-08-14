@@ -1,37 +1,26 @@
 import { z } from "zod";
 
-export const transferSchema = z.object({
-    accountId: z
-        .string()
-        .uuid("Please select an account."),
-        
-    title: z
-        .string()
-        .trim()
-        .min(2, "Title must contain at least 2 characters.")
-        .max(100, "Title cannot exceed 100 characters."),
-
+export const transferSchema = z
+  .object({
     amount: z
-        .number({
-            error: "Amount is required.",
-        })
-        .positive("Amount must be greater than zero."),
-        
-    fromAccountId: z
-        .string()
-        .uuid("Please select a source account."),
+      .number({
+        error: "Amount is required.",
+      })
+      .positive("Amount must be greater than zero."),
 
-    toAccountId: z
-        .string()
-        .uuid("Please select a destination account."),
+    fromAccountId: z.string().uuid("Please select a source account."),
 
-    date: z.date(),
+    toAccountId: z.string().uuid("Please select a destination account."),
 
-    notes: z
-        .string()
-        .max(500)
-        .optional(),
-});
+    date: z.date({
+      error: "Date is required.",
+    }),
 
-export type TransferFormValues =
-    z.infer<typeof transferSchema>;
+    notes: z.string().max(500).optional(),
+  })
+  .refine((data) => data.fromAccountId !== data.toAccountId, {
+    message: "Source and destination accounts must be different.",
+    path: ["toAccountId"],
+  });
+
+export type TransferFormValues = z.infer<typeof transferSchema>;

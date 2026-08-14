@@ -29,7 +29,9 @@ export function Dashboard() {
   const { data: categories = [] } = useCategories();
   const { data: allTransactions = [] } = useTransactions();
   const userName = useAuthStore((state) => state.user?.username ?? "User");
-  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
+  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(
+    null,
+  );
 
   const selectedAccount = useMemo(
     () => accounts.find((account) => account.id === selectedAccountId) ?? null,
@@ -41,7 +43,9 @@ export function Dashboard() {
       return [] as Transaction[];
     }
 
-    return allTransactions.filter((transaction) => transaction.accountId === selectedAccountId);
+    return allTransactions.filter(
+      (transaction) => transaction.accountId === selectedAccountId,
+    );
   }, [allTransactions, selectedAccountId]);
 
   const monthlyTotals = useMemo(() => {
@@ -53,7 +57,8 @@ export function Dashboard() {
       (acc, transaction) => {
         const transactionDate = new Date(transaction.date);
         const isCurrentMonth =
-          transactionDate.getMonth() === month && transactionDate.getFullYear() === year;
+          transactionDate.getMonth() === month &&
+          transactionDate.getFullYear() === year;
 
         if (!isCurrentMonth) {
           return acc;
@@ -81,7 +86,11 @@ export function Dashboard() {
     return [...selectedAccountTransactions]
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, 5);
-  }, [dashboardData?.recentTransactions, selectedAccountId, selectedAccountTransactions]);
+  }, [
+    dashboardData?.recentTransactions,
+    selectedAccountId,
+    selectedAccountTransactions,
+  ]);
 
   const totalBalance = selectedAccount
     ? selectedAccount.balance
@@ -102,12 +111,19 @@ export function Dashboard() {
     : allTransactions;
 
   const incomeExpenseData = useMemo(() => {
-    const monthlyMap = new Map<string, { month: string; income: number; expenses: number }>();
+    const monthlyMap = new Map<
+      string,
+      { month: string; income: number; expenses: number }
+    >();
 
     for (const transaction of chartTransactions) {
       const date = new Date(transaction.date);
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-      const existing = monthlyMap.get(monthKey) ?? { month: monthKey, income: 0, expenses: 0 };
+      const existing = monthlyMap.get(monthKey) ?? {
+        month: monthKey,
+        income: 0,
+        expenses: 0,
+      };
 
       if (transaction.type === "Income") {
         existing.income += transaction.amount;
@@ -132,7 +148,10 @@ export function Dashboard() {
       }
 
       const category = transaction.categoryName?.trim() || "Uncategorized";
-      categoryMap.set(category, (categoryMap.get(category) ?? 0) + transaction.amount);
+      categoryMap.set(
+        category,
+        (categoryMap.get(category) ?? 0) + transaction.amount,
+      );
     }
 
     return [...categoryMap.entries()]
@@ -169,10 +188,19 @@ export function Dashboard() {
 
     return {
       accountsCount: apiAccountsCount > 0 ? apiAccountsCount : accounts.length,
-      categoriesCount: apiCategoriesCount > 0 ? apiCategoriesCount : categories.length,
-      transactionsCount: apiTransactionsCount > 0 ? apiTransactionsCount : allTransactions.length,
+      categoriesCount:
+        apiCategoriesCount > 0 ? apiCategoriesCount : categories.length,
+      transactionsCount:
+        apiTransactionsCount > 0
+          ? apiTransactionsCount
+          : allTransactions.length,
     };
-  }, [dashboardData, accounts.length, categories.length, allTransactions.length]);
+  }, [
+    dashboardData,
+    accounts.length,
+    categories.length,
+    allTransactions.length,
+  ]);
 
   if (isLoading) {
     return <LoadingState message="Loading dashboard data..." />;
@@ -258,7 +286,6 @@ export function Dashboard() {
           <MonthlyBalanceChart data={monthlyBalanceData} />
         </ChartCard>
       </AnalyticsGrid>
-
     </div>
   );
 }

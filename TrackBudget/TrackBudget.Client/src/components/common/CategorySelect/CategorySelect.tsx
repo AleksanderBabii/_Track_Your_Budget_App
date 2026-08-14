@@ -32,14 +32,19 @@ type FormProps<T extends FieldValues> = SharedProps & {
   onChange?: never;
 };
 
-type CategorySelectProps<T extends FieldValues> = ControlledProps | FormProps<T>;
+type CategorySelectProps<T extends FieldValues> =
+  | ControlledProps
+  | FormProps<T>;
 
-export function CategorySelect<T extends FieldValues>(props: CategorySelectProps<T>) {
+export function CategorySelect<T extends FieldValues>(
+  props: CategorySelectProps<T>,
+) {
   const { data: categories = [], isLoading } = useCategories();
 
-  const filteredCategories = "type" in props && props.type
-    ? categories.filter((category) => category.type === props.type)
-    : categories;
+  const filteredCategories =
+    "type" in props && props.type
+      ? categories.filter((category) => category.type === props.type)
+      : categories;
 
   if ("control" in props && "name" in props) {
     const { control, name, label = "Category", disabled } = props;

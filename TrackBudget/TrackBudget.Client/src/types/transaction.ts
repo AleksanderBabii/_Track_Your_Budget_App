@@ -33,4 +33,3 @@ export interface UpdateTransactionRequest {
   notes?: string;
   type?: TransactionType;
 }
-

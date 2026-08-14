@@ -22,7 +22,8 @@ export function TransactionList({
   onEdit,
   onDelete,
 }: TransactionListProps) {
-  const { dates, groupedTransactions, formatDateLabel } = useTransactionGroups(transactions);
+  const { dates, groupedTransactions, formatDateLabel } =
+    useTransactionGroups(transactions);
 
   return (
     <div className={styles.transactionList}>
@@ -52,5 +53,3 @@ export function TransactionList({
     </div>
   );
 }
-
-

@@ -30,14 +30,6 @@ export const Transfers = () => {
   if (error) {
     return <ErrorState title="Failed to load transfers." />;
   }
-  if (filteredTransfers.length === 0) {
-    return (
-      <EmptyState
-        title="No transfers found."
-        description="You have not made any transfers yet."
-      />
-    );
-  }
 
   return (
     <div className={styles.transferPage}>
@@ -55,7 +47,9 @@ export const Transfers = () => {
       {filteredTransfers.length === 0 ? (
         <EmptyState
           title="No transfers found."
-          description="You have not made any transfers yet."
+          description="Create a new transfer to get started."
+          actionLabel="+ Create Transfer"
+          onActionClick={openCreateModal}
         />
       ) : (
         <TransferList

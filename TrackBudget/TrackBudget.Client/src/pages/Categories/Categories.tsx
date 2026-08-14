@@ -20,7 +20,9 @@ export function Categories() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
-  const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
+  const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(
+    null,
+  );
   const deleteCategoryMutation = useDeleteCategory();
 
   function handleEditCategory(category: Category) {
@@ -52,7 +54,9 @@ export function Categories() {
         <div className={styles.header}>
           <div>
             <h1 className={styles.title}>Categories</h1>
-            <p className={styles.description}>Organize your income and expenses.</p>
+            <p className={styles.description}>
+              Organize your income and expenses.
+            </p>
           </div>
 
           <Button type="button" onClick={() => setIsCreateModalOpen(true)}>
