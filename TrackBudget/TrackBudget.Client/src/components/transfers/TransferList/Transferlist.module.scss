@@ -1,0 +1,34 @@
+@use "../../../styles/variables" as *;
+
+.transferList {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-medium;
+  padding: $padding-medium;
+}
+
+.noTransfers {
+  text-align: center;
+  color: $color-text-muted;
+  font-size: $font-size-medium;
+  line-height: 1.5;
+}
+
+.dateHeader {
+  font-size: $font-size-medium;
+  font-weight: 600;
+  color: $color-text-secondary;
+  margin-bottom: $margin-small;
+}
+
+.groupedTransfers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $gap-medium;
+}
+
+@media (min-width: 1025px) {
+  .groupedTransfers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

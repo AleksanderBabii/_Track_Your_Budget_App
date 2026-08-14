@@ -33,8 +33,14 @@ const Register = lazy(() =>
   })),
 );
 const TransactionPage = lazy(() =>
-  import("../pages/TransactionPage/TransactionPage").then((module) => ({
-    default: module.TransactionPage,
+  import("../pages/Transactions/Transactions").then((module) => ({
+    default: module.Transactions,
+  })),
+);
+
+const TransfersPage = lazy(() =>
+  import("../pages/Transfer/Transfers").then((module) => ({
+    default: module.Transfers,
   })),
 );
 
@@ -89,7 +95,7 @@ export function AppRouter() {
 
           <Route path="/budgets" element={<BudgetPage />} />
 
-          <Route path="/transfers" element={<PlaceholderPage title="Transfers" />} />
+          <Route path="/transfers" element={<TransfersPage />} />
 
           <Route path="/reports" element={<PlaceholderPage title="Reports" />} />
 

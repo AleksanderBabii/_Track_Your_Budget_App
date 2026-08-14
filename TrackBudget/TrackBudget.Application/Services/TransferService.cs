@@ -17,7 +17,7 @@ public class TransferService(
     IUnitOfWork unitOfWork
 ) : ITransferService
 {
-    public async Task<IReadOnlyCollection<TransferDto>> GetAllAsync(
+    public async Task<IReadOnlyCollection<TransferDto>> GetAllByUserIdAsync(
         Guid userId,
         CancellationToken cancellationToken = default
     )

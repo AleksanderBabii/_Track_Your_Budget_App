@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { useAccounts } from "../accountHooks/useAccounts";
+import { useAccounts } from "../accountsHooks/useAccounts";
 import { useTransactions } from "./useTransactions";
 
 import type { Currency } from "../../types/account";

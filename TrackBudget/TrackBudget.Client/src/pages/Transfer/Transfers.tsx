@@ -1,74 +1,69 @@
 import { Button } from "../../components/common/Button/Button";
-import { Card } from "../../components/common/Card/Card";
-
 import { LoadingState } from "../../components/common/LoadingState/LoadingState";
 import { ErrorState } from "../../components/common/ErrorState/ErrorState";
 import { EmptyState } from "../../components/common/EmptyState/EmptyState";
 
-import { useTransfers } from "../../hooks/transfersHooks/useTransfers";
+import { TransferFilterBar } from "../../components/transfers/TransferFilterBar/TransferFilterBar";
+import { TransferList } from "../../components/transfers/TransferList/TransferList";
+import { CreateTransferModal } from "../../components/transfers/CreateTransferModal/CreateTransferModal";
+
+import { useTransferPageState } from "../../hooks/transfersHooks/useTransferPageState";
 
 import styles from "./Transfers.module.scss";
 
 export const Transfers = () => {
-  const { transfers, isLoading, error } = useTransfers();
+  const {
+    isCreateOpen,
+    filters,
+    setFilters,
+    filteredTransfers,
+    accountCurrencyById,
+    isLoading,
+    error,
+    openCreateModal,
+    closeCreateModal,
+  } = useTransferPageState();
 
-    if (isLoading) {
-        return <LoadingState message="Loading transfers..." />;
-    }
-    if (error) {
-        return <ErrorState title="Failed to load transfers." />;
-    }
-    if (transfers.length === 0) {
-        return <EmptyState title="No transfers found." description="You have not made any transfers yet." />;
-    }
-    }
-
+  if (isLoading) {
+    return <LoadingState message="Loading transfers..." />;
+  }
+  if (error) {
+    return <ErrorState title="Failed to load transfers." />;
+  }
+  if (filteredTransfers.length === 0) {
     return (
-        <div className={styles.transfersPage}>
-            <div className={styles.header}>
-                <h1>Transfers</h1>
-                <p>Here you can view all your transfers.</p>
-            </div>
-
-            < Button onClick={() => { /* Handle new transfer */ }}>+ New Transfer</Button>
-        </div>
-
-        <TransferFilterBar filters={filters} onFiltersChange={setFilters} />
-
-        {filteredTransfers.length === 0 ? (
-            <EmptyState
-                title="No transfers found."
-                description="You have not made any transfers yet."
-                actionLabel="Create Transfer"
-                onActionClick={() => { /* Handle new transfer */ }}
-            />
-        ) : (
-            <TransfersList
-                transfers={filteredTransfers}
-                accountCurrencyById={accountCurrencyById}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-            />
-        )}
-
-        <CreateTransferModal
-            isOpen={isCreateOpen}
-            onClose={closeCreateModal}
-        />
-
-        <EditTransferModal
-            isOpen={isEditOpen}
-            transfers={transferToEdit}
-            onClose={handleCloseEditModal}
-        />
-
-        {isDeleteOpen && (
-            <DeleteTransferDialog
-                transfer={transferToDelete}
-                isOpen={isDeleteOpen}
-                onClose={handleCloseDeleteModal}
-            />
-        )}
-        </div>
+      <EmptyState
+        title="No transfers found."
+        description="You have not made any transfers yet."
+      />
     );
-}
+  }
+
+  return (
+    <div className={styles.transferPage}>
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>Transfers</h1>
+          <p className={styles.subtitle}>Manage your transfers</p>
+        </div>
+
+        <Button onClick={openCreateModal}>+ New Transfer</Button>
+      </div>
+
+      <TransferFilterBar filters={filters} onFiltersChange={setFilters} />
+
+      {filteredTransfers.length === 0 ? (
+        <EmptyState
+          title="No transfers found."
+          description="You have not made any transfers yet."
+        />
+      ) : (
+        <TransferList
+          transfers={filteredTransfers}
+          accountCurrencyById={accountCurrencyById}
+        />
+      )}
+      <CreateTransferModal isOpen={isCreateOpen} onClose={closeCreateModal} />
+    </div>
+  );
+};

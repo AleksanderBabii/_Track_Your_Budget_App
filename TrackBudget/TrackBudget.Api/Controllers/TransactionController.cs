@@ -9,16 +9,9 @@ namespace TrackBudget.Api.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/transactions")]
-public class TransactionsController : ControllerBase
+public class TransactionsController(ITransactionService transactionService) : ControllerBase
 {
-    private readonly ITransactionService _transactionService;
-
-    public TransactionsController(
-        ITransactionService transactionService
-    )
-    {
-        _transactionService = transactionService;
-    }
+    private readonly ITransactionService _transactionService = transactionService;
 
     [HttpGet]
     public async Task<

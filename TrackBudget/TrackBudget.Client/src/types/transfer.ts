@@ -1,5 +1,5 @@
 export interface Transfer {
-    id: string;
+    accountId: string;
     amount: number;
     date: string;
     notes: string | null;
@@ -13,15 +13,7 @@ export interface Transfer {
 export interface CreateTransfer {
     amount: number;
     date: string;
-    notes: string | null;
-    fromAccountId: string;
-    toAccountId: string;
-}
-
-export interface UpdateTransfer {
-    amount: number;
-    date: string;
-    notes: string | null;
+    notes: string | null | undefined;
     fromAccountId: string;
     toAccountId: string;
 }

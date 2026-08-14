@@ -1,0 +1,35 @@
+@use "../../../styles/variables" as *;
+
+.filterBar {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-large;
+  align-items: stretch;
+  padding: $padding-large;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  background: $color-surface;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $gap-xs;
+  padding-bottom: $gap-small;
+  border-bottom: 1px dashed $color-border;
+}
+
+.filterActions {
+  display: flex;
+  align-items: flex-end;
+}
+
+@media (min-width: 1025px) {
+  .filterRow {
+    flex-wrap: nowrap;
+  }
+
+  .filterActions {
+    margin-left: auto;
+  }
+}

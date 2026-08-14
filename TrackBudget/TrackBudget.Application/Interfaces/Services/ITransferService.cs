@@ -4,7 +4,7 @@ namespace TrackBudget.Application.Interfaces.Services;
 
 public interface ITransferService
 {
-    Task<IReadOnlyCollection<TransferDto>> GetAllAsync(
+    Task<IReadOnlyCollection<TransferDto>> GetAllByUserIdAsync(
         Guid userId,
         CancellationToken cancellationToken = default
     );

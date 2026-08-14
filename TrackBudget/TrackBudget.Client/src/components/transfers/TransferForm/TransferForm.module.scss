@@ -1,0 +1,29 @@
+@use "../../../styles/variables" as *;
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-small;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $gap-small;
+
+    margin-top: $margin-small;
+    margin-bottom: $margin-medium;
+
+    border-top: 1px solid $color-border;
+}
+
+@media (max-width: 768px) {
+    .actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+
+        button {
+            width: 100%;
+        }
+    }
+}

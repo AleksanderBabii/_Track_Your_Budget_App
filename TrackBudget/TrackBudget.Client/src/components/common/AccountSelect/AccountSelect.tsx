@@ -8,7 +8,7 @@ import {
 
 import { Select } from "../Select/Select";
 
-import { useAccounts } from "../../../hooks/accountHooks/useAccounts";
+import { useAccounts } from "../../../hooks/accountsHooks/useAccounts";
 
 type SharedProps = {
   label?: string;

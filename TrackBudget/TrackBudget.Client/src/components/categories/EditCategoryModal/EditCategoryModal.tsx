@@ -1,5 +1,5 @@
-import { useUpdateCategory } from "../../../hooks/categoryHooks/useUpdateCategory";
-import { useCategoryFormSubmission } from "../../../hooks/categoryHooks/useCategoryFormSubmission";
+import { useUpdateCategory } from "../../../hooks/categoriesHooks/useUpdateCategory";
+import { useCategoryFormSubmission } from "../../../hooks/categoriesHooks/useCategoryFormSubmission";
 import type { Category } from "../../../types/category";
 import type { CategoryFormValues } from "../../../utils/categorySchema";
 import { Modal } from "../../common/Modal/Modal";

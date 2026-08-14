@@ -1,5 +1,5 @@
-import { useCreateCategory } from "../../../hooks/categoryHooks/useCreateCategory";
-import { useCategoryFormSubmission } from "../../../hooks/categoryHooks/useCategoryFormSubmission";
+import { useCreateCategory } from "../../../hooks/categoriesHooks/useCreateCategory";
+import { useCategoryFormSubmission } from "../../../hooks/categoriesHooks/useCategoryFormSubmission";
 
 import type { CategoryFormValues } from "../../../utils/categorySchema";
 

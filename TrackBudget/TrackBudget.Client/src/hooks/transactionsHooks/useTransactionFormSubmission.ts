@@ -1,6 +1,6 @@
 import { notify } from "../../utils/toast";
 
-import { useCategories } from "../categoryHooks/useCategories";
+import { useCategories } from "../categoriesHooks/useCategories";
 
 import type { TransactionFormValues } from "../../utils/transactionSchema";
 

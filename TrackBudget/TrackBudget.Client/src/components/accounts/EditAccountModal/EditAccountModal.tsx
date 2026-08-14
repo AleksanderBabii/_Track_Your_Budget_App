@@ -1,4 +1,4 @@
-import { useUpdateAccount } from "../../../hooks/accountHooks/useUpdateAccount";
+import { useUpdateAccount } from "../../../hooks/accountsHooks/useUpdateAccount";
 
 import type { Account } from "../../../types/account";
 import type { AccountFormValues } from "../../../utils/accountSchema";

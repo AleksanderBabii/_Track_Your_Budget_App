@@ -12,15 +12,11 @@ import styles from "./TransferList.module.scss";
 interface TransferListProps {
     transfers: Transfer[];
     accountCurrencyById?: Record<string, Currency>;
-    onEdit: (transfer: Transfer) => void;
-    onDelete: (transferId: string) => void;
 }
 
 export function TransferList({
     transfers,
     accountCurrencyById,
-    onEdit,
-    onDelete,
 }: TransferListProps) {
     const { dates, groupedTransfers, formatDateLabel } = useTransferGroups(transfers);
 
@@ -39,11 +35,9 @@ export function TransferList({
                     <div className={styles.groupedTransfers}>
                         {groupedTransfers[dateKey].map((transfer) => (
                             <TransferCard
-                                key={transfer.id}
+                                key={transfer.accountId + transfer.date + transfer.amount}
                                 transfer={transfer}
                                 currency={accountCurrencyById?.[transfer.fromAccountId] ?? "USD"}
-                                onEdit={onEdit}
-                                onDelete={onDelete}
                             />
                         ))}
                     </div>

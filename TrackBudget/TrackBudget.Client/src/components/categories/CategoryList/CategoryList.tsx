@@ -1,4 +1,4 @@
-import { useCategories } from "../../../hooks/categoryHooks/useCategories";
+import { useCategories } from "../../../hooks/categoriesHooks/useCategories";
 import type { Category } from "../../../types/category";
 import { Spinner } from "../../common/Spinner/Spinner";
 import { CategoryCard } from "../CategoryCard/CategoryCard";

@@ -8,7 +8,7 @@ import {
 
 import { Select } from "../Select/Select";
 
-import { useCategories } from "../../../hooks/categoryHooks/useCategories";
+import { useCategories } from "../../../hooks/categoriesHooks/useCategories";
 
 import type { CategoryType } from "../../../types/category";
 

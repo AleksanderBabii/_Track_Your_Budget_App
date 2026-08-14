@@ -10,7 +10,7 @@ import { CategoryList } from "../../components/categories/CategoryList/CategoryL
 
 import { PageContainer } from "../../components/layout/PageContainer/PageContainer";
 
-import { useDeleteCategory } from "../../hooks/categoryHooks/useDeleteCategory";
+import { useDeleteCategory } from "../../hooks/categoriesHooks/useDeleteCategory";
 
 import type { Category } from "../../types/category";
 

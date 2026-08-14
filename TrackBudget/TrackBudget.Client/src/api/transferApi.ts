@@ -1,6 +1,6 @@
 import { api } from "./axios";
 
-import type { Transfer, CreateTransfer, UpdateTransfer } from "../types/transfer";
+import type { Transfer, CreateTransfer } from "../types/transfer";
 
 export async function getTransfers(): Promise<Transfer[]> {
     const response = await api.get<Transfer[]>("/transfers");
@@ -17,11 +17,7 @@ export async function createTransfer(transfer: CreateTransfer): Promise<Transfer
     return response.data;
 }
 
-export async function updateTransfer(id: string, transfer: UpdateTransfer): Promise<Transfer> {
-    const response = await api.put<Transfer>(`/transfers/${id}`, transfer);
-    return response.data;
-}
-
-export async function deleteTransfer(id: string): Promise<void> {
-    await api.delete(`/transfers/${id}`);
-}
+// export async function updateTransfer(id: string, transfer: UpdateTransfer): Promise<Transfer> {
+//     const response = await api.put<Transfer>(`/transfers/${id}`, transfer);
+//     return response.data;
+// }

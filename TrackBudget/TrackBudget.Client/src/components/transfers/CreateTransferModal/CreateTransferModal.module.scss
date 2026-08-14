@@ -1,0 +1,21 @@
+@use "../../../styles/variables" as *;
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-large;
+}
+
+.description {
+  margin: 0;
+
+  color: $color-text-muted;
+  font-size: $font-size-small;
+  line-height: 1.5;
+}
+
+@media (min-width: 1025px) {
+  .content {
+    gap: $gap-xl;
+  }
+}
