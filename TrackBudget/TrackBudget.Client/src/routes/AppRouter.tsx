@@ -50,6 +50,12 @@ const BudgetPage = lazy(() =>
   })),
 );
 
+const ReportPage = lazy(() =>
+  import("../pages/Report/Report").then((module) => ({
+    default: module.Report,
+  })),
+);
+
 function PlaceholderPage({ title }: { title: string }) {
   return <div>{title} Page</div>;
 }
@@ -97,7 +103,7 @@ export function AppRouter() {
 
           <Route path="/transfers" element={<TransfersPage />} />
 
-          <Route path="/reports" element={<PlaceholderPage title="Reports" />} />
+          <Route path="/reports" element={<ReportPage />} />
 
           <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
           

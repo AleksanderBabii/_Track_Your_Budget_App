@@ -1,0 +1,71 @@
+@use "../../styles/variables" as *;
+
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-medium;
+    padding: $padding-medium;
+    background-color: $color-background;
+    color: $color-text;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $gap-medium;
+}
+
+.filters {
+    display: flex;
+    gap: $gap-medium;
+}
+
+.filterGroup {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-small;
+}
+
+.error {
+    color: $color-danger;
+    font-size: $font-size-small;
+}
+
+.reportSummary {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-small;
+}
+
+.card {
+    background-color: $color-surface;
+    border-radius: $border-radius-md;
+    padding: $padding-medium;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reportByCategory {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-small;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: $padding-small;
+        text-align: left;
+        border-bottom: 1px solid $color-border;
+
+    }
+}
+
+.reportTransfers {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-small;
+}

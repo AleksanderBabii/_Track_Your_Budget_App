@@ -14,29 +14,35 @@ $font-weight-medium: 500;
 $font-weight-semibold: 600;
 $font-weight-bold: 700;
 
-$gap-2xs: 4px;
-$gap-xs: 6px;
-$gap-small: 8px;
-$gap-medium: 16px;
-$gap-large: 24px;
-$gap-xl: 32px;
-$gap-2xl: 40px;
+$gap-2xs: 0.250rem;
+$gap-xs: 0.500rem;
+$gap-small: 0.875rem;
+$gap-medium: 1rem;
+$gap-large: 1.5rem;
+$gap-xl: 2rem;
+$gap-2xl: 2.5rem;
 
-$padding-2xs: 4px;
-$padding-xs: 6px;
-$padding-small: 8px;
-$padding-medium: 16px;
-$padding-large: 24px;
-$padding-xl: 32px;
-$padding-2xl: 40px;
+$padding-2xs: 0.250rem;
+$padding-xs: 0.500rem;
+$padding-small: 0.875rem;
+$padding-medium: 1rem;
+$padding-large: 1.5rem;
+$padding-xl: 2rem;
+$padding-2xl: 2.5rem;
 
-$margin-2xs: 4px;
-$margin-xs: 6px;
-$margin-small: 8px;
-$margin-medium: 16px;
-$margin-large: 24px;
-$margin-xl: 32px;
-$margin-2xl: 40px;
+$margin-2xs: 0.250rem;
+$margin-xs: 0.500rem;
+$margin-small: 0.875rem;
+$margin-medium: 1rem;
+$margin-large: 1.5rem;
+$margin-xl: 2rem;
+$margin-2xl: 2.5rem;
+
+$border-radius-sm: 0.25rem;
+$border-radius-md: 0.625rem;
+$border-radius-lg: 1rem;
+$border-radius-xl: 1.375rem;
+$border-radius-pill: 2rem;
 
 $color-background: #f2f5fb;
 $color-background-secondary: #0d72de;
@@ -67,12 +73,6 @@ $color-on-surface: #0f172a;
 $gradient-page: linear-gradient(165deg, #f9fbff 0%, #edf3ff 48%, #f6f9ff 100%);
 $gradient-brand: linear-gradient(140deg, #0f5cc8 0%, #2aa9ff 100%);
 $gradient-brand-soft: linear-gradient(140deg, rgb(15 92 200 / 14%) 0%, rgb(42 169 255 / 10%) 100%);
-
-$border-radius-sm: 6px;
-$border-radius-md: 10px;
-$border-radius-lg: 16px;
-$border-radius-xl: 22px;
-$border-radius-pill: 999px;
 
 $shadow-sm: 0 1px 2px rgb(15 23 42 / 7%), 0 8px 20px rgb(15 23 42 / 5%);
 $shadow-md: 0 10px 30px rgb(15 23 42 / 11%), 0 2px 8px rgb(15 23 42 / 7%);

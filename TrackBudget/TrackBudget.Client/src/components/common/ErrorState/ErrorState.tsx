@@ -3,19 +3,19 @@ import { Button } from "../Button/Button";
 import styles from "./ErrorState.module.scss";
 
 interface ErrorStateProps {
-  title?: string;
+  message?: string;
   description?: string;
   onRetry?: () => void;
 }
 
 export function ErrorState({
-  title = "Something went wrong.",
+  message = "Something went wrong.",
   description = "Please try again.",
   onRetry,
 }: ErrorStateProps) {
   return (
     <div className={styles.errorState}>
-      <h2 className={styles.title}>{title}</h2>
+      <h2 className={styles.title}>{message}</h2>
 
       <p className={styles.description}>{description}</p>
       {onRetry && <Button onClick={onRetry}>Retry</Button>}

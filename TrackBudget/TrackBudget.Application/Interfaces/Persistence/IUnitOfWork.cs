@@ -1,5 +1,6 @@
-namespace TrackBudget.Application.Interfaces.Persistence;
 using TrackBudget.Application.Interfaces.Repositories;
+
+namespace TrackBudget.Application.Interfaces.Persistence;
 
 public interface IUnitOfWork
 {
