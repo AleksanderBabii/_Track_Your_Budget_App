@@ -28,7 +28,7 @@ export const Transfers = () => {
     return <LoadingState message="Loading transfers..." />;
   }
   if (error) {
-    return <ErrorState title="Failed to load transfers." />;
+    return <ErrorState message="Failed to load transfers." />;
   }
 
   return (
@@ -46,7 +46,7 @@ export const Transfers = () => {
 
       {filteredTransfers.length === 0 ? (
         <EmptyState
-          title="No transfers found."
+          message="No transfers found."
           description="Create a new transfer to get started."
           actionLabel="+ Create Transfer"
           onActionClick={openCreateModal}

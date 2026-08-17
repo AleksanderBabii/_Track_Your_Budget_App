@@ -211,7 +211,7 @@ export function Dashboard() {
       ? `Error loading dashboard data (${error.response?.status ?? "request failed"}).`
       : "Error loading dashboard data.";
 
-    return <ErrorState title="Error" description={errorDescription} />;
+    return <ErrorState message="Error" description={errorDescription} />;
   }
 
   return (

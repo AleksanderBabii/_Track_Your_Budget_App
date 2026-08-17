@@ -25,7 +25,6 @@ export function useTransferFormSubmission({
     }
     
     const payload = {
-        title: values.title,
         amount: values.amount,
         fromAccountId: values.fromAccountId,
         toAccountId: values.toAccountId,

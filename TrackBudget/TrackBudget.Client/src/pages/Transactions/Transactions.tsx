@@ -40,7 +40,7 @@ export function Transactions() {
   if (error) {
     return (
       <ErrorState
-        title="Failed to load transactions."
+        message="Failed to load transactions."
         description="Please try again in a moment."
       />
     );
@@ -61,7 +61,7 @@ export function Transactions() {
 
       {filteredTransactions.length === 0 ? (
         <EmptyState
-          title="No Transactions"
+          message="No Transactions"
           description="Create your first transaction to start tracking your finances."
           actionLabel="+ New Transaction"
           onActionClick={openCreateModal}

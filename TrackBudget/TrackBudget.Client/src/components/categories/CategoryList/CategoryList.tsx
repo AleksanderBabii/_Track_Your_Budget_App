@@ -40,7 +40,7 @@ export function CategoryList({
     return (
       <div className={styles.state}>
         <ErrorState
-          title="Failed to load categories."
+          message="Failed to load categories."
           description="Something went wrong while loading your categories. Please check your internet connection and try again."
           onRetry={refetch}
         />
@@ -51,7 +51,7 @@ export function CategoryList({
   if (categories.length === 0) {
     return (
       <EmptyState
-        title="No categories found."
+        message="No categories found."
         description="You haven't created any categories yet. Start by creating a new category to organize your budgets."
         actionLabel="Create Category"
         onActionClick={onCreate}

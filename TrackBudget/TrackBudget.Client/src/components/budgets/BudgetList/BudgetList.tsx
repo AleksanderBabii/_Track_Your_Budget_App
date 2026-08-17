@@ -31,7 +31,7 @@ export function BudgetList({ onDelete, onCreate, onEdit }: BudgetListProps) {
     return (
       <div className={styles.state}>
         <ErrorState
-          title="Failed to load budgets."
+          message="Failed to load budgets."
           description="Something went wrong while loading your budgets. Please check your internet connection and try again."
           onRetry={refetch}
         />
@@ -42,7 +42,7 @@ export function BudgetList({ onDelete, onCreate, onEdit }: BudgetListProps) {
   if (budgets.length === 0) {
     return (
       <EmptyState
-        title="No budgets found."
+        message="No budgets found."
         description="You haven't created any budgets yet. Start by creating a new budget to manage your finances."
         actionLabel="Create Budget"
         onActionClick={onCreate}

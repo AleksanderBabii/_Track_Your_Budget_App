@@ -72,6 +72,17 @@ public class ReportService(
             .OrderByDescending(r => r.Amount)
             .ToList();
 
+            var monthlyReports = filteredTransactions
+            .GroupBy(t => new { Year = t.Date.Year, Month = t.Date.Month })
+            .Select(g => new ReportMonthlyDto
+            {
+                Month = $"{g.Key.Year}-{g.Key.Month:D2}",
+                TotalIncome = g.Where(t => t.Type == TransactionType.Income).Sum(t => t.Amount),
+                TotalExpenses = g.Where(t => t.Type == TransactionType.Expense).Sum(t => t.Amount)
+            })
+            .OrderBy(r => r.Month)
+            .ToList();
+
             var reportTransfers = filteredTransfers
             .OrderByDescending(t => t.Date)
             .ThenByDescending(t => t.Id)
@@ -95,7 +106,8 @@ public class ReportService(
             Summary = summary,
             ExpensesByCategory = expensesByCategory,
             IncomeByCategory = incomeByCategory,
-            Transfers = reportTransfers
+            Transfers = reportTransfers,
+            MonthlyReports = monthlyReports
         };
     }
 }

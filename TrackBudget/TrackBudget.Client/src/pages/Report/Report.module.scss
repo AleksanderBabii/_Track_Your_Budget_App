@@ -1,71 +1,190 @@
 @use "../../styles/variables" as *;
 
 .pageContainer {
-    display: flex;
-    flex-direction: column;
-    gap: $gap-medium;
-    padding: $padding-medium;
-    background-color: $color-background;
-    color: $color-text;
+  display: flex;
+  flex-direction: column;
+  gap: $gap-medium;
+  padding: $padding-medium;
+  background-color: $color-background;
+  color: $color-text;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: $gap-medium;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $gap-medium;
+  margin-bottom: $margin-medium;
 }
 
 .filters {
-    display: flex;
-    gap: $gap-medium;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: $gap-medium;
+  margin-bottom: $margin-medium;
 }
 
 .filterGroup {
-    display: flex;
-    flex-direction: column;
-    gap: $gap-small;
+  display: flex;
+  flex-direction: column;
+  gap: $gap-small;
+  input {
+    min-height: 40px;
+  }
 }
 
 .error {
-    color: $color-danger;
-    font-size: $font-size-small;
+  color: $color-danger;
+  font-size: $font-size-small;
 }
 
 .reportSummary {
-    display: flex;
-    flex-direction: column;
-    gap: $gap-small;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $gap-small;
+  margin-bottom: $gap-small;
 }
 
 .card {
-    background-color: $color-surface;
-    border-radius: $border-radius-md;
-    padding: $padding-medium;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: $padding-small;
+  border-radius: $border-radius-sm;
+  background: $color-surface;
+  border: 1px solid $color-border;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  gap: $gap-small;
+
+  span {
+    font-size: 14px;
+    color: $color-text-secondary;
+  }
+
+  strong {
+    font-size: 24px;
+    font-weight: 600;
+  }
 }
 
-.reportByCategory {
-    display: flex;
-    flex-direction: column;
-    gap: $gap-small;
+.reportByCategory,
+.reportTransfers {
+  margin-bottom: $margin-medium;
+  padding: $padding-small;
+
+  border-radius: 12px;
+  background: $color-surface;
+  border: 1px solid $color-border;
+
+  h2 {
+    margin-bottom: $margin-medium;
+  }
 }
 
 .table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 
-    th,
-    td {
-        padding: $padding-small;
-        text-align: left;
-        border-bottom: 1px solid $color-border;
-
-    }
+  th,
+  td {
+    padding: $padding-small;
+    text-align: left;
+    border-bottom: 1px solid $color-border;
+  }
 }
 
-.reportTransfers {
-    display: flex;
+.presets {
+  display: flex;
+  align-items: center;
+  gap: $gap-small;
+  flex-wrap: wrap;
+
+  button {
+    background-color: $color-primary;
+    color: $color-on-primary;
+    border: none;
+    border-radius: $border-radius-sm;
+    padding: $padding-small $padding-medium;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-primary;
+    }
+  }
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: $padding-xs;
+    text-align: left;
+    border-bottom: 1px solid $color-border;
+  }
+
+  th {
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 650px) {
+  .reportSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .reportByCategory,
+  .reportTransfers {
+    padding: $padding-small;
+  }
+
+  .card {
+    padding: $padding-small;
+
+    strong {
+      font-size: 20px;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .filters {
     flex-direction: column;
-    gap: $gap-small;
+    align-items: stretch;
+  }
+
+  .filterGroup {
+    width: 100%;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .presets {
+    width: 100%;
+
+    button {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: 650px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      width: 100%;
+    }
+  }
 }

@@ -7,5 +7,6 @@ public class ReportDto
     public ReportSummaryDto Summary { get; set; } = new();
     public List<ReportCategoryDto> ExpensesByCategory { get; set; } = new();
     public List<ReportCategoryDto> IncomeByCategory { get; set; } = new();
+    public List<ReportMonthlyDto> MonthlyReports { get; set; } = new();
     public List<ReportTransferDto> Transfers { get; set; } = new();
 }
