@@ -10,10 +10,17 @@ namespace TrackBudget.Api.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/reports")] 
-public class ReportController( IReportService reportService) : ControllerBase
+public class ReportController : ControllerBase
 {
+    private readonly IReportService reportService;
+
+    public ReportController(IReportService reportService)
+    {
+        this.reportService = reportService;
+    }
+
     [HttpGet]
-    public async Task<ActionResult<ReportDto>> GetReportAsync(
+    public async Task<ActionResult<ReportDto>> GetReport(
         [FromQuery] DateTime from,
         [FromQuery] DateTime to,
         CancellationToken cancellationToken)

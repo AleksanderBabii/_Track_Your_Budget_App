@@ -107,7 +107,7 @@ export function exportReportToCsv(
     "Expenses",
   ]);
 
-  for (const month of report.monthlyReport) {
+  for (const month of report.monthlyReports) {
     rows.push([
       month.month,
       String(month.totalIncome),

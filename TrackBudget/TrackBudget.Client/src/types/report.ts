@@ -38,5 +38,5 @@ export interface Report {
   expensesByCategory: ReportCategory[];
   incomeByCategory: ReportCategory[];
   transfers: ReportTransfer[];
-  monthlyReport: ReportMonthly[];
+  monthlyReports: ReportMonthly[];
 }

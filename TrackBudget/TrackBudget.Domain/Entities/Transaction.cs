@@ -26,4 +26,6 @@ public class Transaction : BaseEntity
 
     public Category Category { get; set; } = null!;
 
+    public TransactionSource Source { get; set; } = TransactionSource.Manual;
+
 }

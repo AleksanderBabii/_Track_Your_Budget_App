@@ -111,6 +111,8 @@ export function Report() {
     error,
   } = useReport(fromDate, toDate);
 
+  console.log("REPORT DATA:", report);
+
   const dateError = useMemo(() => {
     if (!fromDate || !toDate) {
       return "Both From date and To date are required.";
@@ -324,9 +326,9 @@ export function Report() {
           <section className={styles.reportMonthly}>
             <h2>Monthly Report</h2>
 
-            <MonthlyReportChart data={report.monthlyReport} />
+            <MonthlyReportChart data={report.monthlyReports} />
 
-            {report.monthlyReport.length === 0 ? (
+            {report.monthlyReports.length === 0 ? (
               <p>No data recorded in this date range.</p>
             ) : (
               <div className={styles.tableWrapper}>
@@ -340,7 +342,7 @@ export function Report() {
                   </thead>
 
                   <tbody>
-                    {report.monthlyReport.map((month) => (
+                    {report.monthlyReports.map((month) => (
                       <tr key={month.month}>
                         <td>{month.month}</td>
                         <td>${month.totalIncome.toFixed(2)}</td>
