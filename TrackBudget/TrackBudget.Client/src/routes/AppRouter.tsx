@@ -56,6 +56,12 @@ const ReportPage = lazy(() =>
   })),
 );
 
+const ImportPage = lazy(() =>
+  import("../pages/Import/Import").then((module) => ({
+    default: module.Import,
+  })),
+);
+
 function PlaceholderPage({ title }: { title: string }) {
   return <div>{title} Page</div>;
 }
@@ -104,6 +110,8 @@ export function AppRouter() {
           <Route path="/transfers" element={<TransfersPage />} />
 
           <Route path="/reports" element={<ReportPage />} />
+          
+          <Route path="/import" element={<ImportPage />} />
 
           <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
           

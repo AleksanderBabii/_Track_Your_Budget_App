@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+
 using TrackBudget.Application.Interfaces.Repositories;
-using TrackBudget.Domain.Entities;
+
 using TrackBudget.Infrastructure.Data;
+
+using TrackBudget.Domain.Entities;
+using TrackBudget.Domain.Enums;
 
 namespace TrackBudget.Infrastructure.Repositories;
 
@@ -41,6 +45,30 @@ public class TransactionRepository(AppDbContext context) : ITransactionRepositor
                 cancellationToken
             );
     }
+
+    public Task<bool> ExistsAsync( 
+        Guid userId,
+        Guid accountId,
+        DateTime date,
+        decimal amount,
+        TransactionType type,
+        string title,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _dbContext.Transactions
+            .AsNoTracking()
+            .AnyAsync(
+                transaction =>
+                    transaction.UserId == userId &&
+                    transaction.AccountId == accountId &&
+                    transaction.Date == date &&
+                    transaction.Amount == amount &&
+                    transaction.Type == type &&
+                    transaction.Title == title,
+                cancellationToken
+            );
+    } 
 
     public async Task AddAsync(
         Transaction transaction,

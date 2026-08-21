@@ -1,4 +1,3 @@
-
 using TrackBudget.Application.DTOs.Imports;
 using TrackBudget.Application.DTOs.Transactions;
 
@@ -10,12 +9,10 @@ public interface ITransactionImportService
         Stream fileStream,
         Guid userId,
         Guid accountId,
-        CancellationToken cancellationToken = default
-    );
+        CancellationToken cancellationToken = default);
 
     Task<List<TransactionDto>> ConfirmAsync(
         ConfirmImportDto request,
         Guid userId,
-        CancellationToken cancellationToken = default
-    );
+        CancellationToken cancellationToken = default);
 }

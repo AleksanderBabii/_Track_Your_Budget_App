@@ -2,13 +2,16 @@ using System.Globalization;
 using System.Text;
 using System.Diagnostics.CodeAnalysis;
 
+using TrackBudget.Application.DTOs.Imports;
+using TrackBudget.Application.Interfaces.Imports;
+
 namespace TrackBudget.Infrastructure.Imports.Csv;
 
-public sealed class CsvParser
+public sealed class CsvParser : ICsvParser
 {
     private static readonly char[] SupportedDelimiters = new[] { ',', ';', '\t' };
 
-    public async Task<CsvParserResult> ParseAsync(
+    public async Task<CsvParserResultDto> ParseAsync(
         Stream stream,
         CancellationToken cancellationToken = default
     )
@@ -32,7 +35,7 @@ public sealed class CsvParser
         detectEncodingFromByteOrderMarks: true, bufferSize: 1024, leaveOpen: true
         );
         // Read the header line
-        var result = new CsvParserResult();
+        var result = new CsvParserResultDto();
 
         var headerLine = await reader.ReadLineAsync(cancellationToken);
 
@@ -82,7 +85,7 @@ public sealed class CsvParser
                     continue;
                 }
 
-                var row = new CsvRow
+                var row = new CsvRowDto
                 {
                     RowNumber = rowNumber
                 };
@@ -199,7 +202,7 @@ public sealed class CsvParser
         return header.Trim().Trim('"').Trim().ToLowerInvariant();
     }
 
-    public static bool TryGetValue(CsvRow row, IEnumerable<string> possibleHeaders, [NotNullWhen(true)]out string? value) // Try to get a value from a CsvRow using a list of possible headers
+    public static bool TryGetValue(CsvRowDto row, IEnumerable<string> possibleHeaders, [NotNullWhen(true)]out string? value) // Try to get a value from a CsvRow using a list of possible headers
     {
         foreach (var header in possibleHeaders)
         {

@@ -1,7 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-
 using Mapster;
 using MapsterMapper;
 
@@ -14,6 +13,7 @@ using TrackBudget.Infrastructure.Authentication;
 using TrackBudget.Infrastructure.Data;
 using TrackBudget.Infrastructure.Repositories;
 using TrackBudget.Infrastructure.Persistence;
+using TrackBudget.Infrastructure.Imports.Csv;
 
 using TrackBudget.Application.Interfaces.Authentication;
 using TrackBudget.Application.Interfaces.Repositories;
@@ -22,6 +22,7 @@ using TrackBudget.Application.Services;
 using TrackBudget.Application.Validators.Auth;
 using TrackBudget.Application.Mapping;
 using TrackBudget.Application.Interfaces.Persistence;
+using TrackBudget.Application.Interfaces.Imports;
 
 using TrackBudget.Api.Middleware;
 
@@ -109,6 +110,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
 builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<ICsvParser, CsvParser>();
+builder.Services.AddScoped<ICsvTransactionMapper, CsvTransactionMapper>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();

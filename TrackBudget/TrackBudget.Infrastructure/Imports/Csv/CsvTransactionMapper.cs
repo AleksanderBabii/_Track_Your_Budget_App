@@ -1,10 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
-
 using TrackBudget.Application.DTOs.Imports;
+using TrackBudget.Application.Interfaces.Imports;
+
 
 namespace TrackBudget.Infrastructure.Imports.Csv;
 
-public sealed class CsvTransactionMapper
+public sealed class CsvTransactionMapper : ICsvTransactionMapper
 {
     private static readonly string[] DateHeaders =
     [
@@ -66,7 +66,7 @@ public sealed class CsvTransactionMapper
     ];
 
     public bool TryMap(
-        CsvRow row,
+        CsvRowDto row,
         out ImportTransactionDto transaction,
         out string? error)
     {
@@ -115,7 +115,7 @@ public sealed class CsvTransactionMapper
             Title = string.IsNullOrWhiteSpace(title)
                 ? "Imported transaction"
                 : title.Trim(),
-            Amount = Math.Abs(amount),
+            Amount = amount,
             Notes = string.IsNullOrWhiteSpace(notes)
                 ? null
                 : notes.Trim()
@@ -125,7 +125,7 @@ public sealed class CsvTransactionMapper
     }
 
     private static bool TryGetAmount(
-        CsvRow row,
+        CsvRowDto row,
         out decimal amount)
     {
         if (CsvParser.TryGetValue(
