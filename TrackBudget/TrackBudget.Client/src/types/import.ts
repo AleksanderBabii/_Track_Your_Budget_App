@@ -4,6 +4,7 @@ export interface ImportPreviewTransaction {
     rowNumber: number;
     date: string;
     title: string;
+    description?: string;
     amount: number;
     type: Transactiontype;
     notes?: string;

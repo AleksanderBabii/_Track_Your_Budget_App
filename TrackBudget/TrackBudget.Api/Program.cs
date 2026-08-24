@@ -106,6 +106,7 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ITransferRepository, TransferRepository>();
 builder.Services.AddScoped<ITransferService, TransferService>();
+builder.Services.AddScoped<ITransactionImportService, TransactionImportService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
 builder.Services.AddScoped<IBudgetService, BudgetService>();

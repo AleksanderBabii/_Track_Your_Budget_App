@@ -6,7 +6,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: $color-background-secondary;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,10 +14,144 @@
 }
 
 .modalContent {
-  background-color: $color-white;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: $color-background-elevated;
+  padding: $padding-large;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
   width: 90%;
   max-width: 500px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: $margin-medium;
+  padding-bottom: $padding-small;
+
+  border-bottom: 1px solid $color-border;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: $font-size-xl;
+  color: $color-text;
+}
+
+.header p {
+  margin: 0;
+  font-size: $font-size-medium;
+  color: $color-text-secondary;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-medium;
+  padding: $padding-medium 0;
+  margin-bottom: $margin-medium;
+  overflow-y: auto;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-small;
+}
+
+.fileInputLabel {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-small;
+  font-size: $font-size-medium;
+  color: $color-text-secondary;
+}
+
+.selectedFile {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-small;
+  padding: $padding-small;
+  border-radius: $border-radius-sm;
+  background-color: $color-background;
+}
+
+.selectedFile span {
+  font-size: $font-size-small;
+  color: $color-text-muted;
+}
+
+.selectedFile p {
+  margin: 0;
+  font-size: $font-size-medium;
+  color: $color-text;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: $gap-small;
+  padding-top: $padding-small;
+  border-top: 1px solid $color-border;
+}
+
+.previewSection {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-small;
+  padding: $padding-small;
+  border-radius: $border-radius-sm;
+  background-color: $color-background;
+}
+
+.previewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $margin-small;
+}
+
+.previewSummary {
+  font-size: $font-size-medium;
+  color: $color-text-secondary;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.previewTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invalid {
+  color: $color-error;
+  font-size: $font-size-small;
+}
+
+.duplicate {
+  color: $color-warning;
+  font-size: $font-size-small;
+}
+
+.valid {
+  color: $color-success;
+  font-size: $font-size-small;
+}
+
+@media (max-width: 600px) {
+  .modalContent {
+    width: 95%;
+    padding: $padding-medium;
+  }
+
+  .header h2 {
+    font-size: $font-size-large;
+  }
+
+  .header p {
+    font-size: $font-size-small;
+  }
 }

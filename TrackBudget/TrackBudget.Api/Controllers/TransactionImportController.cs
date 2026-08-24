@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 using TrackBudget.Application.DTOs.Imports;
 using TrackBudget.Application.DTOs.Transactions; 
@@ -62,7 +63,7 @@ public class TransactionImportController(
 
     private Guid GetUserId()
     {
-        var userIdClaim = User.FindFirst("sub")?.Value;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (!Guid.TryParse(userIdClaim, out var userId))
         {

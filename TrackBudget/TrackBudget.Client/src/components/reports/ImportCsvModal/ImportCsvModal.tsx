@@ -8,6 +8,9 @@ import { Button } from "../../common/Button/Button";
 import { Input } from "../../common/Input/Input";
 import { ErrorState } from "../../common/ErrorState/ErrorState";
 
+import { usePreviewCsvImport } from "../../../hooks/importHooks/usePreviewCsvImport";
+import type { ImportPreview } from "../../../types/import";
+
 import styles from "./ImportCsvModal.module.scss";
 
 interface ImportCsvModalProps {
@@ -60,6 +63,10 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
   const [validationError, setValidationError] = useState<string | null>(null);
 
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
+
+  const previewMutation = usePreviewCsvImport();
+
+  const [preview, setPreview] = useState<ImportPreview | null>(null);
 
   const [selectedBankFormat, setSelectedBankFormat] =
     useState<BankFormat>("auto detect");
@@ -131,7 +138,7 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
     setValidationError(null);
   }
 
-  function handlePreview() {
+  async function handlePreview() {
     if (!selectedAccountId) {
       setValidationError("Please select an account.");
       return;
@@ -143,6 +150,22 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
     }
 
     setValidationError(null);
+
+    setPreview(null);
+
+    try {
+      const result = await previewMutation.mutateAsync({
+        file: selectedFile,
+        accountId: selectedAccountId,
+      });
+      setPreview(result);
+    } catch (error) {
+      setValidationError(
+        error instanceof Error
+          ? error.message
+          : "Failed to preview the import.",
+      );
+    }
   }
 
   function handleClose() {
@@ -188,10 +211,78 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
               label="Select File Format"
               options={fileFormatOptions}
               value={fileFormat}
-              onChange={(value) =>
-                setFileFormat(value as unknown as ImportFileFormat)
+              onChange={(event) =>
+                setFileFormat(event.target.value as ImportFileFormat)
               }
             />
+
+            {preview && (
+              <section className={styles.previewSection}>
+                <div className={styles.previewHeader}>
+                  <div>
+                    <h3>Preview Import</h3>
+                    <p>
+                      Review the transactions below before confirming the
+                      import.
+                    </p>
+                  </div>
+                  <div className={styles.previewSummary}>
+                    <span>Total: {preview.totalRows}</span>
+                    <span>Valid: {preview.validRows}</span>
+                    <span>Invalid: {preview.invalidRows}</span>
+                    <span>Duplicates: {preview.duplicateRows}</span>
+                  </div>
+                </div>
+
+                <div className={styles.tableWrapper}>
+                  <table className={styles.previewTable}>
+                    <thead>
+                      <tr>
+                        <th>Row</th>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {preview.transactions.map((transactions) => (
+                        <tr key={transactions.rowNumber}>
+                          <td>{transactions.rowNumber}</td>
+                          <td>
+                            {new Date(transactions.date).toLocaleDateString()}
+                          </td>
+                          <td>{transactions.title}</td>
+                          <td>{transactions.description}</td>
+                          <td>{transactions.amount.toFixed(2)}</td>
+                          <td>{transactions.type}</td>
+                          <td>{transactions.notes || "N/A"}</td>
+                          <td>{transactions.categoryId || "N/A"}</td>
+                          <td>{transactions.categoryName || "N/A"}</td>
+                          <td>
+                            {transactions.error ? (
+                              <span className={styles.invalid}>
+                                {transactions.error}
+                              </span>
+                            ) : transactions.isDuplicate ? (
+                              <span className={styles.duplicate}>
+                                Duplicate
+                              </span>
+                            ) : (
+                              <span className={styles.valid}>Valid</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -199,8 +290,8 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
               label="Select Bank Format"
               options={bankFormatOptions}
               value={selectedBankFormat}
-              onChange={(value) =>
-                setSelectedBankFormat(value as unknown as BankFormat)
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                setSelectedBankFormat(event.target.value as BankFormat)
               }
             />
           </div>
@@ -210,8 +301,8 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
               label="Select Account"
               options={accountOptions}
               value={selectedAccountId}
-              onChange={(value) =>
-                setSelectedAccountId(value as unknown as string)
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                setSelectedAccountId(event.target.value as string)
               }
             />
           </div>
@@ -237,14 +328,39 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
         </div>
 
         <footer className={styles.modalFooter}>
-          <Button onClick={handleClose}>Cancel</Button>
+          {preview ? (
+            <>
+              <Button
+                type="button"
+                onClick={() => {
+                  setPreview(null);
+                }}
+              >
+                Back to File Selection
+              </Button>
 
-          <Button
-            onClick={handlePreview}
-            disabled={!selectedFile || !selectedAccountId}
-          >
-            Preview
-          </Button>
+              <Button type="button" disabled>
+                Confirm Import
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button type="button" onClick={handleClose}>
+                Cancel
+              </Button>
+
+              <Button
+                onClick={handlePreview}
+                disabled={
+                  !selectedFile ||
+                  !selectedAccountId ||
+                  previewMutation.isPending
+                }
+              >
+                {previewMutation.isPending ? "Previewing..." : "Preview Import"}
+              </Button>
+            </>
+          )}
         </footer>
       </div>
     </div>,
