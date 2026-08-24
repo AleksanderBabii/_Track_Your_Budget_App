@@ -12,6 +12,7 @@ import { Button } from "../../components/common/Button/Button.tsx";
 import { ExpenseChart } from "../../components/reports/ExpenseChart/ExpenseChart";
 import { IncomeChart } from "../../components/reports/IncomeChart/IncomeChart";
 import { MonthlyReportChart } from "../../components/reports/MonthlyReportChart/MonthlyReportChart";
+import { ImportCsvModal } from "../../components/reports/ImportCsvModal/ImportCsvModal.tsx";
 
 import styles from "./Report.module.scss";
 
@@ -113,6 +114,8 @@ export function Report() {
 
   console.log("REPORT DATA:", report);
 
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+
   const dateError = useMemo(() => {
     if (!fromDate || !toDate) {
       return "Both From date and To date are required.";
@@ -149,17 +152,28 @@ export function Report() {
         </div>
       </div>
 
-      {report && (
-        <Button
-          type="button"
-          onClick={() => 
-            exportReportToCsv(report)
-          }
-          disabled={Boolean(reportError)}>
-            Export CSV
-          </Button>
-        
-      )}
+
+<div className={styles.headerActions}>
+    {report && (
+      <Button
+        type="button"
+        onClick={() => exportReportToCsv(report)}
+      >
+        Export Report to CSV
+      </Button>
+    )}
+    <Button
+      type="button"
+      onClick={() => setIsImportModalOpen(true)}
+    >
+      Import CSV
+    </Button>
+
+    <ImportCsvModal
+      isOpen={isImportModalOpen}
+      onClose={() => setIsImportModalOpen(false)}
+    />
+  </div>
 
       <section className={styles.filters}>
         <div className={styles.presets}>
