@@ -64,6 +64,8 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
 
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
 
+  const [isImporting, setIsImporting] = useState(false);
+
   const previewMutation = usePreviewCsvImport();
 
   const [preview, setPreview] = useState<ImportPreview | null>(null);
@@ -175,6 +177,40 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
     setSelectedBankFormat("auto detect");
     setValidationError(null);
     onClose();
+  }
+
+  async function handleConfirmImport() {
+    if (!preview) {
+      setValidationError(
+        "No preview available. Please preview the import first.",
+      );
+      return;
+    }
+
+    setIsImporting(true);
+    try {
+      // TODO:
+      // Connect this to the final import endpoint.
+      //
+      // The backend should receive:
+      // - selectedFile
+      // - selectedAccountId
+      // - bank format
+      // - file format
+      //
+      // and then create the validated transactions.
+      console.log("Confirming import:", {
+        accountId: selectedAccountId,
+        file: selectedFile,
+        preview,
+      });
+    } catch (error) {
+      setValidationError(
+        error instanceof Error ? error.message : "Failed to import the file.",
+      );
+    } finally {
+      setIsImporting(false);
+    }
   }
 
   return createPortal(
@@ -328,7 +364,25 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
         </div>
 
         <footer className={styles.modalFooter}>
-          {preview ? (
+          {!preview ? (
+            <>
+              <Button type="button" onClick={handleClose}>
+                Cancel
+              </Button>
+
+              <Button
+                type="button"
+                onClick={handlePreview}
+                disabled={
+                  !selectedAccountId ||
+                  !selectedFile ||
+                  previewMutation.isPending
+                }
+              >
+                {previewMutation.isPending ? "Analyzing..." : "Preview Import"}
+              </Button>
+            </>
+          ) : (
             <>
               <Button
                 type="button"
@@ -339,25 +393,12 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
                 Back to File Selection
               </Button>
 
-              <Button type="button" disabled>
-                Confirm Import
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button type="button" onClick={handleClose}>
-                Cancel
-              </Button>
-
               <Button
-                onClick={handlePreview}
-                disabled={
-                  !selectedFile ||
-                  !selectedAccountId ||
-                  previewMutation.isPending
-                }
+                type="button"
+                onClick={handleConfirmImport}
+                disabled={isImporting}
               >
-                {previewMutation.isPending ? "Previewing..." : "Preview Import"}
+                {isImporting ? "Importing..." : "Confirm Import"}
               </Button>
             </>
           )}
