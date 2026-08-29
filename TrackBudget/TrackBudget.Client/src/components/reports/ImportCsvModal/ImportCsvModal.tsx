@@ -2,13 +2,14 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 
 import { useAccounts } from "../../../hooks/accountsHooks/useAccounts";
+import { usePreviewCsvImport } from "../../../hooks/importHooks/usePreviewCsvImport";
+import { useConfirmCsvImport } from "../../../hooks/importHooks/useConfirmCsvImport";
 
 import { Select } from "../../common/Select/Select";
 import { Button } from "../../common/Button/Button";
 import { Input } from "../../common/Input/Input";
 import { ErrorState } from "../../common/ErrorState/ErrorState";
 
-import { usePreviewCsvImport } from "../../../hooks/importHooks/usePreviewCsvImport";
 import type { ImportPreview } from "../../../types/import";
 
 import styles from "./ImportCsvModal.module.scss";
@@ -54,6 +55,10 @@ type BankFormat =
   | "custom";
 
 export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
+  const previewMutation = usePreviewCsvImport();
+
+  const importMutation = useConfirmCsvImport();
+
   const { data: accounts = [] } = useAccounts();
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -65,8 +70,6 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
   const [selectedAccountId, setSelectedAccountId] = useState<string>("");
 
   const [isImporting, setIsImporting] = useState(false);
-
-  const previewMutation = usePreviewCsvImport();
 
   const [preview, setPreview] = useState<ImportPreview | null>(null);
 
@@ -180,36 +183,41 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
   }
 
   async function handleConfirmImport() {
-    if (!preview) {
-      setValidationError(
-        "No preview available. Please preview the import first.",
-      );
+    if (!preview || !selectedAccountId) {
       return;
     }
 
-    setIsImporting(true);
-    try {
-      // TODO:
-      // Connect this to the final import endpoint.
-      //
-      // The backend should receive:
-      // - selectedFile
-      // - selectedAccountId
-      // - bank format
-      // - file format
-      //
-      // and then create the validated transactions.
-      console.log("Confirming import:", {
-        accountId: selectedAccountId,
-        file: selectedFile,
-        preview,
-      });
-    } catch (error) {
+    const transactions = preview.transactions
+      .filter((transaction) => !transaction.error && !transaction.isDuplicate)
+      .map((transaction) => ({
+        rowNumber: transaction.rowNumber,
+        date: transaction.date,
+        title: transaction.title,
+        amount: transaction.amount,
+        type: transaction.type,
+        notes: transaction.notes,
+        categoryId: transaction.categoryId,
+      }));
+
+    if (transactions.length === 0) {
       setValidationError(
-        error instanceof Error ? error.message : "Failed to import the file.",
+        "There are no valid transactions available for import.",
       );
-    } finally {
-      setIsImporting(false);
+
+      return;
+    }
+
+    setValidationError(null);
+
+    try {
+      await importMutation.mutateAsync({
+        accountId: selectedAccountId,
+        transactions,
+      });
+
+      handleClose();
+    } catch {
+      setValidationError("Failed to import transactions. Please try again.");
     }
   }
 
@@ -396,9 +404,9 @@ export function ImportCsvModal({ isOpen, onClose }: ImportCsvModalProps) {
               <Button
                 type="button"
                 onClick={handleConfirmImport}
-                disabled={isImporting}
+                disabled={importMutation.isPending}
               >
-                {isImporting ? "Importing..." : "Confirm Import"}
+                {importMutation.isPending ? "Importing..." : "Confirm Import"}
               </Button>
             </>
           )}

@@ -1,6 +1,6 @@
 namespace TrackBudget.Application.DTOs.Imports;
-
-public class ConfirmImportTransactionDto
+using TrackBudget.Domain.Enums;
+public sealed class ConfirmImportTransactionDto
 {
     public int RowNumber { get; set; }
 
@@ -9,6 +9,8 @@ public class ConfirmImportTransactionDto
     public string Title { get; set; } = string.Empty;
 
     public decimal Amount { get; set; }
+
+    public TransactionType Type { get; set; }
 
     public string? Notes { get; set; }
 
